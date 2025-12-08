@@ -23,6 +23,14 @@ make coverage                # Generate HTML coverage report
 # Run single test
 go test -v -run TestName ./path/to/package/...
 
+# Test coverage
+make coverage                # Generate HTML coverage report (opens browser)
+
+# Coverage for internal packages (tests are in separate tests/ directory)
+go test -coverprofile=coverage.out -coverpkg=./internal/... ./tests/unit/... ./tests/integration/...
+go tool cover -func=coverage.out        # Show coverage by function
+go tool cover -html=coverage.out        # Open HTML coverage report
+
 # Code quality
 make lint                    # Run golangci-lint
 make fmt                     # Format code
