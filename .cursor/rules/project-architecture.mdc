@@ -1,0 +1,49 @@
+---
+description: Defines the core architectural patterns (Hexagonal, Strategy) and the role of the internal/domain package for decoupling.
+globs:
+  - "**/*.go"
+alwaysApply: true
+---
+
+# Project Architecture and Decoupling Rules
+
+The `repodocs-go` project adheres to a Hexagonal Architecture (Ports and Adapters) centered around the Strategy Pattern. All new features and components must maintain this separation of concerns.
+
+## 1. Domain Layer (Ports)
+
+The `internal/domain` package defines the core business entities and interfaces (Ports).
+
+- **Rule**: All infrastructure components must depend only on the interfaces defined in `internal/domain`. They must not import concrete types from other infrastructure packages (e.g., `internal/fetcher` should not import `internal/cache` directly, but rather `domain.Cache`).
+- **Interfaces to Implement**:
+    - `domain.Strategy`: For new source types (e.g., new cloud storage or API).
+    - `domain.Fetcher`: For new network I/O methods.
+    - `domain.Converter`: For new content transformation pipelines.
+    - `domain.Writer`: For new output formats.
+
+## 2. Strategy Pattern Implementation
+
+The application flow is driven by the Strategy Pattern.
+
+- **Context**: The `internal/app/Orchestrator` is the context that selects and executes the strategy.
+- **Detection**: Strategy selection logic resides in `internal/app/detector.go`. When adding a new strategy, update `DetectStrategy` to correctly identify the input URL pattern.
+- **Execution**: All strategies must implement the `Execute(ctx, url, opts)` method and utilize the injected `strategies.Dependencies` struct to perform their work.
+
+## 3. Dependency Injection (Composition Root)
+
+The `internal/strategies/Dependencies` struct acts as the Composition Root, aggregating all infrastructure services.
+
+- **Rule**: All concrete service instantiation (e.g., `cache.NewBadgerCache`, `fetcher.NewClient`) must be centralized within the `strategies.NewDependencies` factory function.
+- **Principle**: Components should receive their dependencies via constructor injection, relying on the `domain` interfaces, not by instantiating concrete types themselves.
+
+## 4. Core Entities
+
+The `domain.Document` model is the central data structure passed through the system.
+
+- **Rule**: Any component that modifies content must update the `Document` model and pass it to the next stage. Avoid creating new, temporary data structures for content that should be part of the final output.
+
+## 5. Package Cohesion
+
+- **`internal/app`**: Only handles coordination, configuration, and strategy selection. No direct I/O or content transformation logic.
+- **`internal/strategies`**: Only contains the concrete strategy logic (e.g., crawling loop, git clone).
+- **`internal/converter`**: Only handles HTML/text transformation.
+- **`cmd/repodocs`**: Only handles CLI parsing (`cobra`) and initialization.

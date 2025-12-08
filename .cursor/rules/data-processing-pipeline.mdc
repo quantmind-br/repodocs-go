@@ -1,0 +1,47 @@
+---
+description: Rules for content acquisition, transformation, and persistence, focusing on the Converter pipeline and caching.
+globs:
+  - "internal/converter/**/*.go"
+  - "internal/fetcher/**/*.go"
+  - "internal/output/**/*.go"
+  - "internal/cache/**/*.go"
+alwaysApply: false
+---
+
+# Data Processing and I/O Conventions
+
+This rule set governs how content is acquired, transformed, and persisted, focusing on the `converter.Pipeline` and robust I/O handling.
+
+## 1. Content Acquisition (Fetcher and Renderer)
+
+The `internal/fetcher` and `internal/renderer` packages handle all external network I/O.
+
+- **Caching First**: Before any external HTTP request, the `fetcher.Client` must check the `domain.Cache` (implemented by `internal/cache/badger.go`) using a key derived from the URL and configuration.
+- **Retry Logic**: All network requests must be wrapped with the `github.com/cenkalti/backoff/v4` logic, as implemented in `internal/fetcher/retry.go`.
+    - **Retryable Errors**: Transient network errors, and HTTP status codes 429, 500, 502, 503, 504.
+- **JavaScript Rendering**: Use `internal/renderer/Renderer` (which utilizes `go-rod`) only when necessary (e.g., for Single Page Applications). This is a resource-heavy operation and should be avoided for static content.
+
+## 2. The Converter Pipeline
+
+Content transformation is a fixed sequence of steps defined in `internal/converter/pipeline.go`.
+
+- **Sequence**: The pipeline must execute in this order:
+    1. Encoding Conversion
+    2. Content Extraction (`go-readability`)
+    3. HTML Sanitization (remove scripts, styles, navigation)
+    4. Markdown Conversion (`html-to-markdown/v2`)
+- **Rule**: When adding a new transformation step, it must be implemented as a new stage in the `converter.Pipeline` to ensure predictable data flow.
+
+## 3. Caching Mechanism (BadgerDB)
+
+The cache is persistent and local, using `github.com/dgraph-io/badger/v4`.
+
+- **Key Generation**: Cache keys must be robust, incorporating the URL and any relevant configuration parameters to prevent stale data. Refer to `internal/cache/keys.go`.
+- **TTL**: Respect the configured Time-To-Live (TTL) for cache entries.
+
+## 4. Final Output Persistence
+
+The final `domain.Document` is written to disk by the `internal/output/writer.go`.
+
+- **Output Format**: The primary output is Markdown (`.md`). JSON metadata should be written alongside the Markdown file if configured.
+- **Directory Structure**: The `Writer` must resolve the final output path based on the configured output directory and the document's source URL, ensuring a clean, predictable file structure.
