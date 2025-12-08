@@ -1,69 +1,87 @@
-# CLAUDE.md: repodocs-go Configuration
+# CLAUDE.md
 
-Hello Claude! This file provides persistent context for working with the `repodocs-go` codebase. This project is a powerful command-line tool written in Go designed to extract documentation from various sources (websites, Git repos, sitemaps) and convert it into clean, standardized Markdown.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 1. Project Overview
+## Project Overview
 
-`repodocs-go` is a documentation extraction and conversion utility. It uses a modular, pluggable architecture to handle different input sources (strategies) and a multi-step pipeline to transform raw HTML into high-quality Markdown documents, complete with caching and stealth features.
+`repodocs-go` is a Go CLI tool that extracts documentation from diverse sources (websites, Git repos, sitemaps, pkg.go.dev) and converts it into standardized Markdown. It handles JavaScript-heavy SPAs via headless Chrome, implements stealth HTTP features for anti-bot measures, and uses persistent caching with BadgerDB.
 
-## 2. Architecture and Design Patterns
+## Build and Development Commands
 
-The architecture is a layered, modular design resembling a **Hexagonal Architecture** (Ports and Adapters), centered around an `Orchestrator`.
+```bash
+# Build
+make build                    # Build binary to ./build/repodocs
+make build-all               # Cross-compile for all platforms
 
-### Core Patterns:
+# Test
+make test                    # Unit tests with race detection
+make test-integration        # Integration tests only
+make test-e2e                # End-to-end tests
+make test-all                # All tests
+make coverage                # Generate HTML coverage report
 
-1.  **Strategy Pattern:** Used to handle different input sources. The `internal/app/Detector` selects the appropriate `domain.Strategy` implementation (`CrawlerStrategy`, `GitStrategy`, `SitemapStrategy`) based on the input URL.
-2.  **Pipeline Pattern:** Implemented in `internal/converter/Pipeline`. This defines a fixed sequence of steps (Sanitization, Readability Extraction, Markdown Conversion) to process raw HTML.
-3.  **Dependency Injection (DI):** All infrastructure services (`Fetcher`, `Renderer`, `Cache`, `Converter`, `Writer`) are aggregated into a `strategies.Dependencies` struct, which acts as the DI container and is passed to the selected `Strategy`.
+# Run single test
+go test -v -run TestName ./path/to/package/...
 
-### Layered Structure:
+# Code quality
+make lint                    # Run golangci-lint
+make fmt                     # Format code
+make vet                     # Static analysis
 
-*   **Domain (`internal/domain`):** Defines all core interfaces (`Strategy`, `Fetcher`, `Cache`, `Converter`) and data models (`Document`). This is the contract layer.
-*   **Application (`internal/app`):** Contains the `Orchestrator` and `Detector`, managing the flow and wiring.
-*   **Infrastructure (`internal/strategies`, `internal/fetcher`, `internal/cache`, etc.):** Concrete implementations of the domain interfaces.
+# Development
+make run ARGS="https://example.com -o ./output"
+make install                 # Install to ~/.local/bin
+make deps                    # Download and tidy dependencies
+```
 
-## 3. Key Components and Responsibilities
+## Architecture
 
-| Component | Package | Role |
-| :--- | :--- | :--- |
-| **Orchestrator** | `internal/app` | Central coordinator. Loads config, initializes dependencies, selects, and executes the correct `Strategy`. |
-| **Dependencies** | `internal/strategies` | The Composition Root. Aggregates and manages the lifecycle of all infrastructure services (e.g., `BadgerCache`, `FetcherClient`, `RodRenderer`). |
-| **Fetcher Client** | `internal/fetcher` | Handles network I/O, retries (with exponential backoff), and stealth features using specialized clients (`fhttp`, `tls-client`). |
-| **Renderer** | `internal/renderer` | Manages the headless browser (`rod`) for rendering JavaScript-heavy pages. |
-| **Converter Pipeline** | `internal/converter` | Executes the multi-step transformation from raw HTML to final Markdown. |
-| **BadgerCache** | `internal/cache` | Persistent, on-disk key-value store for caching fetched content. |
+The codebase follows **Hexagonal Architecture** with the **Strategy Pattern** at its core:
 
-## 4. Development Workflow and Commands
+```
+cmd/repodocs/main.go          CLI entry point (Cobra/Viper)
+        ↓
+internal/app/orchestrator.go  Central coordinator
+        ↓
+internal/app/detector.go      Selects strategy based on URL pattern
+        ↓
+internal/strategies/*         Strategy implementations (Crawler, Git, Sitemap, PkgGo)
+        ↓
+internal/strategies/strategy.go  Dependencies struct (Composition Root)
+```
 
-The project uses standard Go tooling. Configuration is managed by `viper` and `cobra`.
+### Key Packages
 
-### Common Bash Commands
+| Package | Responsibility |
+|---------|---------------|
+| `internal/domain` | Interfaces (Strategy, Fetcher, Cache, Converter, Writer) and models (Document) |
+| `internal/strategies` | Strategy implementations + Dependencies DI container |
+| `internal/fetcher` | Stealth HTTP client (tls-client), retry with exponential backoff |
+| `internal/renderer` | Headless Chrome via rod, tab pooling |
+| `internal/converter` | Pipeline: Encoding → Readability → Sanitization → Markdown |
+| `internal/cache` | BadgerDB persistent cache |
+| `internal/output` | Markdown + JSON metadata file writing |
 
-| Command | Description |
-| :--- | :--- |
-| `go build -o repodocs ./cmd/repodocs` | Builds the main executable binary. |
-| `go test ./...` | Runs all unit and integration tests. |
-| `go run ./cmd/repodocs [url]` | Runs the application directly. |
-| `go run ./cmd/repodocs https://example.com -o ./output --concurrency 5` | Example execution command. |
-| `golangci-lint run` | Runs the linter based on the `/.golangci.yml` configuration. |
+### Design Rules
 
-### Testing
+1. **Depend on interfaces**: Infrastructure packages must import `internal/domain` interfaces, not concrete types from other infrastructure packages
+2. **Composition Root**: All service instantiation happens in `strategies.NewDependencies()` - update this when adding new services
+3. **Strategy detection**: Update `internal/app/detector.go` when adding new source types
+4. **Pipeline sequence**: Converter steps must run in order: Encoding → Readability → Sanitization → Markdown
 
-*   Tests are located in `*_test.go` files within their respective packages.
-*   Focus on mocking external dependencies (like `Fetcher` and `Cache`) when testing core logic in `internal/app` and `internal/strategies`.
-*   Integration tests should verify the end-to-end flow of specific strategies (e.g., `CrawlerStrategy` or `GitStrategy`).
+## Conventions
 
-## 5. Conventions and Style
+**Error handling**: Wrap errors with context using `fmt.Errorf("context: %w", err)`. Define domain errors in `internal/domain/errors.go`.
 
-*   **Language:** Go (Golang).
-*   **Logging:** Use `github.com/rs/zerolog` via the `internal/utils/Logger` wrapper for structured logging. Avoid `fmt.Println` in core logic.
-*   **Error Handling:** Return errors explicitly. Use `fmt.Errorf("context: %w", err)` for wrapping errors and preserving stack trace/context.
-*   **Decoupling:** Always depend on interfaces defined in `internal/domain` when possible, not concrete implementations from other infrastructure packages.
-*   **Configuration:** All configuration must be loaded via `viper` and passed down through the `config.Config` struct.
+**Logging**: Use zerolog via `internal/utils/Logger`. Levels: Debug (internal flow), Info (milestones), Error (failures).
 
-## 6. Development Gotchas and Warnings
+**Context**: All I/O operations must accept `context.Context` as first parameter and respect cancellation.
 
-1.  **Chromium Dependency:** The `internal/renderer` package requires a local installation of Chromium/Chrome to function. If tests involving rendering fail, check the environment setup for `rod`.
-2.  **Stealth Complexity:** The `internal/fetcher` uses specialized, non-standard Go HTTP clients (`fhttp`, `tls-client`) for stealth. Debugging network issues can be complex; ensure you understand the custom client's behavior before assuming a standard `net/http` issue.
-3.  **Composition Root:** The `internal/strategies/Dependencies` struct is the central point of component wiring. If you add a new service or change a constructor signature, this is the first place to update.
-4.  **Caching:** The `BadgerCache` is persistent. If you encounter stale data, try clearing the cache path configured in the CLI or config file.
+**Configuration**: All settings flow through `config.Config` struct loaded by Viper.
+
+## Gotchas
+
+1. **Chromium required**: The renderer package needs local Chromium/Chrome. Run `repodocs doctor` to check.
+2. **Non-standard HTTP clients**: The fetcher uses `fhttp` and `tls-client` for stealth - these behave differently from `net/http`.
+3. **Persistent cache**: BadgerDB cache survives between runs. Clear cache directory or use `--no-cache` if encountering stale data.
+4. **Tab pooling**: The renderer manages a browser tab pool - check `internal/renderer/pool.go` when debugging concurrency issues.
