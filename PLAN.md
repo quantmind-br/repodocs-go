@@ -1,644 +1,398 @@
-# Plano de Cobertura de Testes - Repodocs-Go
+# PLAN.md: Inclusion Selector Enhancement
 
-## Resumo Executivo
+## 1. Executive Summary
 
-**Status dos Testes:**
-- ✅ Unit Tests: APROVADOS (54.6% cobertura)
-- ✅ Integration Tests: APROVADOS (38.0% cobertura)
-- ✅ Teste com falha: CORRIGIDO (TestClient_GetCookies/invalid_URL)
+This plan enhances the `--content-selector` feature in RepoDocs to provide precise HTML content targeting via CSS selectors. After code analysis, the **current implementation is mostly correct** but has specific issues that need addressing.
 
-**Objetivo:** Elevar cobertura de 54.6% para 90%+ através de implementação em 3 fases.
+**Key Findings:**
+- The selector flow (`CLI → Orchestrator → Dependencies → Pipeline → ExtractContent`) is properly wired
+- The `extractWithSelector` already falls back to Readability when selector doesn't match
+- The Sanitizer receives only the scoped HTML fragment (not the full document)
 
----
-
-## 📊 Status Atual por Pacote
-
-### Cobertura por Pacote
-| Pacote | Cobertura | Status |
-|--------|-----------|--------|
-| tests/unit | 54.6% | ⚠️ |
-| tests/unit/app | 2.0% | 🔴 Crítico |
-| tests/unit/cache | 16.1% | 🔴 Baixo |
-| tests/unit/fetcher | 48.7% | ⚠️ |
-| tests/unit/renderer | 24.9% | 🔴 Baixo |
-| tests/unit/utils | 6.0% | 🔴 Crítico |
-| tests/integration | 38.0% | ⚠️ |
-| tests/integration/strategies | 25.3% | 🔴 Baixo |
-
-### Estatísticas Gerais
-- **Total de arquivos Go:** 35
-- **Arquivos de teste unitário:** 29
-- **Arquivos de teste de integração:** 8
-- **Funções com 0% cobertura:** 15
-- **Funções com < 30% cobertura:** 17
+**Real Issues Identified:**
+1. Metadata extraction uses original HTML instead of scoped content for headers/links
+2. No support for exclusion selectors (complement to inclusion)
+3. Multiple matching elements: only `.First()` is taken without user control
+4. No logging/warning when selector doesn't match and fallback is used
 
 ---
 
-## 🚨 Funções com 0% de Cobertura (CRÍTICO)
+## 2. Current Architecture Analysis
 
-### 1. internal/config/defaults.go
-- `ConfigFilePath`: 0.0%
+### 2.1 Data Flow (Working Correctly)
+```
+cmd/main.go
+  └─ --content-selector flag → OrchestratorOptions.ContentSelector
+      └─ orchestrator.go → DependencyOptions.ContentSelector
+          └─ strategy.go → Options.ContentSelector
+              └─ Dependencies.NewPipeline() → PipelineOptions.ContentSelector
+                  └─ pipeline.go → ExtractContent.selector
+                      └─ readability.go → extractWithSelector()
+```
 
-### 2. internal/converter/readability.go
-- `extractBody`: 0.0%
+### 2.2 Pipeline.Convert Flow (Current)
+```go
+// Step 1: UTF-8 conversion
+// Step 2: Extract content (selector applied HERE - correct)
+// Step 3: Sanitize (receives scoped HTML - correct)
+// Step 4: Convert to Markdown
+// Step 5: Extract metadata (BUG: uses original 'html' for headers/links)
+// Step 6: Calculate statistics
+// Step 7: Build document
+```
 
-### 3. internal/fetcher/client.go
-- `DefaultClientOptions`: 0.0%
-- `saveToCache`: 0.0%
-
-### 4. internal/fetcher/stealth.go
-- `RandomDelay`: 0.0%
-
-### 5. internal/strategies/git.go (8 FUNÇÕES)
-- `detectDefaultBranch`: 0.0%
-- `buildArchiveURL`: 0.0%
-- `downloadAndExtract`: 0.0%
-- `extractTarGz`: 0.0%
-- `findDocumentationFiles`: 0.0%
-- `processFiles`: 0.0%
-- `processFile`: 0.0%
-- `extractTitleFromPath`: 0.0%
-
-### 6. internal/strategies/sitemap.go
-- `processSitemapIndex`: 0.0%
-- `decompressGzip`: 0.0%
-
-### 7. internal/cache/interface.go
-- `DefaultOptions`: 0.0%
+### 2.3 extractWithSelector Behavior (Current)
+```go
+func (e *ExtractContent) extractWithSelector(html, sourceURL string) (string, string, error) {
+    doc, _ := goquery.NewDocumentFromReader(...)
+    content := doc.Find(e.selector).First()  // Issue: only first match
+    if content.Length() == 0 {
+        return e.extractWithReadability(html, sourceURL)  // Fallback works
+    }
+    // ...
+}
+```
 
 ---
 
-## 📉 Funções com Baixa Cobertura (< 30%)
+## 3. Issues & Solutions
 
-### internal/strategies/git.go
-- `tryArchiveDownload`: 21.1%
-- `NewGitStrategy`: 25.0%
+### Issue 1: Metadata Extraction Uses Wrong Source
 
-### internal/app/detector.go
-- `CreateStrategy`: 57.1%
+**Problem:** In `pipeline.go`, headers and links are extracted from the original `html` instead of the `sanitized` content:
+```go
+headers := ExtractHeaders(sanitized)  // OK
+links := ExtractLinks(sanitized, sourceURL)  // OK - but see below
+```
 
-### internal/utils/fs.go
-- `GeneratePathFromRelative`: 50.0%
-- `ExpandPath`: 27.3%
+Actually reviewing the code more carefully, this is **already correct**. Both use `sanitized`. No change needed here.
 
-### internal/converter/readability.go
-- `extractTitle`: 60.0%
+### Issue 2: No Warning on Selector Fallback
+
+**Problem:** When the selector doesn't match, the system silently falls back to Readability. Users may not realize their selector is invalid.
+
+**Solution:** Add logging in `extractWithSelector`:
+```go
+func (e *ExtractContent) extractWithSelector(html, sourceURL string) (string, string, error) {
+    // ...
+    if content.Length() == 0 {
+        log.Debug().
+            Str("selector", e.selector).
+            Str("url", sourceURL).
+            Msg("Content selector not found, falling back to Readability")
+        return e.extractWithReadability(html, sourceURL)
+    }
+    // ...
+}
+```
+
+**File:** `internal/converter/readability.go`
+
+### Issue 3: Multiple Elements Behavior
+
+**Problem:** When selector matches multiple elements, only `.First()` is taken. This may not be the desired behavior for selectors like `article` or `.section`.
+
+**Solution:** Add option to combine all matches:
+```go
+type ExtractContent struct {
+    selector    string
+    combineAll  bool  // New: if true, combines all matching elements
+}
+```
+
+**Decision:** For simplicity, use goquery's native comma-separated selector support. Example: `--content-selector "article, .content"` already works with goquery and returns combined content if we adjust to not use `.First()`.
+
+**Proposed Change:**
+```go
+func (e *ExtractContent) extractWithSelector(html, sourceURL string) (string, string, error) {
+    // ...
+    content := doc.Find(e.selector)
+    if content.Length() == 0 {
+        return e.extractWithReadability(html, sourceURL)
+    }
+    
+    // Combine all matches instead of just first
+    var combined strings.Builder
+    content.Each(func(i int, sel *goquery.Selection) {
+        if h, err := sel.Html(); err == nil {
+            combined.WriteString(h)
+        }
+    })
+    
+    return combined.String(), title, nil
+}
+```
+
+### Issue 4: Exclusion Selectors
+
+**Problem:** Users may want to exclude specific elements within their selected content (e.g., exclude `.warning` boxes).
+
+**Solution:** Add `--exclude-selector` flag that runs after inclusion:
+```go
+type PipelineOptions struct {
+    BaseURL          string
+    ContentSelector  string
+    ExcludeSelector  string  // New
+}
+```
+
+**Implementation:** Apply exclusion after extraction but before sanitization:
+```go
+// In Pipeline.Convert
+content, title, err := p.extractor.Extract(html, sourceURL)
+if p.excludeSelector != "" {
+    content = p.removeExcluded(content, p.excludeSelector)
+}
+sanitized, err := p.sanitizer.Sanitize(content)
+```
 
 ---
 
-## 🎯 Estratégia de Implementação (3 Fases)
+## 4. Implementation Plan
 
-### Fase 1: Crítico (1-2 semanas) - Meta: 70%
-**Prioridade Máxima**
+### Phase 1: Logging & Diagnostics (Low Risk)
+**Priority:** High | **Effort:** 1h
 
-#### 1.1 Corrigir Teste com Falha ✅
-- [x] `TestClient_GetCookies/invalid_URL` - CORRIGIDO
-- [x] Teste esperava `nil` mas recebia lista vazia
-- [x] Atualizado para usar `assert.Empty()` ao invés de `assert.Nil()`
+| Task | File | Description |
+|------|------|-------------|
+| 1.1 | `internal/converter/readability.go` | Add debug logging when selector fallback occurs |
+| 1.2 | `internal/converter/readability.go` | Add debug logging showing matched element count |
 
-#### 1.2 internal/app (2% → 70%)
-**Criar:** `tests/unit/app/orchestrator_test.go`
+### Phase 2: Multi-Element Support (Medium Risk)
+**Priority:** Medium | **Effort:** 2h
 
-**Casos de teste:**
-```go
-// orchestrator.go
-- TestNewOrchestrator_Success - Configuração válida
-- TestNewOrchestrator_WithNilConfig - Erro de configuração
-- TestRun_Success - Execução completa bem-sucedida
-- TestRun_InvalidURL - Erro de validação de URL
-- TestRun_StrategyError - Erro durante execução da estratégia
-- TestRun_ContextCancellation - Cancelamento durante execução
-- TestClose_Success - Fechamento adequado dos recursos
-- TestGetStrategyName - Retorna nome da estratégia atual
-- TestValidateURL_Valid - URL válida aceita
-- TestValidateURL_Invalid - URL inválida rejeitada
-- TestValidateURL_Empty - URL vazia rejeitada
+| Task | File | Description |
+|------|------|-------------|
+| 2.1 | `internal/converter/readability.go` | Change `extractWithSelector` to combine all matches |
+| 2.2 | `tests/unit/pipeline_test.go` | Add test for multiple element matching |
+| 2.3 | `tests/unit/pipeline_test.go` | Add test for comma-separated selectors |
 
-// detector.go
-- TestCreateStrategy_ValidURL - Cria estratégia para URL válida
-- TestCreateStrategy_InvalidURL - Erro para URL inválida
-- TestCreateStrategy_UnknownType - Erro para tipo desconhecido
-- TestDetectStrategy_Crawler - Detecta estratégia crawler
-- TestDetectStrategy_Git - Detecta estratégia git
-- TestDetectStrategy_Sitemap - Detecta estratégia sitemap
-- TestDetectStrategy_PkgGo - Detecta estratégia pkg.go.dev
-- TestDetectStrategy_LLMS - Detecta estratégia LLMS
-- TestGetAllStrategies - Retorna todas as estratégias registradas
-- TestFindMatchingStrategy - Encontra estratégia correspondente
-```
+### Phase 3: Exclusion Selector (Medium Risk)
+**Priority:** Low | **Effort:** 3h
 
-#### 1.3 internal/utils (6% → 75%)
-**Criar:** `tests/unit/utils/fs_test.go`
-**Expandir:** `tests/unit/utils/url_test.go`
-
-**Casos de teste:**
-```go
-// fs.go
-- TestSanitizeFilename - Remove caracteres inválidos
-- TestGeneratePath - Gera caminho absoluto válido
-- TestGeneratePathFromRelative - Converte path relativo (50% → 100%)
-- TestExpandPath - Expande paths com ~ e variáveis (27% → 100%)
-- TestEnsureDir - Cria diretórios com diferentes permissões
-- TestEnsureDir_ExistingDir - Não recria diretório existente
-- TestURLToFilename - Converte URL para nome de arquivo
-- TestURLToPath - Converte URL para caminho completo
-- TestIsValidFilename - Valida nomes de arquivo
-- TestJSONPath - Gera caminho para arquivo JSON
-
-// url.go (expandir testes existentes)
-- TestNormalizeURL_WithQuery - Mantém query parameters
-- TestNormalizeURL_WithoutQuery - Remove query parameters
-- TestNormalizeURL_Invalid - Erro para URL inválida
-- TestResolveURL_Valid - Resolve URL relativa com base
-- TestResolveURL_InvalidBase - Erro para base inválida
-- TestExtractLinks_HTML - Extrai links de HTML
-- TestExtractLinks_Complex - Extrai de HTML complexo
-- TestFilterLinks_Include - Filtra links incluídos
-- TestFilterLinks_Exclude - Filtra links excluídos
-- TestGetDomain - Extrai domínio de URL
-- TestGetBaseDomain - Extrai domínio base
-- TestIsSameDomain - Compara domínios
-- TestIsSameBaseDomain - Compara domínios base
-```
-
-#### 1.4 internal/strategies/git.go (50% → 80%)
-**Criar/Expandir:** `tests/unit/git_strategy_test.go`
-
-**Casos de teste:**
-```go
-// Funções críticas sem testes (0% → 80%+)
-- TestDetectDefaultBranch_Main - Detecta branch 'main'
-- TestDetectDefaultBranch_Master - Detecta branch 'master'
-- TestDetectDefaultBranch_Custom - Detecta branch customizado
-- TestDetectDefaultBranch_Error - Erro ao detectar branch
-- TestBuildArchiveURL_GitHub - Constrói URL do GitHub
-- TestBuildArchiveURL_GitLab - Constrói URL do GitLab
-- TestBuildArchiveURL_Custom - Constrói URL customizada
-- TestDownloadAndExtract_Success - Download e extração bem-sucedidos
-- TestDownloadAndExtract_Gzip - Processa arquivo .tar.gz
-- TestDownloadAndExtract_Error - Erro durante download
-- TestExtractTarGz_Success - Extração bem-sucedida
-- TestExtractTarGz_Invalid - Erro para arquivo inválido
-- TestFindDocumentationFiles_Markdown - Encontra arquivos .md
-- TestFindDocumentationFiles_AsciiDoc - Encontra arquivos .adoc
-- TestFindDocumentationFiles_Empty - Lista vazia para repo sem docs
-- TestFindDocumentationFiles_Nested - Encontra em subdiretórios
-- TestProcessFiles_Success - Processa múltiplos arquivos
-- TestProcessFiles_Invalid - Erro para arquivo inválido
-- TestProcessFiles_Empty - Lista vazia
-- TestProcessFile_Markdown - Processa arquivo Markdown
-- TestProcessFile_HTML - Converte HTML para Markdown
-- TestProcessFile_Error - Erro ao processar arquivo
-- TestExtractTitleFromPath_Readme - Extrai título do README
-- TestExtractTitleFromPath_Custom - Extrai de path customizado
-- TestExtractTitleFromPath_Index - Extrai de index.*
-- TestTryArchiveDownload_Success - Download via archive bem-sucedido
-- TestTryArchiveDownload_Error - Erro no download via archive
-- TestTryArchiveDownload_Fallback - Fallback para clone
-- TestNewGitStrategy_Success - Inicialização bem-sucedida
-- TestNewGitStrategy_WithOptions - Inicialização com opções
-```
-
-#### 1.5 internal/config (75% → 95%)
-**Expandir:** `tests/unit/config_loader_test.go`
-
-**Casos de teste:**
-```go
-// defaults.go
-- TestConfigFilePath_Default - Retorna caminho padrão
-- TestConfigFilePath_Custom - Retorna caminho customizado
-- TestConfigFilePath_Empty - Trata caminho vazio
-
-// loader.go
-- TestLoad_WithConfigFile - Carrega de arquivo específico
-- TestLoad_WithoutConfigFile - Usa valores padrão
-- TestEnsureConfigDir_Success - Cria diretório de config
-- TestEnsureConfigDir_Existing - Não recria diretório existente
-- TestEnsureCacheDir_Success - Cria diretório de cache
-- TestEnsureCacheDir_Existing - Não recria diretório existente
-```
-
-**Meta Fase 1:** 70% de cobertura
+| Task | File | Description |
+|------|------|-------------|
+| 3.1 | `internal/converter/pipeline.go` | Add `ExcludeSelector` to `PipelineOptions` |
+| 3.2 | `internal/converter/pipeline.go` | Implement `removeExcluded()` method |
+| 3.3 | `cmd/repodocs/main.go` | Add `--exclude-selector` flag |
+| 3.4 | `internal/app/orchestrator.go` | Wire `ExcludeSelector` through options |
+| 3.5 | `internal/strategies/strategy.go` | Add to `Options` struct |
+| 3.6 | `tests/unit/pipeline_test.go` | Add exclusion selector tests |
 
 ---
 
-### Fase 2: Alto (2-3 semanas) - Meta: 80%
+## 5. Detailed Code Changes
 
-#### 2.1 internal/fetcher (80% → 95%)
-**Expandir:** `tests/unit/fetcher/client_cache_test.go`
-
-**Casos de teste:**
-```go
-// client.go
-- TestDefaultClientOptions - Verifica opções padrão
-- TestSaveToCache_Success - Salva no cache com sucesso
-- TestSaveToCache_Disabled - Não salva com cache desabilitado
-- TestSaveToCache_Error - Erro ao salvar no cache
-- TestGet_WithCache - Busca com cache habilitado
-- TestGet_WithoutCache - Busca com cache desabilitado
-- TestGetWithHeaders_CustomHeaders - Headers customizados
-
-// stealth.go
-- TestRandomDelay_Generate - Gera delay aleatório
-- TestRandomDelay_WithinRange - Delay dentro do intervalo
-- TestRandomDelay_Zero - Delay zero quando configurado
-```
-
-#### 2.2 internal/strategies/sitemap (80% → 95%)
-**Expandir:** `tests/unit/sitemap_strategy_test.go`
-
-**Casos de teste:**
-```go
-// sitemap.go
-- TestProcessSitemapIndex_Success - Processa índice de sitemaps
-- TestProcessSitemapIndex_Empty - Lista vazia
-- TestProcessSitemapIndex_Nested - Processa sitemaps aninhados
-- TestDecompressGzip_Success - Descompacta arquivo .gz
-- TestDecompressGzip_Invalid - Erro para arquivo inválido
-- TestDecompressGzip_NotGzipped - Erro para arquivo não compactado
-- TestParseLastMod_WithDate - Analisa data válida
-- TestParseLastMod_Invalid - Ignora data inválida
-```
-
-#### 2.3 internal/converter/readability (71.4% → 90%)
-**Expandir:** `tests/unit/readability_test.go`
-
-**Casos de teste:**
-```go
-// readability.go
-- TestExtractBody_WithSelector - Extrai com seletor específico
-- TestExtractBody_WithoutSelector - Extrai sem seletor
-- TestExtractBody_Empty - Retorna vazio para conteúdo vazio
-- TestExtractBody_ComplexHTML - Extrai de HTML complexo
-- TestExtractTitle_FromH1 - Extrai título de <h1>
-- TestExtractTitle_FromTitle - Extrai de <title>
-- TestExtractTitle_Empty - Retorna vazio sem título
-- TestExtractDescription_Meta - Extrai de meta description
-- TestExtractDescription_Content - Extrai do conteúdo
-- TestExtractDescription_Empty - Retorna vazio sem description
-```
-
-#### 2.4 internal/renderer (24.9% → 75%)
-**Expandir:** `tests/unit/renderer/pool_test.go`
-**Criar:** `tests/unit/renderer/rod_test.go`
-
-**Casos de teste:**
-```go
-// pool.go (70% → 90%)
-- TestNewTabPool_WithOptions - Cria pool com opções
-- TestNewTabPool_DefaultOptions - Usa opções padrão
-- TestAcquire_Success - Adquire tab do pool
-- TestAcquire_Timeout - Timeout ao adquirir tab
-- TestRelease_Success - Libera tab para o pool
-- TestRelease_Invalid - Erro ao liberar tab inválida
-- TestClose_ClosesAllTabs - Fecha todas as tabs
-- TestSize_ReturnsCurrentSize - Retorna tamanho atual
-- TestMaxSize_ReturnsMaxSize - Retorna tamanho máximo
-
-// rod.go (80% → 90%)
-- TestNewRenderer_Success - Inicialização bem-sucedida
-- TestNewRenderer_WithOptions - Inicialização com opções
-- TestClose_ClosesBrowser - Fecha navegador adequadamente
-- TestIsAvailable_CheckAvailability - Verifica disponibilidade
-- TestGetBrowserPath_FindsChrome - Encontra caminho do Chrome
-- TestGetBrowserPath_NotFound - Erro se Chrome não encontrado
-```
-
-**Meta Fase 2:** 80% de cobertura
-
----
-
-### Fase 3: Médio (1-2 semanas) - Meta: 90%+
-
-#### 3.1 internal/cache (16.1% → 80%)
-**Expandir:** `tests/unit/cache/keys_test.go`
-**Criar:** `tests/unit/cache/badger_test.go`
-
-**Casos de teste:**
-```go
-// badger.go
-- TestNewBadgerCache_Success - Inicialização bem-sucedida
-- TestNewBadgerCache_WithOptions - Inicialização com opções
-- TestGet_Found - Encontra chave no cache
-- TestGet_NotFound - Não encontra chave inexistente
-- TestGet_Expired - Remove entrada expirada
-- TestSet_Success - Define valor no cache
-- TestSet_Update - Atualiza valor existente
-- TestHas_Exists - Verifica existência
-- TestHas_NotExists - Verifica não-existência
-- TestDelete_Success - Remove chave
-- TestDelete_NotExists - Erro ao remover inexistente
-- TestClear_Success - Limpa todo o cache
-- TestSize_ReturnsCount - Retorna número de entradas
-- TestStats_ReturnsStatistics - Retorna estatísticas
-- TestClose_Success - Fecha cache adequadamente
-
-// keys.go (80% → 100%)
-- TestGenerateKey_Simple - Gera chave simples
-- TestGenerateKey_WithPrefix - Gera chave com prefixo
-- TestNormalizeForKey_SpecialChars - Normaliza caracteres especiais
-- TestPageKey_GeneratesCorrectKey - Gera chave de página
-- TestSitemapKey_GeneratesCorrectKey - Gera chave de sitemap
-- TestMetadataKey_GeneratesCorrectKey - Gera chave de metadados
-```
-
-#### 3.2 internal/output (81% → 95%)
-**Expandir:** `tests/unit/writer_test.go`
-
-**Casos de teste:**
-```go
-// writer.go
-- TestWrite_Success - Escreve documento único
-- TestWrite_WithMetadata - Inclui metadados
-- TestWrite_EmptyContent - Trata conteúdo vazio
-- TestWrite_InvalidPath - Erro para caminho inválido
-- TestWriteMultiple_Success - Escreve múltiplos documentos
-- TestWriteMultiple_Partial - Falha parcial em escrita múltipla
-- TestWriteJSON_Success - Escreve JSON válido
-- TestWriteJSON_Indent - Escreve JSON formatado
-- TestGetPath_ReturnsPath - Retorna caminho configurado
-- TestExists_CheckExistence - Verifica existência de arquivo
-- TestEnsureBaseDir_CreatesDir - Cria diretório base
-- TestEnsureBaseDir_Existing - Não recria diretório existente
-- TestClean_RemovesFiles - Remove arquivos e diretórios
-- TestClean_EmptyDir - Não falha ao limpar diretório vazio
-- TestStats_ReturnsStatistics - Retorna estatísticas
-```
-
-#### 3.3 internal/strategies/llms (51.4% → 85%)
-**Expandir:** `tests/unit/llms_strategy_test.go`
-
-**Casos de teste:**
-```go
-// llms.go
-- TestParseLLMSLinks_Success - Extrai links LLMS
-- TestParseLLMSLinks_Empty - Lista vazia para HTML sem LLMS
-- TestParseLLMSLinks_Complex - Processa HTML complexo
-- TestExecute_WithValidLLMS - Executa com LLMS válido
-- TestExecute_WithEmptyLLMS - Trata LLMS vazio
-- TestExecute_WithInvalidHTML - Erro para HTML inválido
-- TestExecute_FetchError - Erro durante fetch
-- TestNewLLMSStrategy_Success - Inicialização bem-sucedida
-- TestCanHandle_LLMSURL - Reconhece URL LLMS
-- TestCanHandle_NonLLMSURL - Rejeita URL não-LLMS
-```
-
-#### 3.4 Testes de Integração (38% → 70%)
-**Expandir:** `tests/integration/orchestrator_test.go`
-**Criar:** `tests/e2e/full_pipeline_test.go`
-
-**Casos de teste:**
-```go
-// Integração completa
-- TestFullPipeline_Website - Pipeline completo para website
-- TestFullPipeline_GitRepo - Pipeline completo para repositório Git
-- TestFullPipeline_Sitemap - Pipeline completo para sitemap
-- TestFullPipeline_PkgGo - Pipeline completo para pkg.go.dev
-- TestCache_Integration - Testa cache entre execuções
-- TestConcurrency_MultipleURLs - Executa URLs em paralelo
-- TestContextCancellation_FullFlow - Cancelamento durante pipeline
-- TestErrorHandling_Graceful - Tratamento gracioso de erros
-- TestPerformance_LargeSite - Performance com site grande
-- TestRenderer_PoolExhaustion - Exaustão e renovação de pool
-```
-
-#### 3.5 Testes End-to-End (0% → 50%)
-**Criar:** `tests/e2e/`
+### 5.1 Phase 1: readability.go Logging
 
 ```go
-// e2e tests
-- TestCrawl_RealWebsite - Crawl de website real
-- TestCrawl_GitHubRepo - Crawl de repositório GitHub
-- TestCrawl_PkgGoDev - Crawl de pkg.go.dev
-- TestCrawl_Sitemap - Crawl via sitemap
-- TestOutput_ValidMarkdown - Valida Markdown gerado
-- TestMetadata_ValidJSON - Valida JSON de metadados
-- TestCache_PersistsBetweenRuns - Cache persiste entre execuções
-- TestConfig_Overrides - Testa sobrescrita de configurações
-- TestCLI_Integration - Testa integração via CLI
+package converter
+
+import (
+    "github.com/rs/zerolog/log"
+    // ... existing imports
+)
+
+func (e *ExtractContent) extractWithSelector(html, sourceURL string) (string, string, error) {
+    doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+    if err != nil {
+        return "", "", err
+    }
+
+    content := doc.Find(e.selector)
+    matchCount := content.Length()
+    
+    log.Debug().
+        Str("selector", e.selector).
+        Int("matches", matchCount).
+        Str("url", sourceURL).
+        Msg("Content selector applied")
+
+    if matchCount == 0 {
+        log.Debug().
+            Str("selector", e.selector).
+            Str("url", sourceURL).
+            Msg("Selector not found, falling back to Readability algorithm")
+        return e.extractWithReadability(html, sourceURL)
+    }
+
+    title := extractTitle(doc)
+    
+    // Combine all matches
+    var combined strings.Builder
+    content.Each(func(i int, sel *goquery.Selection) {
+        if h, err := sel.Html(); err == nil {
+            combined.WriteString(h)
+        }
+    })
+
+    return combined.String(), title, nil
+}
 ```
 
-**Meta Fase 3:** 90%+ de cobertura
+### 5.2 Phase 3: Exclusion Selector
 
----
+**pipeline.go changes:**
+```go
+type PipelineOptions struct {
+    BaseURL         string
+    ContentSelector string
+    ExcludeSelector string
+}
 
-## 📋 Lista de Verificação por Fase
+type Pipeline struct {
+    sanitizer       *Sanitizer
+    extractor       *ExtractContent
+    mdConverter     *MarkdownConverter
+    excludeSelector string
+}
 
-### Fase 1 - Crítico (1-2 semanas)
-- [ ] 1.1 Corrigir `TestClient_GetCookies/invalid_URL` ✅
-- [ ] 1.2 Criar `tests/unit/app/orchestrator_test.go` (11 casos)
-- [ ] 1.3 Expandir `tests/unit/app/detector_test.go` (10 casos)
-- [ ] 1.4 Criar `tests/unit/utils/fs_test.go` (10 casos)
-- [ ] 1.5 Expandir `tests/unit/utils/url_test.go` (15 casos)
-- [ ] 1.6 Expandir `tests/unit/git_strategy_test.go` (25 casos)
-- [ ] 1.7 Expandir `tests/unit/config_loader_test.go` (10 casos)
-- [ ] **Meta:** 70% cobertura
-- [ ] **Duração:** 1-2 semanas
+func NewPipeline(opts PipelineOptions) *Pipeline {
+    // ... existing code ...
+    return &Pipeline{
+        sanitizer:       sanitizer,
+        extractor:       extractor,
+        mdConverter:     mdConverter,
+        excludeSelector: opts.ExcludeSelector,
+    }
+}
 
-### Fase 2 - Alto (2-3 semanas)
-- [ ] 2.1 Expandir `tests/unit/fetcher/client_cache_test.go` (10 casos)
-- [ ] 2.2 Expandir `tests/unit/fetcher/stealth_test.go` (3 casos)
-- [ ] 2.3 Expandir `tests/unit/sitemap_strategy_test.go` (10 casos)
-- [ ] 2.4 Expandir `tests/unit/readability_test.go` (10 casos)
-- [ ] 2.5 Expandir `tests/unit/renderer/pool_test.go` (10 casos)
-- [ ] 2.6 Criar `tests/unit/renderer/rod_test.go` (8 casos)
-- [ ] **Meta:** 80% cobertura
-- [ ] **Duração:** 2-3 semanas
-
-### Fase 3 - Médio (1-2 semanas)
-- [ ] 3.1 Criar `tests/unit/cache/badger_test.go` (15 casos)
-- [ ] 3.2 Expandir `tests/unit/cache/keys_test.go` (7 casos)
-- [ ] 3.3 Expandir `tests/unit/writer_test.go` (15 casos)
-- [ ] 3.4 Expandir `tests/unit/llms_strategy_test.go` (10 casos)
-- [ ] 3.5 Expandir `tests/integration/` (10 casos)
-- [ ] 3.6 Criar `tests/e2e/` (9 casos)
-- [ ] **Meta:** 90%+ cobertura
-- [ ] **Duração:** 1-2 semanas
-
-**Total:** 4-7 semanas para alcançar 90%+ de cobertura
-
----
-
-## 🛠️ Ferramentas e Comandos
-
-### Comandos de Teste
-```bash
-# Gerar relatório de cobertura completo
-go test -coverprofile=coverage.out -coverpkg=./internal/... ./tests/unit/... ./tests/integration/...
-
-# Visualizar cobertura por função
-go tool cover -func=coverage.out
-
-# Ver funções com 0% cobertura
-go tool cover -func=coverage.out | grep "0.0%"
-
-# Ver funções com baixa cobertura (< 30%)
-go tool cover -func=coverage.out | awk -F: 'NF==4 && $3+0 < 30 && $3+0 > 0 {print $0}'
-
-# Executar todos os testes
-make test
-
-# Executar testes unitários
-make test-unit
-
-# Executar testes de integração
-make test-integration
-
-# Executar testes end-to-end
-make test-e2e
-
-# Gerar HTML de cobertura
-go tool cover -html=coverage.out -o coverage.html
-
-# Ver cobertura de um pacote específico
-go test -coverprofile=/tmp/pkg.out ./tests/unit/fetcher/ && go tool cover -func=/tmp/pkg.out
-
-# Executar teste específico
-go test -v ./tests/unit/app/orchestrator_test.go
-
-# Executar com race detection
-go test -race ./tests/unit/...
-
-# Executar com timeout
-go test -timeout 5m ./tests/integration/...
-```
-
-### Comandos de Desenvolvimento
-```bash
-# Instalar dependências de teste
-make deps
-
-# Executar linter
-make lint
-
-# Formatar código
-make fmt
-
-# Verificar código
-make vet
-
-# Build do projeto
-make build
-
-# Executar CLI
-make run ARGS="https://example.com -o ./output"
+func (p *Pipeline) removeExcluded(html, selector string) string {
+    if selector == "" {
+        return html
+    }
+    doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+    if err != nil {
+        return html
+    }
+    doc.Find(selector).Remove()
+    result, _ := doc.Html()
+    return result
+}
 ```
 
 ---
 
-## 📚 Recursos de Referência
+## 6. Test Cases
 
-### Estrutura de Testes Recomendada
-```
-tests/
-├── unit/                  # Testes unitários
-│   ├── app/
-│   │   ├── detector_test.go
-│   │   └── orchestrator_test.go  # CRIAR
-│   ├── cache/
-│   │   ├── keys_test.go
-│   │   └── badger_test.go  # CRIAR
-│   ├── fetcher/
-│   │   ├── client_cache_test.go
-│   │   └── stealth_test.go  # EXPANDIR
-│   ├── renderer/
-│   │   ├── pool_test.go
-│   │   └── rod_test.go  # CRIAR
-│   ├── strategies/
-│   │   ├── git_strategy_test.go  # EXPANDIR
-│   │   ├── sitemap_strategy_test.go  # EXPANDIR
-│   │   └── llms_strategy_test.go  # EXPANDIR
-│   └── utils/
-│       ├── fs_test.go  # CRIAR
-│       ├── url_test.go  # EXPANDIR
-│       └── logger_test.go
-├── integration/          # Testes de integração
-│   ├── orchestrator_test.go  # EXPANDIR
-│   ├── strategies/
-│   └── ...
-└── e2e/                  # Testes end-to-end
-    ├── full_pipeline_test.go  # CRIAR
-    └── ...
+### 6.1 New Test: Multiple Element Matching
+```go
+func TestPipeline_ContentSelector_MultipleMatches(t *testing.T) {
+    html := `<!DOCTYPE html>
+    <html><body>
+        <article class="post">First article</article>
+        <article class="post">Second article</article>
+        <aside>Sidebar</aside>
+    </body></html>`
+
+    pipeline := converter.NewPipeline(converter.PipelineOptions{
+        ContentSelector: "article.post",
+    })
+
+    doc, err := pipeline.Convert(context.Background(), html, "https://example.com")
+    require.NoError(t, err)
+
+    assert.Contains(t, doc.Content, "First article")
+    assert.Contains(t, doc.Content, "Second article")
+    assert.NotContains(t, doc.Content, "Sidebar")
+}
 ```
 
-### Padrões de Teste
-- **Arrange-Act-Assert:** Estrutura clara para cada teste
-- **Table-driven tests:** Para múltiplos cenários
-- **Mock interfaces:** Isolar dependências
-- **Golden files:** Para outputs complexos (Markdown)
-- **TempDir:** Para testes que escrevem arquivos
+### 6.2 New Test: Comma-Separated Selectors
+```go
+func TestPipeline_ContentSelector_CommaSeparated(t *testing.T) {
+    html := `<!DOCTYPE html>
+    <html><body>
+        <div id="title">Page Title</div>
+        <nav>Navigation</nav>
+        <div id="body">Main content</div>
+    </body></html>`
+
+    pipeline := converter.NewPipeline(converter.PipelineOptions{
+        ContentSelector: "#title, #body",
+    })
+
+    doc, err := pipeline.Convert(context.Background(), html, "https://example.com")
+    require.NoError(t, err)
+
+    assert.Contains(t, doc.Content, "Page Title")
+    assert.Contains(t, doc.Content, "Main content")
+    assert.NotContains(t, doc.Content, "Navigation")
+}
+```
+
+### 6.3 New Test: Exclusion Selector
+```go
+func TestPipeline_ExcludeSelector(t *testing.T) {
+    html := `<!DOCTYPE html>
+    <html><body>
+        <article>
+            <h1>Title</h1>
+            <div class="warning">Warning box to exclude</div>
+            <p>Main content</p>
+        </article>
+    </body></html>`
+
+    pipeline := converter.NewPipeline(converter.PipelineOptions{
+        ContentSelector: "article",
+        ExcludeSelector: ".warning",
+    })
+
+    doc, err := pipeline.Convert(context.Background(), html, "https://example.com")
+    require.NoError(t, err)
+
+    assert.Contains(t, doc.Content, "Title")
+    assert.Contains(t, doc.Content, "Main content")
+    assert.NotContains(t, doc.Content, "Warning box")
+}
+```
 
 ---
 
-## 🎯 Critérios de Aceitação
+## 7. Resolved Questions
 
-### Para cada pacote/pacote:
-- [ ] Cobertura ≥ 70% (Fase 1)
-- [ ] Cobertura ≥ 80% (Fase 2)
-- [ ] Cobertura ≥ 90% (Fase 3)
-- [ ] Todos os testes passing
-- [ ] Sem race conditions
-- [ ] Sem data races
-
-### Para cada função crítica:
-- [ ] Testes de sucesso
-- [ ] Testes de erro
-- [ ] Testes de edge cases
-- [ ] Testes de contexto (cancelamento)
-
-### Para integração:
-- [ ] Testes end-to-end passing
-- [ ] Performance acceptable
-- [ ] Cache funcionando
-- [ ] Concorrência segura
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| Multiple selectors support? | **Yes, native** | goquery already supports comma-separated selectors |
+| Exclusion selectors? | **Yes, new flag** | Adds `--exclude-selector` flag for explicit exclusions |
+| Multiple matches behavior? | **Combine all** | Change `.First()` to combine all matching elements |
+| Invalid selector handling? | **Silent fallback + log** | Keep fallback to Readability, add debug logging |
 
 ---
 
-## 📊 Métricas de Sucesso
+## 8. Success Criteria
 
-### Fase 1
-- **Cobertura geral:** 70%
-- **Pacotes críticos (app, utils):** ≥ 70%
-- **Funções 0%:** Reduzir de 15 para ≤ 5
-
-### Fase 2
-- **Cobertura geral:** 80%
-- **Todos os pacotes:** ≥ 75%
-- **Funções 0%:** Reduzir para ≤ 2
-
-### Fase 3
-- **Cobertura geral:** 90%+
-- **Todos os pacotes:** ≥ 85%
-- **Funções 0%:** ≤ 1
+1. **Unit Tests:** All new tests in `pipeline_test.go` pass
+2. **Existing Tests:** No regression in existing `TestPipeline_ContentSelector` tests
+3. **Functional:** `repodocs URL --content-selector "article"` extracts all `<article>` elements
+4. **Functional:** `repodocs URL --content-selector "#main" --exclude-selector ".ads"` works correctly
+5. **Logging:** Debug mode shows selector match count and fallback warnings
 
 ---
 
-## 🚦 Status do Projeto
+## 9. Risk Assessment
 
-### Atual
-- ✅ Unit Tests: APROVADOS (54.6%)
-- ✅ Integration Tests: APROVADOS (38.0%)
-- ✅ Teste falhando: CORRIGIDO
-- 🔄 Execução de testes: PASSOU
-
-### Próximos Passos
-1. **Imediato:** Iniciar Fase 1 (internal/app, internal/utils, internal/strategies/git)
-2. **Semana 1:** Completar testes para internal/app
-3. **Semana 2:** Completar testes para internal/utils
-4. **Semana 3:** Completar testes para internal/strategies/git
-5. **Semana 4:** Verificar 70% de cobertura
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| Breaking existing selector behavior | Low | High | Keep fallback logic, add tests first |
+| Performance impact from combining elements | Low | Low | goquery is efficient; no extra parsing |
+| Complex selectors failing | Low | Medium | goquery handles most CSS3 selectors |
 
 ---
 
-## 📞 Contato e Suporte
+## 10. Implementation Order
 
-Para dúvidas sobre implementação de testes:
-- Verificar: `/home/diogo/dev/repodocs-go/repodocs-go/CLAUDE.md`
-- Consultar: Documentação de testes existente
-- Executar: `make test` para verificar status
+1. **Write tests first** (TDD approach)
+2. Add logging (Phase 1) - safest change
+3. Implement multi-element support (Phase 2)
+4. Add exclusion selector (Phase 3) - if needed
+
+**Estimated Total Effort:** 6 hours
 
 ---
 
-**Última atualização:** 2025-12-08
-**Versão do plano:** 2.0
-**Responsável:** Equipe de Desenvolvimento
+## 11. Dependencies
+
+- **goquery** v1.8+ (already installed) - CSS selector support
+- **zerolog** (already installed) - structured logging
+- No new dependencies required
