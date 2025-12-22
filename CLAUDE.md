@@ -14,32 +14,48 @@ make build                    # Build binary to ./build/repodocs
 make build-all               # Cross-compile for all platforms
 
 # Test
-make test                    # Unit tests with race detection
+make test                    # Unit tests with race detection (-short flag)
 make test-integration        # Integration tests only
 make test-e2e                # End-to-end tests
-make test-all                # All tests
+make test-all                # All tests (unit, integration, e2e)
 make coverage                # Generate HTML coverage report
 
 # Run single test
-go test -v -run TestName ./path/to/package/...
+go test -v -run TestName ./tests/unit/...
+go test -v -run TestName ./tests/integration/...
+go test -v -run TestName ./tests/e2e/...
 
-# Test coverage
-make coverage                # Generate HTML coverage report (opens browser)
-
-# Coverage for internal packages (tests are in separate tests/ directory)
+# Test coverage for internal packages
+# Note: Tests are in separate tests/ directory, not alongside code
 go test -coverprofile=coverage.out -coverpkg=./internal/... ./tests/unit/... ./tests/integration/...
 go tool cover -func=coverage.out        # Show coverage by function
 go tool cover -html=coverage.out        # Open HTML coverage report
 
+# Regenerate mocks (after changing domain interfaces)
+go generate ./...
+# Or manually:
+mockgen -source=internal/domain/interfaces.go -destination=tests/mocks/domain.go -package=mocks
+
 # Code quality
-make lint                    # Run golangci-lint
+make lint                    # Run golangci-lint with custom config (.golangci.yml)
 make fmt                     # Format code
 make vet                     # Static analysis
 
 # Development
 make run ARGS="https://example.com -o ./output"
-make install                 # Install to ~/.local/bin
+make dev                     # Watch mode (requires air)
 make deps                    # Download and tidy dependencies
+make deps-update             # Update all dependencies
+
+# Installation
+make install                 # Install to ~/.local/bin (user installation)
+make uninstall              # Remove from ~/.local/bin
+make install-global         # Install to /usr/local/bin (requires sudo)
+make uninstall-global       # Remove from /usr/local/bin (requires sudo)
+make check-install          # Check installation status and version
+
+# Check environment dependencies
+./build/repodocs doctor      # Verify Chromium/Chrome availability
 ```
 
 ## Architecture
@@ -63,12 +79,29 @@ internal/strategies/strategy.go  Dependencies struct (Composition Root)
 | Package | Responsibility |
 |---------|---------------|
 | `internal/domain` | Interfaces (Strategy, Fetcher, Cache, Converter, Writer) and models (Document) |
-| `internal/strategies` | Strategy implementations + Dependencies DI container |
-| `internal/fetcher` | Stealth HTTP client (tls-client), retry with exponential backoff |
-| `internal/renderer` | Headless Chrome via rod, tab pooling |
-| `internal/converter` | Pipeline: Encoding → Readability → Sanitization → Markdown |
-| `internal/cache` | BadgerDB persistent cache |
+| `internal/strategies` | Strategy implementations (Crawler, Git, Sitemap, PkgGo, LLMs*) + Dependencies DI container |
+| `internal/fetcher` | Stealth HTTP client (tls-client/fhttp), retry with exponential backoff, custom User-Agent |
+| `internal/renderer` | Headless Chrome via rod + stealth, browser tab pooling |
+| `internal/converter` | Pipeline: Encoding → Readability → Sanitization → Markdown (html-to-markdown) |
+| `internal/cache` | BadgerDB persistent cache with TTL support |
 | `internal/output` | Markdown + JSON metadata file writing |
+| `internal/app` | Orchestrator (main coordinator) + Detector (URL pattern → Strategy selection) |
+| `internal/config` | Viper-based configuration loading and management |
+| `internal/utils` | Zerolog logger, WorkerPool for concurrency |
+
+*LLMs strategy is a placeholder for future integration
+
+### Strategy Selection
+
+The Detector (`internal/app/detector.go`) selects the appropriate strategy based on URL patterns:
+
+| Strategy | URL Pattern | Purpose |
+|----------|-------------|---------|
+| **Git** | `git@`, `.git`, `github.com`, `gitlab.com`, `bitbucket.org` | Clone Git repos and extract markdown/docs |
+| **PkgGo** | `pkg.go.dev/` | Extract Go package documentation from pkg.go.dev |
+| **Sitemap** | URLs ending in `.xml` or containing `sitemap` | Parse sitemap.xml and crawl listed URLs |
+| **Crawler** | All other HTTP/HTTPS URLs | Crawl website starting from URL |
+| **LLMs** | Not implemented | Placeholder for future LLM-based extraction |
 
 ### Design Rules
 
@@ -87,9 +120,35 @@ internal/strategies/strategy.go  Dependencies struct (Composition Root)
 
 **Configuration**: All settings flow through `config.Config` struct loaded by Viper.
 
+## Test Organization
+
+Tests are in a **separate `tests/` directory**, not alongside production code:
+
+```
+tests/
+├── unit/           # Unit tests for internal packages
+├── integration/    # Integration tests with external dependencies
+├── e2e/           # End-to-end tests
+├── benchmark/     # Performance benchmarks
+├── mocks/         # Generated mocks (mockgen)
+├── testutil/      # Test helpers and utilities
+├── testdata/      # Test fixtures and golden files
+└── fixtures/      # HTML/XML fixtures for strategies
+```
+
+**Key test utilities** (`tests/testutil/`):
+- `NewBadgerCache(t)` - In-memory BadgerDB for tests
+- `NewTestServer(t)` - httptest server with HTML fixtures
+- `NewTestLogger(t)` - Zerolog test logger
+- `NewDocument(t)` - Document factory
+- `AssertDocumentContent(t, ...)` - Custom assertions
+
 ## Gotchas
 
 1. **Chromium required**: The renderer package needs local Chromium/Chrome. Run `repodocs doctor` to check.
 2. **Non-standard HTTP clients**: The fetcher uses `fhttp` and `tls-client` for stealth - these behave differently from `net/http`.
 3. **Persistent cache**: BadgerDB cache survives between runs. Clear cache directory or use `--no-cache` if encountering stale data.
 4. **Tab pooling**: The renderer manages a browser tab pool - check `internal/renderer/pool.go` when debugging concurrency issues.
+5. **Test location**: Tests are in `tests/` directory, not `*_test.go` alongside code. Use `-coverpkg=./internal/...` to measure coverage correctly.
+6. **Strategy detection**: URL patterns determine strategy selection in `internal/app/detector.go` - update this when adding new strategies.
+7. **Pipeline order matters**: The converter pipeline steps must run in sequence (Encoding → Readability → Sanitization → Markdown) - don't reorder.
