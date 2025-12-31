@@ -1,1306 +1,1768 @@
-# Implementation Plan: GitHub Wiki Strategy
+# PLAN.md - Integração Multi-Provider LLM para repodocs-go
 
-## Executive Summary
+## Resumo Executivo
 
-This document provides a comprehensive implementation plan for adding GitHub Wiki extraction support to `repodocs-go`. The new `WikiStrategy` will enable users to extract, transform, and organize wiki documentation from any GitHub repository wiki into clean, hierarchically structured Markdown files.
+Integrar suporte a provedores LLM compatíveis com as APIs **OpenAI**, **Anthropic** e **Google Gemini**. O usuário configura apenas três parâmetros por provider:
 
-**Target URL Example:** `https://github.com/Alexays/Waybar/wiki`
+- **`api_key`** - Chave de autenticação
+- **`base_url`** - URL base do endpoint
+- **`model`** - Identificador do modelo
 
----
-
-## Table of Contents
-
-1. [Technical Analysis](#1-technical-analysis)
-2. [Architecture Design](#2-architecture-design)
-3. [Implementation Details](#3-implementation-details)
-4. [File Changes](#4-file-changes)
-5. [Testing Strategy](#5-testing-strategy)
-6. [CLI Integration](#6-cli-integration)
-7. [Implementation Phases](#7-implementation-phases)
-8. [Risk Assessment](#8-risk-assessment)
+**Não haverá modelos hardcoded.** O usuário especifica qualquer modelo suportado pelo endpoint configurado.
 
 ---
 
-## 1. Technical Analysis
+## Índice
 
-### 1.1 GitHub Wiki Characteristics
+1. [Objetivo e Escopo](#1-objetivo-e-escopo)
+2. [Especificações das APIs](#2-especificações-das-apis)
+3. [Arquitetura da Solução](#3-arquitetura-da-solução)
+4. [Schema de Configuração](#4-schema-de-configuração)
+5. [Camada de Domínio](#5-camada-de-domínio)
+6. [Implementação dos Providers](#6-implementação-dos-providers)
+7. [Cliente HTTP](#7-cliente-http)
+8. [Tratamento de Erros](#8-tratamento-de-erros)
+9. [Testes](#9-testes)
+10. [Fases de Implementação](#10-fases-de-implementação)
+11. [Estrutura de Arquivos](#11-estrutura-de-arquivos)
+12. [Exemplos de Uso](#12-exemplos-de-uso)
 
-| Property | Value | Notes |
-|----------|-------|-------|
-| **Storage** | Separate Git repository | `{repo}.wiki.git` |
-| **API Access** | None | No REST/GraphQL API for wiki content |
-| **Clone URL (HTTPS)** | `https://github.com/{owner}/{repo}.wiki.git` | Public wikis |
-| **Clone URL (SSH)** | `git@github.com:{owner}/{repo}.wiki.git` | Authenticated |
-| **File Structure** | Flat (root directory only) | No subdirectories supported |
-| **File Format** | Markdown (`.md`), others supported | MediaWiki, AsciiDoc, etc. |
-| **Archive Download** | Not available | Must use git clone |
+---
 
-### 1.2 Special Files
+## 1. Objetivo e Escopo
 
-| File | Purpose | Required |
-|------|---------|----------|
-| `Home.md` | Wiki landing page (index) | Yes (created by default) |
-| `_Sidebar.md` | Custom navigation sidebar | No (optional) |
-| `_Footer.md` | Common footer for all pages | No (optional) |
+### 1.1 Objetivo Principal
 
-### 1.3 Wiki Link Syntax
+Permitir que `repodocs-go` se comunique com qualquer LLM através de três formatos de API padronizados:
 
-GitHub wikis support special link syntax:
+| Formato API | Provedores Compatíveis |
+|-------------|------------------------|
+| **OpenAI** | OpenAI, Azure OpenAI, Ollama, vLLM, LiteLLM, LocalAI, Together AI, Groq, Mistral, Anyscale, OpenRouter, etc. |
+| **Anthropic** | Anthropic Claude, AWS Bedrock (Claude), proxies compatíveis |
+| **Google** | Google AI Studio, Vertex AI, proxies compatíveis |
 
-```markdown
-# Standard Markdown links
-[Link Text](Page-Name)           # Without .md extension
-[Link Text](Page-Name.md)        # With extension
+### 1.2 Princípios de Design
 
-# Wiki-style links (GitHub-specific)
-[[Page Name]]                    # Auto-generates link text
-[[Page Name|Custom Text]]        # Custom link text
-[[Page Name#Section]]            # Link to section
+1. **Zero modelos hardcoded** - O usuário informa o ID do modelo
+2. **Configuração mínima** - Apenas `api_key`, `base_url`, `model`
+3. **Compatibilidade máxima** - Funciona com qualquer endpoint que implemente o formato
+4. **Cliente HTTP nativo** - Sem dependência de SDKs oficiais para maior controle
+5. **Seguir padrões existentes** - Usar patterns já estabelecidos no codebase
+
+### 1.3 Fora do Escopo (v1)
+
+- Streaming (será adicionado em versão futura)
+- Function calling / Tools
+- Vision / Multimodal
+- Embeddings
+- Fine-tuning
+
+---
+
+## 2. Especificações das APIs
+
+### 2.1 OpenAI Chat Completions API
+
+**Endpoint:** `POST {base_url}/chat/completions`
+
+**Headers:**
+```http
+Authorization: Bearer {api_key}
+Content-Type: application/json
 ```
 
-### 1.4 URL Patterns to Detect
+**Request Body:**
+```json
+{
+  "model": "{model}",
+  "messages": [
+    {"role": "system", "content": "..."},
+    {"role": "user", "content": "..."},
+    {"role": "assistant", "content": "..."}
+  ],
+  "max_tokens": 4096,
+  "temperature": 0.7
+}
+```
+
+**Response Body:**
+```json
+{
+  "id": "chatcmpl-xxx",
+  "object": "chat.completion",
+  "model": "...",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "..."
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 20,
+    "total_tokens": 30
+  }
+}
+```
+
+**Provedores compatíveis com este formato:**
+
+| Provedor | Base URL Padrão |
+|----------|-----------------|
+| OpenAI | `https://api.openai.com/v1` |
+| Ollama | `http://localhost:11434/v1` |
+| vLLM | `http://localhost:8000/v1` |
+| LiteLLM | `http://localhost:4000` |
+| LocalAI | `http://localhost:8080/v1` |
+| Together AI | `https://api.together.xyz/v1` |
+| Groq | `https://api.groq.com/openai/v1` |
+| Mistral | `https://api.mistral.ai/v1` |
+| OpenRouter | `https://openrouter.ai/api/v1` |
+| Azure OpenAI | `https://{resource}.openai.azure.com/openai/deployments/{deployment}` |
+
+---
+
+### 2.2 Anthropic Messages API
+
+**Endpoint:** `POST {base_url}/v1/messages`
+
+**Headers:**
+```http
+x-api-key: {api_key}
+anthropic-version: 2023-06-01
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "model": "{model}",
+  "max_tokens": 4096,
+  "messages": [
+    {"role": "user", "content": "..."},
+    {"role": "assistant", "content": "..."}
+  ],
+  "system": "optional system prompt"
+}
+```
+
+**Response Body:**
+```json
+{
+  "id": "msg_xxx",
+  "type": "message",
+  "role": "assistant",
+  "model": "...",
+  "content": [
+    {
+      "type": "text",
+      "text": "..."
+    }
+  ],
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 10,
+    "output_tokens": 20
+  }
+}
+```
+
+**Provedores compatíveis:**
+
+| Provedor | Base URL Padrão |
+|----------|-----------------|
+| Anthropic | `https://api.anthropic.com` |
+| AWS Bedrock | Via SDK específico |
+
+---
+
+### 2.3 Google Gemini API
+
+**Endpoint:** `POST {base_url}/v1beta/models/{model}:generateContent`
+
+**Headers:**
+```http
+x-goog-api-key: {api_key}
+Content-Type: application/json
+```
+
+**Alternativa de autenticação:** `?key={api_key}` como query parameter
+
+**Request Body:**
+```json
+{
+  "contents": [
+    {
+      "role": "user",
+      "parts": [{"text": "..."}]
+    },
+    {
+      "role": "model", 
+      "parts": [{"text": "..."}]
+    }
+  ],
+  "systemInstruction": {
+    "parts": [{"text": "..."}]
+  },
+  "generationConfig": {
+    "maxOutputTokens": 4096,
+    "temperature": 0.7
+  }
+}
+```
+
+**Response Body:**
+```json
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [{"text": "..."}]
+      },
+      "finishReason": "STOP"
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 10,
+    "candidatesTokenCount": 20,
+    "totalTokenCount": 30
+  }
+}
+```
+
+**Provedores compatíveis:**
+
+| Provedor | Base URL Padrão |
+|----------|-----------------|
+| Google AI Studio | `https://generativelanguage.googleapis.com` |
+| Vertex AI | `https://{region}-aiplatform.googleapis.com` |
+
+---
+
+## 3. Arquitetura da Solução
+
+### 3.1 Diagrama de Componentes
 
 ```
-# Wiki root
-https://github.com/{owner}/{repo}/wiki
-https://github.com/{owner}/{repo}/wiki/
-
-# Specific wiki page
-https://github.com/{owner}/{repo}/wiki/{Page-Name}
-
-# Direct clone URL
-https://github.com/{owner}/{repo}.wiki.git
-git@github.com:{owner}/{repo}.wiki.git
+┌─────────────────────────────────────────────────────────────────────┐
+│                         Configuração                                 │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  config.yaml / ENV vars                                        │  │
+│  │                                                                │  │
+│  │  llm:                                                          │  │
+│  │    provider: openai | anthropic | google                       │  │
+│  │    api_key: "sk-..."  (ou REPODOCS_LLM_API_KEY)               │  │
+│  │    base_url: "https://..."                                     │  │
+│  │    model: "user-specified-model-id"                            │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Domain Layer                                  │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  LLMProvider interface                                         │  │
+│  │    - Name() string                                             │  │
+│  │    - Complete(ctx, req) (*LLMResponse, error)                  │  │
+│  │    - Close() error                                             │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  LLMRequest / LLMResponse / LLMMessage                         │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      Provider Adapters                               │
+│                                                                      │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
+│  │  OpenAI         │  │  Anthropic      │  │  Google         │     │
+│  │  Adapter        │  │  Adapter        │  │  Adapter        │     │
+│  │                 │  │                 │  │                 │     │
+│  │  - Constrói     │  │  - Constrói     │  │  - Constrói     │     │
+│  │    request no   │  │    request no   │  │    request no   │     │
+│  │    formato      │  │    formato      │  │    formato      │     │
+│  │    OpenAI       │  │    Anthropic    │  │    Gemini       │     │
+│  │                 │  │                 │  │                 │     │
+│  │  - Parseia      │  │  - Parseia      │  │  - Parseia      │     │
+│  │    response     │  │    response     │  │    response     │     │
+│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘     │
+│           │                    │                    │               │
+│           └────────────────────┼────────────────────┘               │
+│                                │                                    │
+│                                ▼                                    │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                    HTTP Client (net/http)                      │  │
+│  │  - POST request com headers específicos                        │  │
+│  │  - Retry com backoff exponencial                               │  │
+│  │  - Timeout configurável                                        │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      External APIs                                   │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
+│  │ OpenAI-compat   │  │ Anthropic API   │  │ Google Gemini   │     │
+│  │ endpoints       │  │                 │  │ API             │     │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘     │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 1.5 Sidebar Structure Example
+### 3.2 Fluxo de Dados
 
-```markdown
-# _Sidebar.md example from a real wiki
-
-# Table of Contents
-
-## Getting Started
-* [[Home]]
-* [[Installation]]
-* [[Quick Start]]
-
-## Configuration
-* [[Basic Configuration]]
-* [[Advanced Settings]]
-* [[Themes]]
-
-## Development
-* [[Contributing]]
-* [[Building from Source]]
+```
+1. Usuário configura: provider=openai, base_url=http://localhost:11434/v1, model=llama3.2
+                           │
+                           ▼
+2. Factory cria OpenAIProvider com as configurações
+                           │
+                           ▼
+3. Chamada: provider.Complete(ctx, &LLMRequest{Messages: [...]})
+                           │
+                           ▼
+4. OpenAIProvider converte LLMRequest → OpenAI JSON format
+                           │
+                           ▼
+5. HTTP POST para {base_url}/chat/completions com headers corretos
+                           │
+                           ▼
+6. Parse da resposta JSON → LLMResponse
+                           │
+                           ▼
+7. Retorna LLMResponse para o chamador
 ```
 
 ---
 
-## 2. Architecture Design
+## 4. Schema de Configuração
 
-### 2.1 Component Overview
-
-```
-+---------------------------------------------------------------------+
-|                         WikiStrategy                                 |
-+---------------------------------------------------------------------+
-|  +------------------+  +------------------+  +--------------------+  |
-|  |   URL Parser     |  |  Git Cloner      |  |   Sidebar Parser   |  |
-|  |                  |  |                  |  |                    |  |
-|  | - Detect wiki    |  | - Shallow clone  |  | - Parse _Sidebar   |  |
-|  | - Extract owner  |  | - Handle auth    |  | - Build hierarchy  |  |
-|  | - Extract repo   |  | - Temp dir mgmt  |  | - Extract order    |  |
-|  +------------------+  +------------------+  +--------------------+  |
-|                                                                      |
-|  +------------------+  +------------------+  +--------------------+  |
-|  |  Link Converter  |  |  Doc Processor   |  |   Output Manager   |  |
-|  |                  |  |                  |  |                    |  |
-|  | - [[...]] links  |  | - Read .md files |  | - Create hierarchy |  |
-|  | - Relative URLs  |  | - Add metadata   |  | - Write documents  |  |
-|  | - Section links  |  | - Frontmatter    |  | - Generate index   |  |
-|  +------------------+  +------------------+  +--------------------+  |
-+---------------------------------------------------------------------+
-```
-
-### 2.2 Data Flow
-
-```
-+--------------+     +--------------+     +--------------+
-|  Wiki URL    |---->| Parse URL    |---->| Clone Wiki   |
-|              |     |              |     | Repository   |
-+--------------+     +--------------+     +------+-------+
-                                                 |
-                                                 v
-+--------------+     +--------------+     +--------------+
-| Write to     |<----| Process      |<----| Parse        |
-| Output Dir   |     | Documents    |     | _Sidebar.md  |
-+--------------+     +--------------+     +--------------+
-       |
-       v
-+------------------------------------------------------+
-|                    Output Structure                   |
-|  docs/                                               |
-|  +-- index.md              (Home.md)                 |
-|  +-- getting-started/                                |
-|  |   +-- installation.md                             |
-|  |   +-- quick-start.md                              |
-|  +-- configuration/                                  |
-|  |   +-- basic.md                                    |
-|  |   +-- advanced.md                                 |
-|  +-- _wiki_metadata.json   (optional)                |
-+------------------------------------------------------+
-```
-
-### 2.3 New Types
+### 4.1 Struct de Configuração
 
 ```go
-// WikiPage represents a parsed wiki page
-type WikiPage struct {
-    Filename     string   // Original filename (e.g., "Page-Name.md")
-    Title        string   // Extracted title (e.g., "Page Name")
-    Content      string   // Markdown content
-    Section      string   // Section from sidebar (e.g., "Getting Started")
-    Order        int      // Order within section
-    Links        []string // Extracted internal links
-    IsHome       bool     // Is this Home.md?
-    IsSpecial    bool     // Is _Sidebar.md or _Footer.md?
+// internal/config/config.go
+
+// LLMConfig contém configurações do provedor LLM
+type LLMConfig struct {
+    // Provider: "openai", "anthropic", "google"
+    Provider string `mapstructure:"provider"`
+    
+    // APIKey para autenticação (preferir env var REPODOCS_LLM_API_KEY)
+    APIKey string `mapstructure:"api_key"`
+    
+    // BaseURL do endpoint da API
+    // Não há default - usuário deve especificar ou usar env var
+    BaseURL string `mapstructure:"base_url"`
+    
+    // Model ID - não há default, usuário deve especificar
+    Model string `mapstructure:"model"`
+    
+    // Configurações opcionais
+    MaxTokens   int           `mapstructure:"max_tokens"`
+    Temperature float64       `mapstructure:"temperature"`
+    Timeout     time.Duration `mapstructure:"timeout"`
+    MaxRetries  int           `mapstructure:"max_retries"`
 }
 
-// WikiStructure represents the parsed sidebar hierarchy
-type WikiStructure struct {
-    Sections   []WikiSection
-    Pages      map[string]*WikiPage // filename -> page
-    HasSidebar bool
+// Adicionar ao Config principal
+type Config struct {
+    // ... campos existentes ...
+    LLM LLMConfig `mapstructure:"llm"`
+}
+```
+
+### 4.2 Defaults
+
+```go
+// internal/config/defaults.go
+
+const (
+    // LLM defaults - apenas para parâmetros opcionais
+    DefaultLLMMaxTokens   = 4096
+    DefaultLLMTemperature = 0.7
+    DefaultLLMTimeout     = 60 * time.Second
+    DefaultLLMMaxRetries  = 3
+)
+
+// NÃO há defaults para: provider, api_key, base_url, model
+// Usuário DEVE configurar esses valores
+```
+
+### 4.3 Exemplo de Configuração
+
+```yaml
+# ~/.repodocs/config.yaml
+
+llm:
+  # Provider type (obrigatório): openai, anthropic, google
+  provider: openai
+  
+  # API key (obrigatório, preferir variável de ambiente)
+  # api_key: sk-...
+  
+  # Base URL do endpoint (obrigatório)
+  # Exemplos:
+  #   OpenAI:    https://api.openai.com/v1
+  #   Ollama:    http://localhost:11434/v1
+  #   vLLM:      http://localhost:8000/v1
+  #   Anthropic: https://api.anthropic.com
+  #   Google:    https://generativelanguage.googleapis.com
+  base_url: http://localhost:11434/v1
+  
+  # Model ID (obrigatório) - especificado pelo usuário
+  model: llama3.2
+  
+  # Parâmetros opcionais
+  max_tokens: 4096
+  temperature: 0.7
+  timeout: 60s
+  max_retries: 3
+```
+
+### 4.4 Variáveis de Ambiente
+
+| Variável | Descrição | Obrigatório |
+|----------|-----------|-------------|
+| `REPODOCS_LLM_PROVIDER` | Tipo do provider | Sim |
+| `REPODOCS_LLM_API_KEY` | Chave de API | Sim |
+| `REPODOCS_LLM_BASE_URL` | URL base do endpoint | Sim |
+| `REPODOCS_LLM_MODEL` | ID do modelo | Sim |
+| `REPODOCS_LLM_MAX_TOKENS` | Máximo de tokens | Não |
+| `REPODOCS_LLM_TEMPERATURE` | Temperatura | Não |
+| `REPODOCS_LLM_TIMEOUT` | Timeout | Não |
+
+---
+
+## 5. Camada de Domínio
+
+### 5.1 Interface do Provider
+
+```go
+// internal/domain/interfaces.go
+
+// LLMProvider define a interface para interação com LLMs
+type LLMProvider interface {
+    // Name retorna o nome do provider (openai, anthropic, google)
+    Name() string
+    
+    // Complete envia uma requisição e retorna a resposta
+    Complete(ctx context.Context, req *LLMRequest) (*LLMResponse, error)
+    
+    // Close libera recursos
+    Close() error
+}
+```
+
+### 5.2 Tipos de Domínio
+
+```go
+// internal/domain/models.go
+
+// MessageRole representa o papel na conversa
+type MessageRole string
+
+const (
+    RoleSystem    MessageRole = "system"
+    RoleUser      MessageRole = "user"
+    RoleAssistant MessageRole = "assistant"
+)
+
+// LLMMessage representa uma mensagem na conversa
+type LLMMessage struct {
+    Role    MessageRole
+    Content string
 }
 
-// WikiSection represents a section in the sidebar
-type WikiSection struct {
-    Name   string
-    Order  int
-    Pages  []string // Page filenames in order
+// LLMRequest representa uma requisição de completion
+type LLMRequest struct {
+    Messages    []LLMMessage
+    MaxTokens   int      // 0 = usar default do provider
+    Temperature *float64 // nil = usar default do provider
 }
 
-// WikiInfo contains parsed wiki URL information
-type WikiInfo struct {
-    Owner       string
-    Repo        string
-    CloneURL    string
-    Platform    string // "github", "gitlab" (future)
-    TargetPage  string // Specific page if in URL
+// LLMResponse representa a resposta do LLM
+type LLMResponse struct {
+    Content      string
+    Model        string
+    FinishReason string
+    Usage        LLMUsage
+}
+
+// LLMUsage contém estatísticas de uso de tokens
+type LLMUsage struct {
+    PromptTokens     int
+    CompletionTokens int
+    TotalTokens      int
+}
+```
+
+### 5.3 Erros
+
+```go
+// internal/domain/errors.go
+
+var (
+    ErrLLMNotConfigured     = errors.New("LLM provider not configured")
+    ErrLLMMissingAPIKey     = errors.New("LLM API key is required")
+    ErrLLMMissingBaseURL    = errors.New("LLM base URL is required")
+    ErrLLMMissingModel      = errors.New("LLM model is required")
+    ErrLLMInvalidProvider   = errors.New("invalid LLM provider")
+    ErrLLMRequestFailed     = errors.New("LLM request failed")
+    ErrLLMRateLimited       = errors.New("LLM rate limit exceeded")
+    ErrLLMAuthFailed        = errors.New("LLM authentication failed")
+    ErrLLMContextTooLong    = errors.New("LLM context length exceeded")
+)
+
+// LLMError representa um erro específico do LLM
+type LLMError struct {
+    Provider   string
+    StatusCode int
+    Message    string
+    Err        error
+}
+
+func (e *LLMError) Error() string {
+    if e.StatusCode > 0 {
+        return fmt.Sprintf("%s error (HTTP %d): %s", e.Provider, e.StatusCode, e.Message)
+    }
+    return fmt.Sprintf("%s error: %s", e.Provider, e.Message)
+}
+
+func (e *LLMError) Unwrap() error {
+    return e.Err
 }
 ```
 
 ---
 
-## 3. Implementation Details
+## 6. Implementação dos Providers
 
-### 3.1 File: `internal/strategies/wiki.go`
+### 6.1 Factory
 
 ```go
-package strategies
+// internal/llm/provider.go
+
+package llm
 
 import (
-    "context"
     "fmt"
-    "os"
-    "path/filepath"
-    "strings"
+    "net/http"
     "time"
-
-    "github.com/go-git/go-git/v5"
-    githttp "github.com/go-git/go-git/v5/plumbing/transport/http"
+    
+    "github.com/quantmind-br/repodocs-go/internal/config"
     "github.com/quantmind-br/repodocs-go/internal/domain"
-    "github.com/quantmind-br/repodocs-go/internal/output"
-    "github.com/quantmind-br/repodocs-go/internal/utils"
-    "github.com/schollz/progressbar/v3"
 )
 
-// WikiStrategy extracts documentation from GitHub wiki repositories
-type WikiStrategy struct {
-    writer *output.Writer
-    logger *utils.Logger
+// ProviderConfig contém configuração para criar um provider
+type ProviderConfig struct {
+    Provider    string
+    APIKey      string
+    BaseURL     string
+    Model       string
+    MaxTokens   int
+    Temperature float64
+    Timeout     time.Duration
+    MaxRetries  int
+    HTTPClient  *http.Client
 }
 
-// NewWikiStrategy creates a new wiki strategy
-func NewWikiStrategy(deps *Dependencies) *WikiStrategy {
-    return &WikiStrategy{
-        writer: deps.Writer,
-        logger: deps.Logger,
+// NewProviderFromConfig cria um provider a partir da configuração
+func NewProviderFromConfig(cfg *config.LLMConfig) (domain.LLMProvider, error) {
+    if cfg.Provider == "" {
+        return nil, domain.ErrLLMNotConfigured
     }
+    if cfg.APIKey == "" {
+        return nil, domain.ErrLLMMissingAPIKey
+    }
+    if cfg.BaseURL == "" {
+        return nil, domain.ErrLLMMissingBaseURL
+    }
+    if cfg.Model == "" {
+        return nil, domain.ErrLLMMissingModel
+    }
+    
+    pcfg := ProviderConfig{
+        Provider:    cfg.Provider,
+        APIKey:      cfg.APIKey,
+        BaseURL:     cfg.BaseURL,
+        Model:       cfg.Model,
+        MaxTokens:   cfg.MaxTokens,
+        Temperature: cfg.Temperature,
+        Timeout:     cfg.Timeout,
+        MaxRetries:  cfg.MaxRetries,
+    }
+    
+    return NewProvider(pcfg)
 }
 
-// Name returns the strategy name
-func (s *WikiStrategy) Name() string {
-    return "wiki"
-}
-
-// CanHandle returns true if this strategy can handle the given URL
-func (s *WikiStrategy) CanHandle(url string) bool {
-    return IsWikiURL(url)
-}
-
-// IsWikiURL checks if a URL points to a GitHub wiki
-func IsWikiURL(url string) bool {
-    lower := strings.ToLower(url)
-
-    // Pattern 1: github.com/{owner}/{repo}/wiki
-    if strings.Contains(lower, "github.com") && strings.Contains(lower, "/wiki") {
-        return true
+// NewProvider cria um novo provider baseado no tipo especificado
+func NewProvider(cfg ProviderConfig) (domain.LLMProvider, error) {
+    // Criar HTTP client com timeout
+    timeout := cfg.Timeout
+    if timeout == 0 {
+        timeout = 60 * time.Second
     }
-
-    // Pattern 2: {repo}.wiki.git
-    if strings.HasSuffix(lower, ".wiki.git") {
-        return true
+    
+    httpClient := cfg.HTTPClient
+    if httpClient == nil {
+        httpClient = &http.Client{Timeout: timeout}
     }
-
-    return false
-}
-
-// Execute runs the wiki extraction strategy
-func (s *WikiStrategy) Execute(ctx context.Context, url string, opts Options) error {
-    s.logger.Info().Str("url", url).Msg("Starting wiki extraction")
-
-    // Step 1: Parse wiki URL
-    wikiInfo, err := ParseWikiURL(url)
-    if err != nil {
-        return fmt.Errorf("failed to parse wiki URL: %w", err)
+    
+    switch cfg.Provider {
+    case "openai":
+        return NewOpenAIProvider(cfg, httpClient)
+    case "anthropic":
+        return NewAnthropicProvider(cfg, httpClient)
+    case "google":
+        return NewGoogleProvider(cfg, httpClient)
+    default:
+        return nil, fmt.Errorf("%w: %s", domain.ErrLLMInvalidProvider, cfg.Provider)
     }
-
-    s.logger.Debug().
-        Str("owner", wikiInfo.Owner).
-        Str("repo", wikiInfo.Repo).
-        Str("clone_url", wikiInfo.CloneURL).
-        Msg("Parsed wiki URL")
-
-    // Step 2: Create temporary directory
-    tmpDir, err := os.MkdirTemp("", "repodocs-wiki-*")
-    if err != nil {
-        return fmt.Errorf("failed to create temp dir: %w", err)
-    }
-    defer os.RemoveAll(tmpDir)
-
-    // Step 3: Clone wiki repository
-    if err := s.cloneWiki(ctx, wikiInfo.CloneURL, tmpDir); err != nil {
-        return fmt.Errorf("failed to clone wiki: %w", err)
-    }
-
-    // Step 4: Parse wiki structure
-    structure, err := s.parseWikiStructure(tmpDir)
-    if err != nil {
-        return fmt.Errorf("failed to parse wiki structure: %w", err)
-    }
-
-    s.logger.Info().
-        Int("pages", len(structure.Pages)).
-        Int("sections", len(structure.Sections)).
-        Bool("has_sidebar", structure.HasSidebar).
-        Msg("Parsed wiki structure")
-
-    // Step 5: Process and write documents
-    return s.processPages(ctx, structure, tmpDir, wikiInfo, opts)
-}
-
-// cloneWiki clones the wiki repository
-func (s *WikiStrategy) cloneWiki(ctx context.Context, cloneURL, destDir string) error {
-    s.logger.Info().Str("url", cloneURL).Msg("Cloning wiki repository")
-
-    cloneOpts := &git.CloneOptions{
-        URL:      cloneURL,
-        Depth:    1, // Shallow clone for speed
-        Progress: nil,
-    }
-
-    // Use HTTPS auth if available
-    if token := os.Getenv("GITHUB_TOKEN"); token != "" {
-        cloneOpts.Auth = &githttp.BasicAuth{
-            Username: "token",
-            Password: token,
-        }
-    }
-
-    _, err := git.PlainCloneContext(ctx, destDir, false, cloneOpts)
-    if err != nil {
-        // Check if wiki doesn't exist
-        if strings.Contains(err.Error(), "not found") ||
-           strings.Contains(err.Error(), "404") {
-            return fmt.Errorf("wiki not found or not enabled for this repository")
-        }
-        return err
-    }
-
-    return nil
-}
-
-// parseWikiStructure parses the wiki file structure and sidebar
-func (s *WikiStrategy) parseWikiStructure(dir string) (*WikiStructure, error) {
-    structure := &WikiStructure{
-        Pages:    make(map[string]*WikiPage),
-        Sections: []WikiSection{},
-    }
-
-    // Read all markdown files
-    entries, err := os.ReadDir(dir)
-    if err != nil {
-        return nil, err
-    }
-
-    for _, entry := range entries {
-        if entry.IsDir() {
-            continue
-        }
-
-        name := entry.Name()
-        ext := strings.ToLower(filepath.Ext(name))
-
-        // Only process markdown files
-        if ext != ".md" && ext != ".markdown" {
-            continue
-        }
-
-        content, err := os.ReadFile(filepath.Join(dir, name))
-        if err != nil {
-            s.logger.Warn().Err(err).Str("file", name).Msg("Failed to read file")
-            continue
-        }
-
-        page := &WikiPage{
-            Filename:  name,
-            Title:     filenameToTitle(name),
-            Content:   string(content),
-            IsHome:    strings.EqualFold(name, "Home.md"),
-            IsSpecial: strings.HasPrefix(name, "_"),
-        }
-
-        structure.Pages[name] = page
-    }
-
-    // Parse sidebar if exists
-    if sidebarPage, exists := structure.Pages["_Sidebar.md"]; exists {
-        structure.HasSidebar = true
-        structure.Sections = parseSidebarContent(sidebarPage.Content, structure.Pages)
-    } else {
-        // Create default structure (alphabetical, single section)
-        structure.Sections = createDefaultStructure(structure.Pages)
-    }
-
-    return structure, nil
-}
-
-// processPages processes all wiki pages and writes them to output
-func (s *WikiStrategy) processPages(
-    ctx context.Context,
-    structure *WikiStructure,
-    tmpDir string,
-    wikiInfo *WikiInfo,
-    opts Options,
-) error {
-    // Count processable pages (exclude special files)
-    var processablePages []*WikiPage
-    for _, page := range structure.Pages {
-        if !page.IsSpecial {
-            processablePages = append(processablePages, page)
-        }
-    }
-
-    // Apply limit
-    if opts.Limit > 0 && len(processablePages) > opts.Limit {
-        processablePages = processablePages[:opts.Limit]
-    }
-
-    // Create progress bar
-    bar := progressbar.NewOptions(len(processablePages),
-        progressbar.OptionSetDescription("Processing wiki pages"),
-        progressbar.OptionShowCount(),
-    )
-
-    // Build base wiki URL for references
-    baseWikiURL := fmt.Sprintf("https://github.com/%s/%s/wiki", wikiInfo.Owner, wikiInfo.Repo)
-
-    // Process each page
-    for _, page := range processablePages {
-        select {
-        case <-ctx.Done():
-            return ctx.Err()
-        default:
-        }
-
-        if err := s.processPage(ctx, page, structure, baseWikiURL, opts); err != nil {
-            s.logger.Warn().Err(err).Str("page", page.Filename).Msg("Failed to process page")
-        }
-        bar.Add(1)
-    }
-
-    s.logger.Info().
-        Int("processed", len(processablePages)).
-        Msg("Wiki extraction completed")
-
-    return nil
-}
-
-// processPage processes a single wiki page
-func (s *WikiStrategy) processPage(
-    ctx context.Context,
-    page *WikiPage,
-    structure *WikiStructure,
-    baseWikiURL string,
-    opts Options,
-) error {
-    // Convert wiki-style links to standard markdown
-    content := convertWikiLinks(page.Content, structure.Pages)
-
-    // Generate page URL
-    pageName := strings.TrimSuffix(page.Filename, filepath.Ext(page.Filename))
-    pageURL := baseWikiURL
-    if !page.IsHome {
-        pageURL = fmt.Sprintf("%s/%s", baseWikiURL, pageName)
-    }
-
-    // Build relative path based on section
-    relativePath := buildRelativePath(page, structure, opts.NoFolders)
-
-    // Create document
-    doc := &domain.Document{
-        URL:            pageURL,
-        Title:          page.Title,
-        Content:        content,
-        FetchedAt:      time.Now(),
-        WordCount:      len(strings.Fields(content)),
-        CharCount:      len(content),
-        SourceStrategy: s.Name(),
-        RelativePath:   relativePath,
-    }
-
-    // Write document
-    if !opts.DryRun {
-        return s.writer.Write(ctx, doc)
-    }
-
-    return nil
 }
 ```
 
-### 3.2 File: `internal/strategies/wiki_parser.go`
+### 6.2 OpenAI Provider
 
 ```go
-package strategies
+// internal/llm/openai.go
+
+package llm
 
 import (
+    "bytes"
+    "context"
+    "encoding/json"
     "fmt"
-    "path/filepath"
-    "regexp"
-    "sort"
+    "io"
+    "net/http"
     "strings"
+    
+    "github.com/quantmind-br/repodocs-go/internal/domain"
 )
 
-// WikiPage represents a parsed wiki page
-type WikiPage struct {
-    Filename  string
-    Title     string
-    Content   string
-    Section   string
-    Order     int
-    Links     []string
-    IsHome    bool
-    IsSpecial bool
+// OpenAI request/response types
+type openAIRequest struct {
+    Model       string            `json:"model"`
+    Messages    []openAIMessage   `json:"messages"`
+    MaxTokens   int               `json:"max_tokens,omitempty"`
+    Temperature float64           `json:"temperature,omitempty"`
 }
 
-// WikiStructure represents the parsed wiki hierarchy
-type WikiStructure struct {
-    Sections   []WikiSection
-    Pages      map[string]*WikiPage
-    HasSidebar bool
+type openAIMessage struct {
+    Role    string `json:"role"`
+    Content string `json:"content"`
 }
 
-// WikiSection represents a section in the sidebar
-type WikiSection struct {
-    Name  string
-    Order int
-    Pages []string
+type openAIResponse struct {
+    ID      string `json:"id"`
+    Model   string `json:"model"`
+    Choices []struct {
+        Index   int `json:"index"`
+        Message struct {
+            Role    string `json:"role"`
+            Content string `json:"content"`
+        } `json:"message"`
+        FinishReason string `json:"finish_reason"`
+    } `json:"choices"`
+    Usage struct {
+        PromptTokens     int `json:"prompt_tokens"`
+        CompletionTokens int `json:"completion_tokens"`
+        TotalTokens      int `json:"total_tokens"`
+    } `json:"usage"`
+    Error *struct {
+        Message string `json:"message"`
+        Type    string `json:"type"`
+        Code    string `json:"code"`
+    } `json:"error,omitempty"`
 }
 
-// WikiInfo contains parsed wiki URL information
-type WikiInfo struct {
-    Owner      string
-    Repo       string
-    CloneURL   string
-    Platform   string
-    TargetPage string
+// OpenAIProvider implementa LLMProvider para APIs compatíveis com OpenAI
+type OpenAIProvider struct {
+    httpClient  *http.Client
+    apiKey      string
+    baseURL     string
+    model       string
+    maxTokens   int
+    temperature float64
 }
 
-// ParseWikiURL parses a wiki URL and extracts repository information
-func ParseWikiURL(rawURL string) (*WikiInfo, error) {
-    // Normalize URL
-    url := strings.TrimSuffix(rawURL, "/")
-
-    // Pattern: https://github.com/{owner}/{repo}/wiki[/{page}]
-    wikiPattern := regexp.MustCompile(
-        `github\.com[:/]([^/]+)/([^/]+?)(?:\.wiki)?(?:/wiki)?(?:/([^/]+))?(?:\.git)?$`,
-    )
-
-    matches := wikiPattern.FindStringSubmatch(url)
-    if len(matches) < 3 {
-        return nil, fmt.Errorf("invalid wiki URL format: %s", rawURL)
-    }
-
-    owner := matches[1]
-    repo := strings.TrimSuffix(matches[2], ".wiki")
-
-    var targetPage string
-    if len(matches) > 3 && matches[3] != "" {
-        targetPage = matches[3]
-    }
-
-    // Build clone URL
-    cloneURL := fmt.Sprintf("https://github.com/%s/%s.wiki.git", owner, repo)
-
-    return &WikiInfo{
-        Owner:      owner,
-        Repo:       repo,
-        CloneURL:   cloneURL,
-        Platform:   "github",
-        TargetPage: targetPage,
+// NewOpenAIProvider cria um novo OpenAI provider
+func NewOpenAIProvider(cfg ProviderConfig, httpClient *http.Client) (*OpenAIProvider, error) {
+    baseURL := strings.TrimSuffix(cfg.BaseURL, "/")
+    
+    return &OpenAIProvider{
+        httpClient:  httpClient,
+        apiKey:      cfg.APIKey,
+        baseURL:     baseURL,
+        model:       cfg.Model,
+        maxTokens:   cfg.MaxTokens,
+        temperature: cfg.Temperature,
     }, nil
 }
 
-// filenameToTitle converts a wiki filename to a readable title
-// Examples:
-//   "Getting-Started.md" -> "Getting Started"
-//   "API_Reference.md" -> "API Reference"
-//   "Home.md" -> "Home"
-func filenameToTitle(filename string) string {
-    // Remove extension
-    name := strings.TrimSuffix(filename, filepath.Ext(filename))
-
-    // Replace hyphens and underscores with spaces
-    name = strings.ReplaceAll(name, "-", " ")
-    name = strings.ReplaceAll(name, "_", " ")
-
-    // Capitalize first letter of each word
-    words := strings.Fields(name)
-    for i, word := range words {
-        if len(word) > 0 {
-            words[i] = strings.ToUpper(word[:1]) + word[1:]
-        }
-    }
-
-    return strings.Join(words, " ")
+// Name retorna o nome do provider
+func (p *OpenAIProvider) Name() string {
+    return "openai"
 }
 
-// titleToFilename converts a title back to wiki filename format
-// Examples:
-//   "Getting Started" -> "Getting-Started"
-//   "API Reference" -> "API-Reference"
-func titleToFilename(title string) string {
-    return strings.ReplaceAll(title, " ", "-")
-}
-
-// parseSidebarContent parses _Sidebar.md content to extract structure
-func parseSidebarContent(content string, pages map[string]*WikiPage) []WikiSection {
-    var sections []WikiSection
-    var currentSection *WikiSection
-
-    lines := strings.Split(content, "\n")
-    sectionOrder := 0
-    pageOrder := 0
-
-    // Regex patterns
-    headerPattern := regexp.MustCompile(`^#+\s*(.+)$`)                          // ## Section Name
-    wikiLinkPattern := regexp.MustCompile(`\[\[([^\]|]+)(?:\|[^\]]+)?\]\]`)     // [[Page]] or [[Page|Text]]
-    mdLinkPattern := regexp.MustCompile(`\[([^\]]+)\]\(([^)]+)\)`)              // [Text](Page)
-
-    for _, line := range lines {
-        trimmed := strings.TrimSpace(line)
-
-        // Check for section header
-        if matches := headerPattern.FindStringSubmatch(trimmed); len(matches) > 1 {
-            // Save previous section
-            if currentSection != nil && len(currentSection.Pages) > 0 {
-                sections = append(sections, *currentSection)
-            }
-
-            // Start new section
-            sectionOrder++
-            pageOrder = 0
-            currentSection = &WikiSection{
-                Name:  strings.TrimSpace(matches[1]),
-                Order: sectionOrder,
-                Pages: []string{},
-            }
-            continue
-        }
-
-        // Check for wiki-style links [[Page Name]]
-        if wikiMatches := wikiLinkPattern.FindAllStringSubmatch(trimmed, -1); len(wikiMatches) > 0 {
-            for _, match := range wikiMatches {
-                pageName := match[1]
-                filename := findPageFilename(pageName, pages)
-                if filename != "" {
-                    pageOrder++
-                    if page, exists := pages[filename]; exists {
-                        page.Section = currentSection.Name
-                        page.Order = pageOrder
-                    }
-                    if currentSection != nil {
-                        currentSection.Pages = append(currentSection.Pages, filename)
-                    }
-                }
-            }
-            continue
-        }
-
-        // Check for markdown links [Text](Page)
-        if mdMatches := mdLinkPattern.FindAllStringSubmatch(trimmed, -1); len(mdMatches) > 0 {
-            for _, match := range mdMatches {
-                pageName := match[2]
-                // Remove .md extension if present
-                pageName = strings.TrimSuffix(pageName, ".md")
-                filename := findPageFilename(pageName, pages)
-                if filename != "" {
-                    pageOrder++
-                    if page, exists := pages[filename]; exists {
-                        page.Section = currentSection.Name
-                        page.Order = pageOrder
-                    }
-                    if currentSection != nil {
-                        currentSection.Pages = append(currentSection.Pages, filename)
-                    }
-                }
-            }
+// Complete envia uma requisição de completion
+func (p *OpenAIProvider) Complete(ctx context.Context, req *domain.LLMRequest) (*domain.LLMResponse, error) {
+    // Converter mensagens para formato OpenAI
+    messages := make([]openAIMessage, len(req.Messages))
+    for i, msg := range req.Messages {
+        messages[i] = openAIMessage{
+            Role:    string(msg.Role),
+            Content: msg.Content,
         }
     }
-
-    // Save last section
-    if currentSection != nil && len(currentSection.Pages) > 0 {
-        sections = append(sections, *currentSection)
+    
+    // Construir request body
+    maxTokens := req.MaxTokens
+    if maxTokens == 0 {
+        maxTokens = p.maxTokens
     }
-
-    return sections
-}
-
-// findPageFilename finds the actual filename for a page reference
-func findPageFilename(pageName string, pages map[string]*WikiPage) string {
-    // Try exact match with .md
-    if _, exists := pages[pageName+".md"]; exists {
-        return pageName + ".md"
+    
+    temp := p.temperature
+    if req.Temperature != nil {
+        temp = *req.Temperature
     }
-
-    // Try with hyphens instead of spaces
-    hyphenated := strings.ReplaceAll(pageName, " ", "-") + ".md"
-    if _, exists := pages[hyphenated]; exists {
-        return hyphenated
+    
+    openAIReq := openAIRequest{
+        Model:       p.model,
+        Messages:    messages,
+        MaxTokens:   maxTokens,
+        Temperature: temp,
     }
-
-    // Try case-insensitive match
-    for filename := range pages {
-        if strings.EqualFold(strings.TrimSuffix(filename, ".md"), pageName) ||
-           strings.EqualFold(strings.TrimSuffix(filename, ".md"), strings.ReplaceAll(pageName, " ", "-")) {
-            return filename
+    
+    body, err := json.Marshal(openAIReq)
+    if err != nil {
+        return nil, fmt.Errorf("failed to marshal request: %w", err)
+    }
+    
+    // Criar HTTP request
+    url := p.baseURL + "/chat/completions"
+    httpReq, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewReader(body))
+    if err != nil {
+        return nil, fmt.Errorf("failed to create request: %w", err)
+    }
+    
+    // Headers para OpenAI API
+    httpReq.Header.Set("Content-Type", "application/json")
+    httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
+    
+    // Executar request
+    resp, err := p.httpClient.Do(httpReq)
+    if err != nil {
+        return nil, &domain.LLMError{
+            Provider: "openai",
+            Message:  fmt.Sprintf("request failed: %v", err),
+            Err:      err,
         }
     }
-
-    return ""
-}
-
-// createDefaultStructure creates a default structure when no sidebar exists
-func createDefaultStructure(pages map[string]*WikiPage) []WikiSection {
-    // Create single section with all pages alphabetically
-    var pageNames []string
-    for filename, page := range pages {
-        if !page.IsSpecial {
-            pageNames = append(pageNames, filename)
+    defer resp.Body.Close()
+    
+    // Ler response body
+    respBody, err := io.ReadAll(resp.Body)
+    if err != nil {
+        return nil, fmt.Errorf("failed to read response: %w", err)
+    }
+    
+    // Parse response
+    var openAIResp openAIResponse
+    if err := json.Unmarshal(respBody, &openAIResp); err != nil {
+        return nil, fmt.Errorf("failed to parse response: %w", err)
+    }
+    
+    // Verificar erros na response
+    if openAIResp.Error != nil {
+        return nil, &domain.LLMError{
+            Provider:   "openai",
+            StatusCode: resp.StatusCode,
+            Message:    openAIResp.Error.Message,
         }
     }
-
-    sort.Strings(pageNames)
-
-    // Move Home to front if exists
-    for i, name := range pageNames {
-        if strings.EqualFold(name, "Home.md") {
-            pageNames = append([]string{name}, append(pageNames[:i], pageNames[i+1:]...)...)
-            break
+    
+    // Verificar status code
+    if resp.StatusCode != http.StatusOK {
+        return nil, p.handleHTTPError(resp.StatusCode, respBody)
+    }
+    
+    // Verificar se há choices
+    if len(openAIResp.Choices) == 0 {
+        return nil, &domain.LLMError{
+            Provider: "openai",
+            Message:  "no choices in response",
         }
     }
-
-    // Assign order to pages
-    for i, filename := range pageNames {
-        if page, exists := pages[filename]; exists {
-            page.Order = i + 1
-            page.Section = "Documentation"
-        }
-    }
-
-    return []WikiSection{
-        {
-            Name:  "Documentation",
-            Order: 1,
-            Pages: pageNames,
+    
+    choice := openAIResp.Choices[0]
+    
+    return &domain.LLMResponse{
+        Content:      choice.Message.Content,
+        Model:        openAIResp.Model,
+        FinishReason: choice.FinishReason,
+        Usage: domain.LLMUsage{
+            PromptTokens:     openAIResp.Usage.PromptTokens,
+            CompletionTokens: openAIResp.Usage.CompletionTokens,
+            TotalTokens:      openAIResp.Usage.TotalTokens,
         },
-    }
+    }, nil
 }
 
-// convertWikiLinks converts wiki-style links to standard markdown
-func convertWikiLinks(content string, pages map[string]*WikiPage) string {
-    // Pattern 1: [[Page Name|Custom Text]] -> [Custom Text](./page-name.md)
-    pattern1 := regexp.MustCompile(`\[\[([^\]|]+)\|([^\]]+)\]\]`)
-    content = pattern1.ReplaceAllStringFunc(content, func(match string) string {
-        matches := pattern1.FindStringSubmatch(match)
-        if len(matches) == 3 {
-            pageName := matches[1]
-            linkText := matches[2]
-            filename := titleToFilename(pageName) + ".md"
-            return fmt.Sprintf("[%s](./%s)", linkText, strings.ToLower(filename))
-        }
-        return match
-    })
-
-    // Pattern 2: [[Page Name#Section]] -> [Page Name](./page-name.md#section)
-    pattern2 := regexp.MustCompile(`\[\[([^\]#]+)#([^\]]+)\]\]`)
-    content = pattern2.ReplaceAllStringFunc(content, func(match string) string {
-        matches := pattern2.FindStringSubmatch(match)
-        if len(matches) == 3 {
-            pageName := matches[1]
-            section := matches[2]
-            filename := titleToFilename(pageName) + ".md"
-            anchor := strings.ToLower(strings.ReplaceAll(section, " ", "-"))
-            return fmt.Sprintf("[%s](./%s#%s)", pageName, strings.ToLower(filename), anchor)
-        }
-        return match
-    })
-
-    // Pattern 3: [[Page Name]] -> [Page Name](./page-name.md)
-    pattern3 := regexp.MustCompile(`\[\[([^\]]+)\]\]`)
-    content = pattern3.ReplaceAllStringFunc(content, func(match string) string {
-        matches := pattern3.FindStringSubmatch(match)
-        if len(matches) == 2 {
-            pageName := matches[1]
-            filename := titleToFilename(pageName) + ".md"
-            return fmt.Sprintf("[%s](./%s)", pageName, strings.ToLower(filename))
-        }
-        return match
-    })
-
-    return content
+// Close libera recursos
+func (p *OpenAIProvider) Close() error {
+    return nil
 }
 
-// buildRelativePath builds the output path based on wiki structure
-func buildRelativePath(page *WikiPage, structure *WikiStructure, flat bool) string {
-    // For Home.md, always use index.md at root
-    if page.IsHome {
-        return "index.md"
+// handleHTTPError trata erros HTTP
+func (p *OpenAIProvider) handleHTTPError(statusCode int, body []byte) error {
+    switch statusCode {
+    case http.StatusUnauthorized:
+        return &domain.LLMError{
+            Provider:   "openai",
+            StatusCode: statusCode,
+            Message:    "authentication failed",
+            Err:        domain.ErrLLMAuthFailed,
+        }
+    case http.StatusTooManyRequests:
+        return &domain.LLMError{
+            Provider:   "openai",
+            StatusCode: statusCode,
+            Message:    "rate limit exceeded",
+            Err:        domain.ErrLLMRateLimited,
+        }
+    default:
+        return &domain.LLMError{
+            Provider:   "openai",
+            StatusCode: statusCode,
+            Message:    string(body),
+        }
     }
-
-    // If flat mode or no sections, just use filename
-    if flat || len(structure.Sections) == 0 || page.Section == "" {
-        return strings.ToLower(page.Filename)
-    }
-
-    // Build hierarchical path: section/filename
-    sectionDir := strings.ToLower(strings.ReplaceAll(page.Section, " ", "-"))
-    filename := strings.ToLower(page.Filename)
-
-    return filepath.Join(sectionDir, filename)
 }
 ```
 
-### 3.3 Updates to `internal/app/detector.go`
+### 6.3 Anthropic Provider
 
 ```go
-// Add new strategy type constant
-const (
-    StrategyLLMS    StrategyType = "llms"
-    StrategySitemap StrategyType = "sitemap"
-    StrategyWiki    StrategyType = "wiki"     // NEW
-    StrategyGit     StrategyType = "git"
-    StrategyPkgGo   StrategyType = "pkggo"
-    StrategyCrawler StrategyType = "crawler"
-    StrategyUnknown StrategyType = "unknown"
+// internal/llm/anthropic.go
+
+package llm
+
+import (
+    "bytes"
+    "context"
+    "encoding/json"
+    "fmt"
+    "io"
+    "net/http"
+    "strings"
+    
+    "github.com/quantmind-br/repodocs-go/internal/domain"
 )
 
-// Update DetectStrategy function
-func DetectStrategy(url string) StrategyType {
-    lower := strings.ToLower(url)
+const anthropicVersion = "2023-06-01"
 
-    // Check for llms.txt first
-    if strings.HasSuffix(lower, "/llms.txt") || strings.HasSuffix(lower, "llms.txt") {
-        return StrategyLLMS
-    }
-
-    // Check for pkg.go.dev (before Git, since pkg.go.dev URLs contain github.com paths)
-    if strings.Contains(lower, "pkg.go.dev") {
-        return StrategyPkgGo
-    }
-
-    // Check for sitemap
-    if strings.HasSuffix(lower, "sitemap.xml") ||
-        strings.HasSuffix(lower, "sitemap.xml.gz") ||
-        strings.Contains(lower, "sitemap") && strings.HasSuffix(lower, ".xml") {
-        return StrategySitemap
-    }
-
-    // NEW: Check for GitHub Wiki (before generic Git)
-    if strategies.IsWikiURL(url) {
-        return StrategyWiki
-    }
-
-    // Check for Git repository
-    // ... rest of existing code
+// Anthropic request/response types
+type anthropicRequest struct {
+    Model     string              `json:"model"`
+    MaxTokens int                 `json:"max_tokens"`
+    Messages  []anthropicMessage  `json:"messages"`
+    System    string              `json:"system,omitempty"`
 }
 
-// Update CreateStrategy function
-func CreateStrategy(strategyType StrategyType, deps *strategies.Dependencies) strategies.Strategy {
-    switch strategyType {
-    case StrategyLLMS:
-        return strategies.NewLLMSStrategy(deps)
-    case StrategySitemap:
-        return strategies.NewSitemapStrategy(deps)
-    case StrategyWiki:                           // NEW
-        return strategies.NewWikiStrategy(deps)  // NEW
-    case StrategyGit:
-        return strategies.NewGitStrategy(deps)
-    case StrategyPkgGo:
-        return strategies.NewPkgGoStrategy(deps)
-    case StrategyCrawler:
-        return strategies.NewCrawlerStrategy(deps)
-    default:
-        return nil
-    }
+type anthropicMessage struct {
+    Role    string `json:"role"`
+    Content string `json:"content"`
 }
 
-// Update GetAllStrategies function
-func GetAllStrategies(deps *strategies.Dependencies) []strategies.Strategy {
-    return []strategies.Strategy{
-        strategies.NewLLMSStrategy(deps),     // Most specific: /llms.txt
-        strategies.NewPkgGoStrategy(deps),    // Specific: pkg.go.dev
-        strategies.NewSitemapStrategy(deps),  // Specific: sitemap.xml
-        strategies.NewWikiStrategy(deps),     // NEW: github.com/.../wiki
-        strategies.NewGitStrategy(deps),      // General: github.com repositories
-        strategies.NewCrawlerStrategy(deps),  // Catch-all: any HTTP URL
-    }
-}
-```
-
-### 3.4 Updates to `internal/utils/url.go`
-
-```go
-// Add new utility function
-
-// IsWikiURL checks if a URL points to a GitHub wiki
-func IsWikiURL(rawURL string) bool {
-    lower := strings.ToLower(rawURL)
-
-    // Pattern 1: github.com/{owner}/{repo}/wiki
-    if strings.Contains(lower, "github.com") && strings.Contains(lower, "/wiki") {
-        return true
-    }
-
-    // Pattern 2: {repo}.wiki.git
-    if strings.HasSuffix(lower, ".wiki.git") {
-        return true
-    }
-
-    return false
+type anthropicResponse struct {
+    ID      string `json:"id"`
+    Type    string `json:"type"`
+    Role    string `json:"role"`
+    Model   string `json:"model"`
+    Content []struct {
+        Type string `json:"type"`
+        Text string `json:"text"`
+    } `json:"content"`
+    StopReason string `json:"stop_reason"`
+    Usage      struct {
+        InputTokens  int `json:"input_tokens"`
+        OutputTokens int `json:"output_tokens"`
+    } `json:"usage"`
+    Error *struct {
+        Type    string `json:"type"`
+        Message string `json:"message"`
+    } `json:"error,omitempty"`
 }
 
-// Update GenerateOutputDirFromURL to handle wiki URLs
-func GenerateOutputDirFromURL(rawURL string) string {
-    // ... existing code ...
+// AnthropicProvider implementa LLMProvider para API Anthropic
+type AnthropicProvider struct {
+    httpClient  *http.Client
+    apiKey      string
+    baseURL     string
+    model       string
+    maxTokens   int
+    temperature float64
+}
 
-    // Handle Wiki URLs
-    if IsWikiURL(rawURL) && strings.Contains(host, "github.com") {
-        parts := strings.Split(pathStr, "/")
-        if len(parts) >= 2 {
-            // Use repo name + "-wiki" suffix
-            name = parts[1] + "-wiki"
+// NewAnthropicProvider cria um novo Anthropic provider
+func NewAnthropicProvider(cfg ProviderConfig, httpClient *http.Client) (*AnthropicProvider, error) {
+    baseURL := strings.TrimSuffix(cfg.BaseURL, "/")
+    
+    maxTokens := cfg.MaxTokens
+    if maxTokens == 0 {
+        maxTokens = 4096 // Anthropic requer max_tokens
+    }
+    
+    return &AnthropicProvider{
+        httpClient:  httpClient,
+        apiKey:      cfg.APIKey,
+        baseURL:     baseURL,
+        model:       cfg.Model,
+        maxTokens:   maxTokens,
+        temperature: cfg.Temperature,
+    }, nil
+}
+
+// Name retorna o nome do provider
+func (p *AnthropicProvider) Name() string {
+    return "anthropic"
+}
+
+// Complete envia uma requisição de completion
+func (p *AnthropicProvider) Complete(ctx context.Context, req *domain.LLMRequest) (*domain.LLMResponse, error) {
+    // Separar system prompt das mensagens
+    var systemPrompt string
+    messages := make([]anthropicMessage, 0, len(req.Messages))
+    
+    for _, msg := range req.Messages {
+        if msg.Role == domain.RoleSystem {
+            systemPrompt = msg.Content
+        } else {
+            messages = append(messages, anthropicMessage{
+                Role:    string(msg.Role),
+                Content: msg.Content,
+            })
         }
     }
+    
+    // Construir request
+    maxTokens := req.MaxTokens
+    if maxTokens == 0 {
+        maxTokens = p.maxTokens
+    }
+    
+    anthropicReq := anthropicRequest{
+        Model:     p.model,
+        MaxTokens: maxTokens,
+        Messages:  messages,
+        System:    systemPrompt,
+    }
+    
+    body, err := json.Marshal(anthropicReq)
+    if err != nil {
+        return nil, fmt.Errorf("failed to marshal request: %w", err)
+    }
+    
+    // Criar HTTP request
+    url := p.baseURL + "/v1/messages"
+    httpReq, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewReader(body))
+    if err != nil {
+        return nil, fmt.Errorf("failed to create request: %w", err)
+    }
+    
+    // Headers específicos da Anthropic
+    httpReq.Header.Set("Content-Type", "application/json")
+    httpReq.Header.Set("x-api-key", p.apiKey)
+    httpReq.Header.Set("anthropic-version", anthropicVersion)
+    
+    // Executar request
+    resp, err := p.httpClient.Do(httpReq)
+    if err != nil {
+        return nil, &domain.LLMError{
+            Provider: "anthropic",
+            Message:  fmt.Sprintf("request failed: %v", err),
+            Err:      err,
+        }
+    }
+    defer resp.Body.Close()
+    
+    // Ler response body
+    respBody, err := io.ReadAll(resp.Body)
+    if err != nil {
+        return nil, fmt.Errorf("failed to read response: %w", err)
+    }
+    
+    // Parse response
+    var anthropicResp anthropicResponse
+    if err := json.Unmarshal(respBody, &anthropicResp); err != nil {
+        return nil, fmt.Errorf("failed to parse response: %w", err)
+    }
+    
+    // Verificar erros
+    if anthropicResp.Error != nil {
+        return nil, &domain.LLMError{
+            Provider:   "anthropic",
+            StatusCode: resp.StatusCode,
+            Message:    anthropicResp.Error.Message,
+        }
+    }
+    
+    if resp.StatusCode != http.StatusOK {
+        return nil, p.handleHTTPError(resp.StatusCode, respBody)
+    }
+    
+    // Extrair conteúdo de texto
+    var content string
+    for _, block := range anthropicResp.Content {
+        if block.Type == "text" {
+            content += block.Text
+        }
+    }
+    
+    return &domain.LLMResponse{
+        Content:      content,
+        Model:        anthropicResp.Model,
+        FinishReason: anthropicResp.StopReason,
+        Usage: domain.LLMUsage{
+            PromptTokens:     anthropicResp.Usage.InputTokens,
+            CompletionTokens: anthropicResp.Usage.OutputTokens,
+            TotalTokens:      anthropicResp.Usage.InputTokens + anthropicResp.Usage.OutputTokens,
+        },
+    }, nil
+}
 
-    // ... rest of existing code ...
+// Close libera recursos
+func (p *AnthropicProvider) Close() error {
+    return nil
+}
+
+// handleHTTPError trata erros HTTP
+func (p *AnthropicProvider) handleHTTPError(statusCode int, body []byte) error {
+    switch statusCode {
+    case http.StatusUnauthorized:
+        return &domain.LLMError{
+            Provider:   "anthropic",
+            StatusCode: statusCode,
+            Message:    "authentication failed",
+            Err:        domain.ErrLLMAuthFailed,
+        }
+    case http.StatusTooManyRequests:
+        return &domain.LLMError{
+            Provider:   "anthropic",
+            StatusCode: statusCode,
+            Message:    "rate limit exceeded",
+            Err:        domain.ErrLLMRateLimited,
+        }
+    default:
+        return &domain.LLMError{
+            Provider:   "anthropic",
+            StatusCode: statusCode,
+            Message:    string(body),
+        }
+    }
 }
 ```
 
----
-
-## 4. File Changes
-
-### 4.1 New Files
-
-| File | Purpose | Lines (est.) |
-|------|---------|--------------|
-| `internal/strategies/wiki.go` | WikiStrategy implementation | ~250 |
-| `internal/strategies/wiki_parser.go` | URL parser, sidebar parser, link converter | ~300 |
-| `internal/strategies/wiki_test.go` | Unit tests for WikiStrategy | ~200 |
-| `internal/strategies/wiki_parser_test.go` | Unit tests for parsers | ~250 |
-| `tests/integration/strategies/wiki_test.go` | Integration tests | ~150 |
-
-### 4.2 Modified Files
-
-| File | Changes |
-|------|---------|
-| `internal/app/detector.go` | Add `StrategyWiki`, update detection logic |
-| `internal/utils/url.go` | Add `IsWikiURL()` function |
-| `internal/strategies/strategy.go` | No changes needed (uses existing interfaces) |
-
-### 4.3 File Dependency Graph
-
-```
-internal/strategies/wiki.go
-+-- internal/strategies/wiki_parser.go
-+-- internal/domain/models.go (Document)
-+-- internal/output/writer.go (Writer)
-+-- internal/utils/logger.go (Logger)
-+-- github.com/go-git/go-git/v5
-
-internal/strategies/wiki_parser.go
-+-- regexp
-+-- strings
-+-- path/filepath
-
-internal/app/detector.go
-+-- internal/strategies/wiki.go (IsWikiURL)
-+-- internal/strategies (WikiStrategy)
-```
-
----
-
-## 5. Testing Strategy
-
-### 5.1 Unit Tests
-
-#### `wiki_parser_test.go`
+### 6.4 Google Provider
 
 ```go
-func TestParseWikiURL(t *testing.T) {
-    tests := []struct {
-        name     string
-        url      string
-        expected *WikiInfo
-        wantErr  bool
-    }{
-        {
-            name: "standard wiki URL",
-            url:  "https://github.com/Alexays/Waybar/wiki",
-            expected: &WikiInfo{
-                Owner:    "Alexays",
-                Repo:     "Waybar",
-                CloneURL: "https://github.com/Alexays/Waybar.wiki.git",
-                Platform: "github",
-            },
-        },
-        {
-            name: "wiki URL with page",
-            url:  "https://github.com/owner/repo/wiki/Configuration",
-            expected: &WikiInfo{
-                Owner:      "owner",
-                Repo:       "repo",
-                CloneURL:   "https://github.com/owner/repo.wiki.git",
-                Platform:   "github",
-                TargetPage: "Configuration",
-            },
-        },
-        {
-            name: "direct clone URL",
-            url:  "https://github.com/owner/repo.wiki.git",
-            expected: &WikiInfo{
-                Owner:    "owner",
-                Repo:     "repo",
-                CloneURL: "https://github.com/owner/repo.wiki.git",
-                Platform: "github",
-            },
-        },
-    }
-    // ... test implementation
+// internal/llm/google.go
+
+package llm
+
+import (
+    "bytes"
+    "context"
+    "encoding/json"
+    "fmt"
+    "io"
+    "net/http"
+    "strings"
+    
+    "github.com/quantmind-br/repodocs-go/internal/domain"
+)
+
+// Google Gemini request/response types
+type googleRequest struct {
+    Contents          []googleContent   `json:"contents"`
+    SystemInstruction *googleContent    `json:"systemInstruction,omitempty"`
+    GenerationConfig  *googleGenConfig  `json:"generationConfig,omitempty"`
 }
 
-func TestFilenameToTitle(t *testing.T) {
-    tests := []struct {
-        input    string
-        expected string
-    }{
-        {"Getting-Started.md", "Getting Started"},
-        {"API_Reference.md", "API Reference"},
-        {"Home.md", "Home"},
-        {"advanced-configuration.md", "Advanced Configuration"},
-    }
-    // ... test implementation
+type googleContent struct {
+    Role  string       `json:"role,omitempty"`
+    Parts []googlePart `json:"parts"`
 }
 
-func TestConvertWikiLinks(t *testing.T) {
-    tests := []struct {
-        input    string
-        expected string
-    }{
-        {
-            input:    "See [[Getting Started]] for more info",
-            expected: "See [Getting Started](./getting-started.md) for more info",
+type googlePart struct {
+    Text string `json:"text"`
+}
+
+type googleGenConfig struct {
+    MaxOutputTokens int     `json:"maxOutputTokens,omitempty"`
+    Temperature     float64 `json:"temperature,omitempty"`
+}
+
+type googleResponse struct {
+    Candidates []struct {
+        Content struct {
+            Role  string `json:"role"`
+            Parts []struct {
+                Text string `json:"text"`
+            } `json:"parts"`
+        } `json:"content"`
+        FinishReason string `json:"finishReason"`
+    } `json:"candidates"`
+    UsageMetadata struct {
+        PromptTokenCount     int `json:"promptTokenCount"`
+        CandidatesTokenCount int `json:"candidatesTokenCount"`
+        TotalTokenCount      int `json:"totalTokenCount"`
+    } `json:"usageMetadata"`
+    Error *struct {
+        Code    int    `json:"code"`
+        Message string `json:"message"`
+        Status  string `json:"status"`
+    } `json:"error,omitempty"`
+}
+
+// GoogleProvider implementa LLMProvider para Google Gemini API
+type GoogleProvider struct {
+    httpClient  *http.Client
+    apiKey      string
+    baseURL     string
+    model       string
+    maxTokens   int
+    temperature float64
+}
+
+// NewGoogleProvider cria um novo Google provider
+func NewGoogleProvider(cfg ProviderConfig, httpClient *http.Client) (*GoogleProvider, error) {
+    baseURL := strings.TrimSuffix(cfg.BaseURL, "/")
+    
+    return &GoogleProvider{
+        httpClient:  httpClient,
+        apiKey:      cfg.APIKey,
+        baseURL:     baseURL,
+        model:       cfg.Model,
+        maxTokens:   cfg.MaxTokens,
+        temperature: cfg.Temperature,
+    }, nil
+}
+
+// Name retorna o nome do provider
+func (p *GoogleProvider) Name() string {
+    return "google"
+}
+
+// Complete envia uma requisição de completion
+func (p *GoogleProvider) Complete(ctx context.Context, req *domain.LLMRequest) (*domain.LLMResponse, error) {
+    // Converter mensagens para formato Google
+    var systemInstruction *googleContent
+    contents := make([]googleContent, 0, len(req.Messages))
+    
+    for _, msg := range req.Messages {
+        switch msg.Role {
+        case domain.RoleSystem:
+            systemInstruction = &googleContent{
+                Parts: []googlePart{{Text: msg.Content}},
+            }
+        case domain.RoleUser:
+            contents = append(contents, googleContent{
+                Role:  "user",
+                Parts: []googlePart{{Text: msg.Content}},
+            })
+        case domain.RoleAssistant:
+            contents = append(contents, googleContent{
+                Role:  "model",
+                Parts: []googlePart{{Text: msg.Content}},
+            })
+        }
+    }
+    
+    // Construir request
+    googleReq := googleRequest{
+        Contents:          contents,
+        SystemInstruction: systemInstruction,
+    }
+    
+    // Generation config
+    maxTokens := req.MaxTokens
+    if maxTokens == 0 {
+        maxTokens = p.maxTokens
+    }
+    
+    temp := p.temperature
+    if req.Temperature != nil {
+        temp = *req.Temperature
+    }
+    
+    if maxTokens > 0 || temp > 0 {
+        googleReq.GenerationConfig = &googleGenConfig{
+            MaxOutputTokens: maxTokens,
+            Temperature:     temp,
+        }
+    }
+    
+    body, err := json.Marshal(googleReq)
+    if err != nil {
+        return nil, fmt.Errorf("failed to marshal request: %w", err)
+    }
+    
+    // Criar HTTP request
+    // Google usa o modelo na URL
+    url := fmt.Sprintf("%s/v1beta/models/%s:generateContent", p.baseURL, p.model)
+    httpReq, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewReader(body))
+    if err != nil {
+        return nil, fmt.Errorf("failed to create request: %w", err)
+    }
+    
+    // Headers para Google API
+    httpReq.Header.Set("Content-Type", "application/json")
+    httpReq.Header.Set("x-goog-api-key", p.apiKey)
+    
+    // Executar request
+    resp, err := p.httpClient.Do(httpReq)
+    if err != nil {
+        return nil, &domain.LLMError{
+            Provider: "google",
+            Message:  fmt.Sprintf("request failed: %v", err),
+            Err:      err,
+        }
+    }
+    defer resp.Body.Close()
+    
+    // Ler response body
+    respBody, err := io.ReadAll(resp.Body)
+    if err != nil {
+        return nil, fmt.Errorf("failed to read response: %w", err)
+    }
+    
+    // Parse response
+    var googleResp googleResponse
+    if err := json.Unmarshal(respBody, &googleResp); err != nil {
+        return nil, fmt.Errorf("failed to parse response: %w", err)
+    }
+    
+    // Verificar erros
+    if googleResp.Error != nil {
+        return nil, &domain.LLMError{
+            Provider:   "google",
+            StatusCode: googleResp.Error.Code,
+            Message:    googleResp.Error.Message,
+        }
+    }
+    
+    if resp.StatusCode != http.StatusOK {
+        return nil, p.handleHTTPError(resp.StatusCode, respBody)
+    }
+    
+    // Verificar candidates
+    if len(googleResp.Candidates) == 0 {
+        return nil, &domain.LLMError{
+            Provider: "google",
+            Message:  "no candidates in response",
+        }
+    }
+    
+    candidate := googleResp.Candidates[0]
+    
+    // Extrair texto
+    var content string
+    for _, part := range candidate.Content.Parts {
+        content += part.Text
+    }
+    
+    return &domain.LLMResponse{
+        Content:      content,
+        Model:        p.model,
+        FinishReason: candidate.FinishReason,
+        Usage: domain.LLMUsage{
+            PromptTokens:     googleResp.UsageMetadata.PromptTokenCount,
+            CompletionTokens: googleResp.UsageMetadata.CandidatesTokenCount,
+            TotalTokens:      googleResp.UsageMetadata.TotalTokenCount,
         },
-        {
-            input:    "Check the [[Configuration|config page]]",
-            expected: "Check the [config page](./configuration.md)",
-        },
-        {
-            input:    "Go to [[Setup#Installation]]",
-            expected: "Go to [Setup](./setup.md#installation)",
-        },
-    }
-    // ... test implementation
+    }, nil
 }
 
-func TestParseSidebarContent(t *testing.T) {
-    sidebar := `
-# Wiki
-
-## Getting Started
-* [[Home]]
-* [[Installation]]
-
-## Configuration
-* [[Basic Config]]
-* [[Advanced]]
-`
-    pages := map[string]*WikiPage{
-        "Home.md":         {Filename: "Home.md"},
-        "Installation.md": {Filename: "Installation.md"},
-        "Basic-Config.md": {Filename: "Basic-Config.md"},
-        "Advanced.md":     {Filename: "Advanced.md"},
-    }
-
-    sections := parseSidebarContent(sidebar, pages)
-
-    assert.Len(t, sections, 2)
-    assert.Equal(t, "Getting Started", sections[0].Name)
-    assert.Len(t, sections[0].Pages, 2)
-    // ... more assertions
+// Close libera recursos
+func (p *GoogleProvider) Close() error {
+    return nil
 }
-```
 
-### 5.2 Integration Tests
-
-#### `tests/integration/strategies/wiki_test.go`
-
-```go
-func TestWikiStrategy_Integration(t *testing.T) {
-    if testing.Short() {
-        t.Skip("Skipping integration test")
+// handleHTTPError trata erros HTTP
+func (p *GoogleProvider) handleHTTPError(statusCode int, body []byte) error {
+    switch statusCode {
+    case http.StatusUnauthorized, http.StatusForbidden:
+        return &domain.LLMError{
+            Provider:   "google",
+            StatusCode: statusCode,
+            Message:    "authentication failed",
+            Err:        domain.ErrLLMAuthFailed,
+        }
+    case http.StatusTooManyRequests:
+        return &domain.LLMError{
+            Provider:   "google",
+            StatusCode: statusCode,
+            Message:    "rate limit exceeded",
+            Err:        domain.ErrLLMRateLimited,
+        }
+    default:
+        return &domain.LLMError{
+            Provider:   "google",
+            StatusCode: statusCode,
+            Message:    string(body),
+        }
     }
-
-    // Test with a real public wiki
-    ctx := context.Background()
-    tmpDir := t.TempDir()
-
-    deps := createTestDependencies(tmpDir)
-    defer deps.Close()
-
-    strategy := strategies.NewWikiStrategy(deps)
-
-    // Test CanHandle
-    assert.True(t, strategy.CanHandle("https://github.com/Alexays/Waybar/wiki"))
-    assert.False(t, strategy.CanHandle("https://github.com/owner/repo"))
-
-    // Test Execute (uses real network)
-    err := strategy.Execute(ctx, "https://github.com/Alexays/Waybar/wiki", strategies.Options{
-        Output: tmpDir,
-        Limit:  5, // Limit for faster tests
-    })
-
-    require.NoError(t, err)
-
-    // Verify output
-    files, _ := filepath.Glob(filepath.Join(tmpDir, "*.md"))
-    assert.Greater(t, len(files), 0)
 }
-```
-
-### 5.3 Test Data
-
-Create test fixtures in `tests/testdata/wiki/`:
-
-```
-tests/testdata/wiki/
-+-- _Sidebar.md
-+-- Home.md
-+-- Getting-Started.md
-+-- Configuration.md
-+-- Advanced-Topics.md
 ```
 
 ---
 
-## 6. CLI Integration
+## 7. Cliente HTTP
 
-### 6.1 Command Examples
+### 7.1 Retry com Backoff
+
+```go
+// internal/llm/retry.go
+
+package llm
+
+import (
+    "context"
+    "math"
+    "math/rand"
+    "net/http"
+    "time"
+)
+
+// RetryConfig configura o comportamento de retry
+type RetryConfig struct {
+    MaxRetries      int
+    InitialInterval time.Duration
+    MaxInterval     time.Duration
+    Multiplier      float64
+}
+
+// DefaultRetryConfig retorna configuração padrão
+func DefaultRetryConfig() RetryConfig {
+    return RetryConfig{
+        MaxRetries:      3,
+        InitialInterval: 1 * time.Second,
+        MaxInterval:     30 * time.Second,
+        Multiplier:      2.0,
+    }
+}
+
+// ShouldRetry verifica se deve fazer retry baseado no status code
+func ShouldRetry(statusCode int) bool {
+    switch statusCode {
+    case http.StatusTooManyRequests,
+        http.StatusInternalServerError,
+        http.StatusBadGateway,
+        http.StatusServiceUnavailable,
+        http.StatusGatewayTimeout:
+        return true
+    default:
+        return false
+    }
+}
+
+// CalculateBackoff calcula o tempo de espera para o próximo retry
+func CalculateBackoff(attempt int, cfg RetryConfig) time.Duration {
+    backoff := float64(cfg.InitialInterval) * math.Pow(cfg.Multiplier, float64(attempt))
+    
+    // Adicionar jitter (±10%)
+    jitter := backoff * 0.1 * (rand.Float64()*2 - 1)
+    backoff += jitter
+    
+    // Limitar ao máximo
+    if backoff > float64(cfg.MaxInterval) {
+        backoff = float64(cfg.MaxInterval)
+    }
+    
+    return time.Duration(backoff)
+}
+```
+
+---
+
+## 8. Tratamento de Erros
+
+### 8.1 Classificação de Erros
+
+| HTTP Status | Erro | Retry? | Ação do Usuário |
+|-------------|------|--------|-----------------|
+| 401, 403 | `ErrLLMAuthFailed` | Não | Verificar API key |
+| 429 | `ErrLLMRateLimited` | Sim | Aguardar e retry |
+| 400 | `ErrLLMInvalidRequest` | Não | Corrigir request |
+| 500-599 | Server error | Sim | Auto-retry |
+
+### 8.2 Logging de Erros
+
+```go
+// Em caso de erro, logar informações úteis (sem expor secrets)
+logger.Error().
+    Str("provider", provider.Name()).
+    Str("model", req.Model).
+    Int("status_code", err.StatusCode).
+    Str("error_type", err.Type).
+    Msg("LLM request failed")
+```
+
+---
+
+## 9. Testes
+
+### 9.1 Estrutura de Testes
+
+```
+tests/
+├── unit/
+│   └── llm/
+│       ├── openai_test.go
+│       ├── anthropic_test.go
+│       ├── google_test.go
+│       └── provider_test.go
+├── integration/
+│   └── llm/
+│       ├── openai_integration_test.go
+│       ├── anthropic_integration_test.go
+│       └── google_integration_test.go
+└── mocks/
+    └── llm.go
+```
+
+### 9.2 Testes Unitários com Mock Server
+
+```go
+// tests/unit/llm/openai_test.go
+
+func TestOpenAIProvider_Complete(t *testing.T) {
+    tests := []struct {
+        name           string
+        responseBody   string
+        responseStatus int
+        wantErr        bool
+        wantContent    string
+    }{
+        {
+            name: "successful completion",
+            responseBody: `{
+                "id": "chatcmpl-123",
+                "model": "gpt-4",
+                "choices": [{
+                    "index": 0,
+                    "message": {"role": "assistant", "content": "Hello!"},
+                    "finish_reason": "stop"
+                }],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15}
+            }`,
+            responseStatus: 200,
+            wantErr:        false,
+            wantContent:    "Hello!",
+        },
+        {
+            name:           "authentication error",
+            responseBody:   `{"error": {"message": "Invalid API key"}}`,
+            responseStatus: 401,
+            wantErr:        true,
+        },
+    }
+    
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+                // Verificar headers
+                assert.Equal(t, "application/json", r.Header.Get("Content-Type"))
+                assert.Contains(t, r.Header.Get("Authorization"), "Bearer ")
+                
+                w.WriteHeader(tt.responseStatus)
+                w.Write([]byte(tt.responseBody))
+            }))
+            defer server.Close()
+            
+            provider, err := NewOpenAIProvider(ProviderConfig{
+                APIKey:  "test-key",
+                BaseURL: server.URL,
+                Model:   "test-model",
+            }, server.Client())
+            require.NoError(t, err)
+            
+            resp, err := provider.Complete(context.Background(), &domain.LLMRequest{
+                Messages: []domain.LLMMessage{
+                    {Role: domain.RoleUser, Content: "Hello"},
+                },
+            })
+            
+            if tt.wantErr {
+                require.Error(t, err)
+            } else {
+                require.NoError(t, err)
+                assert.Equal(t, tt.wantContent, resp.Content)
+            }
+        })
+    }
+}
+```
+
+### 9.3 Mock Provider
+
+```go
+// tests/mocks/llm.go
+
+type MockLLMProvider struct {
+    mock.Mock
+}
+
+func (m *MockLLMProvider) Name() string {
+    return m.Called().String(0)
+}
+
+func (m *MockLLMProvider) Complete(ctx context.Context, req *domain.LLMRequest) (*domain.LLMResponse, error) {
+    args := m.Called(ctx, req)
+    if args.Get(0) == nil {
+        return nil, args.Error(1)
+    }
+    return args.Get(0).(*domain.LLMResponse), args.Error(1)
+}
+
+func (m *MockLLMProvider) Close() error {
+    return m.Called().Error(0)
+}
+```
+
+---
+
+## 10. Fases de Implementação
+
+### Fase 1: Fundação (3-4 dias)
+
+**Objetivo:** Infraestrutura básica sem quebrar funcionalidade existente
+
+- [ ] Adicionar tipos de domínio em `internal/domain/`
+  - `LLMProvider` interface
+  - `LLMRequest`, `LLMResponse`, `LLMMessage` structs
+  - Erros específicos de LLM
+- [ ] Adicionar `LLMConfig` em `internal/config/config.go`
+- [ ] Adicionar defaults em `internal/config/loader.go`
+- [ ] Criar estrutura de pacote `internal/llm/`
+- [ ] Implementar factory `NewProvider()` e `NewProviderFromConfig()`
+
+**Entregáveis:**
+- Interfaces e tipos definidos
+- Configuração carregando corretamente
+- Factory funcionando (retornando erro para provider não implementado)
+
+### Fase 2: OpenAI Provider (2-3 dias)
+
+**Objetivo:** Suporte completo a endpoints compatíveis com OpenAI
+
+- [ ] Implementar `OpenAIProvider`
+  - Construção de request JSON
+  - Headers corretos (`Authorization: Bearer`)
+  - Parse de response
+  - Tratamento de erros HTTP
+- [ ] Testes unitários com mock server
+- [ ] Teste de integração (opcional, requer API key)
+
+**Entregáveis:**
+- Provider funcional para OpenAI e compatíveis (Ollama, vLLM, etc.)
+- Cobertura de testes > 80%
+
+### Fase 3: Anthropic Provider (2-3 dias)
+
+**Objetivo:** Suporte completo a API Anthropic
+
+- [ ] Implementar `AnthropicProvider`
+  - Headers específicos (`x-api-key`, `anthropic-version`)
+  - Tratamento de system prompt separado
+  - Parse de content blocks
+- [ ] Testes unitários
+- [ ] Teste de integração
+
+**Entregáveis:**
+- Provider funcional para Anthropic Claude
+- Cobertura de testes > 80%
+
+### Fase 4: Google Provider (2-3 dias)
+
+**Objetivo:** Suporte completo a Google Gemini API
+
+- [ ] Implementar `GoogleProvider`
+  - URL com modelo no path
+  - Header `x-goog-api-key`
+  - Format de contents/parts
+  - SystemInstruction
+- [ ] Testes unitários
+- [ ] Teste de integração
+
+**Entregáveis:**
+- Provider funcional para Google Gemini
+- Cobertura de testes > 80%
+
+### Fase 5: Integração e Documentação (2 dias)
+
+**Objetivo:** Integrar ao sistema e documentar
+
+- [ ] Integrar LLM provider em `Dependencies`
+- [ ] Adicionar validação de configuração no startup
+- [ ] Atualizar README com documentação de configuração
+- [ ] Adicionar exemplos para providers comuns
+- [ ] Comando `repodocs doctor` para verificar configuração LLM
+
+**Entregáveis:**
+- Sistema integrado
+- Documentação completa
+- Exemplos de configuração
+
+---
+
+## 11. Estrutura de Arquivos
+
+```
+internal/
+├── config/
+│   ├── config.go        # + LLMConfig struct
+│   ├── defaults.go      # + DefaultLLM* constants
+│   └── loader.go        # + setDefaults para LLM
+├── domain/
+│   ├── errors.go        # + ErrLLM* errors
+│   ├── interfaces.go    # + LLMProvider interface
+│   └── models.go        # + LLMRequest, LLMResponse, etc.
+├── llm/
+│   ├── provider.go      # Factory functions
+│   ├── openai.go        # OpenAI provider implementation
+│   ├── anthropic.go     # Anthropic provider implementation
+│   ├── google.go        # Google provider implementation
+│   └── retry.go         # Retry logic
+└── strategies/
+    └── strategy.go      # + LLM field in Dependencies
+
+tests/
+├── unit/
+│   └── llm/
+│       ├── openai_test.go
+│       ├── anthropic_test.go
+│       ├── google_test.go
+│       └── provider_test.go
+├── integration/
+│   └── llm/
+│       └── provider_integration_test.go
+└── mocks/
+    └── llm.go
+```
+
+---
+
+## 12. Exemplos de Uso
+
+### 12.1 OpenAI Oficial
+
+```yaml
+# config.yaml
+llm:
+  provider: openai
+  base_url: https://api.openai.com/v1
+  model: gpt-4o
+```
 
 ```bash
-# Extract entire wiki
-repodocs https://github.com/Alexays/Waybar/wiki
-
-# Extract with custom output directory
-repodocs https://github.com/owner/repo/wiki -o ./waybar-docs
-
-# Extract specific page only (future enhancement)
-repodocs https://github.com/owner/repo/wiki/Configuration --single-page
-
-# Dry run
-repodocs https://github.com/owner/repo/wiki --dry-run
-
-# Flat structure (no sections)
-repodocs https://github.com/owner/repo/wiki --nofolders
-
-# Verbose output
-repodocs https://github.com/owner/repo/wiki -v
-
-# With limit
-repodocs https://github.com/owner/repo/wiki --limit 10
+export REPODOCS_LLM_API_KEY=sk-your-openai-key
 ```
 
-### 6.2 Output Examples
+### 12.2 Ollama (Local)
 
-**Default (hierarchical based on sidebar):**
-```
-docs_waybar-wiki/
-+-- index.md                    # Home.md
-+-- getting-started/
-|   +-- installation.md
-|   +-- quick-start.md
-+-- configuration/
-|   +-- basic.md
-|   +-- modules.md
-+-- development/
-    +-- contributing.md
+```yaml
+llm:
+  provider: openai
+  base_url: http://localhost:11434/v1
+  model: llama3.2
+  api_key: ollama  # Ollama não requer key real
 ```
 
-**Flat mode (`--nofolders`):**
+### 12.3 vLLM (Self-hosted)
+
+```yaml
+llm:
+  provider: openai
+  base_url: http://your-server:8000/v1
+  model: meta-llama/Llama-3-70b-chat-hf
+  api_key: token-xyz
 ```
-docs_waybar-wiki/
-+-- index.md
-+-- installation.md
-+-- quick-start.md
-+-- basic.md
-+-- modules.md
-+-- contributing.md
+
+### 12.4 Anthropic Claude
+
+```yaml
+llm:
+  provider: anthropic
+  base_url: https://api.anthropic.com
+  model: claude-3-5-sonnet-20241022
 ```
 
----
-
-## 7. Implementation Phases
-
-### Phase 1: Core Infrastructure (Day 1)
-
-**Objective:** Basic wiki cloning and file reading
-
-- [ ] Create `internal/strategies/wiki.go` skeleton
-- [ ] Implement `ParseWikiURL()` function
-- [ ] Implement `cloneWiki()` using go-git
-- [ ] Add `IsWikiURL()` to utils
-- [ ] Update `detector.go` with wiki detection
-- [ ] Basic unit tests for URL parsing
-
-**Deliverable:** Can clone a wiki repository to temp directory
-
-### Phase 2: Structure Parsing (Day 2)
-
-**Objective:** Parse wiki structure and sidebar
-
-- [ ] Implement `filenameToTitle()` and `titleToFilename()`
-- [ ] Implement `parseSidebarContent()` parser
-- [ ] Implement `createDefaultStructure()` fallback
-- [ ] Create `WikiPage` and `WikiStructure` types
-- [ ] Unit tests for sidebar parsing
-
-**Deliverable:** Can extract hierarchical structure from _Sidebar.md
-
-### Phase 3: Link Conversion (Day 3)
-
-**Objective:** Convert wiki-style links to standard markdown
-
-- [ ] Implement `convertWikiLinks()` with all patterns:
-  - `[[Page Name]]`
-  - `[[Page Name|Text]]`
-  - `[[Page#Section]]`
-- [ ] Handle edge cases (case sensitivity, spaces vs hyphens)
-- [ ] Unit tests for link conversion
-
-**Deliverable:** Wiki content converted to portable markdown
-
-### Phase 4: Output Generation (Day 4)
-
-**Objective:** Generate organized output structure
-
-- [ ] Implement `buildRelativePath()` for hierarchical output
-- [ ] Implement `processPages()` main loop
-- [ ] Implement `processPage()` document creation
-- [ ] Integration with existing `Writer`
-- [ ] Handle `Home.md` -> `index.md` conversion
-
-**Deliverable:** Full wiki extraction to organized directories
-
-### Phase 5: Testing & Polish (Day 5)
-
-**Objective:** Comprehensive testing and edge cases
-
-- [ ] Integration tests with real wikis
-- [ ] Edge case handling (empty wiki, no sidebar, special characters)
-- [ ] Error messages and logging
-- [ ] Documentation updates
-- [ ] Performance testing with large wikis
-
-**Deliverable:** Production-ready wiki strategy
-
----
-
-## 8. Risk Assessment
-
-### 8.1 Technical Risks
-
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| Wiki doesn't exist | Medium | Low | Clear error message, validate before clone |
-| Private wiki (auth required) | Medium | Medium | Support GITHUB_TOKEN, document requirements |
-| Non-standard sidebar format | Medium | Low | Fallback to default structure |
-| Very large wiki (>1000 pages) | Low | Medium | Implement pagination/limits |
-| Network timeout during clone | Low | Low | Existing retry logic in go-git |
-| Special characters in filenames | Medium | Low | Sanitize filenames |
-
-### 8.2 Compatibility Risks
-
-| Risk | Mitigation |
-|------|------------|
-| Different markdown flavors | Use existing converter pipeline |
-| Non-markdown wiki pages | Skip or basic handling |
-| Images/assets in wiki | Log warning, future enhancement |
-
-### 8.3 Acceptance Criteria
-
-- [ ] Successfully extracts Waybar wiki (https://github.com/Alexays/Waybar/wiki)
-- [ ] Parses sidebar hierarchy correctly
-- [ ] Converts all wiki link formats
-- [ ] Generates clean, portable markdown
-- [ ] Works with wikis without _Sidebar.md
-- [ ] Handles authentication via GITHUB_TOKEN
-- [ ] All tests pass
-- [ ] No data races (mutex protection where needed)
-
----
-
-## Appendix A: Reference Implementation Links
-
-- GitHub Wiki Documentation: https://docs.github.com/en/communities/documenting-your-project-with-wikis
-- go-git Library: https://github.com/go-git/go-git
-- Example Wiki for Testing: https://github.com/Alexays/Waybar/wiki
-
-## Appendix B: Related Files in Codebase
-
+```bash
+export REPODOCS_LLM_API_KEY=sk-ant-your-anthropic-key
 ```
-internal/strategies/git.go       # Reference for Git cloning patterns
-internal/strategies/sitemap.go   # Reference for URL parsing
-internal/strategies/llms.go      # Reference for content extraction
-internal/output/writer.go        # Output writing interface
-internal/domain/models.go        # Document model definition
-internal/utils/url.go            # URL utility functions
+
+### 12.5 Google Gemini
+
+```yaml
+llm:
+  provider: google
+  base_url: https://generativelanguage.googleapis.com
+  model: gemini-1.5-pro
+```
+
+```bash
+export REPODOCS_LLM_API_KEY=your-google-api-key
+```
+
+### 12.6 Groq (OpenAI-compatible)
+
+```yaml
+llm:
+  provider: openai
+  base_url: https://api.groq.com/openai/v1
+  model: llama3-70b-8192
+```
+
+```bash
+export REPODOCS_LLM_API_KEY=gsk_your-groq-key
+```
+
+### 12.7 Together AI (OpenAI-compatible)
+
+```yaml
+llm:
+  provider: openai
+  base_url: https://api.together.xyz/v1
+  model: meta-llama/Llama-3-70b-chat-hf
+```
+
+```bash
+export REPODOCS_LLM_API_KEY=your-together-key
 ```
 
 ---
 
-*Plan created: 2025-12-31*
-*Author: Claude Code Assistant*
-*Status: Ready for Implementation*
+## Resumo
+
+Este plano implementa suporte a múltiplos provedores LLM de forma flexível e extensível:
+
+1. **3 formatos de API suportados:** OpenAI, Anthropic, Google
+2. **Configuração mínima:** `provider`, `api_key`, `base_url`, `model`
+3. **Zero hardcode:** Usuário especifica qualquer modelo
+4. **Cliente HTTP nativo:** Máximo controle, sem dependências de SDKs
+5. **Compatibilidade ampla:** Funciona com dezenas de provedores que implementam esses padrões
+
+A implementação segue os padrões existentes do codebase (hexagonal architecture, viper config, interface-based design) e pode ser completada em aproximadamente 2 semanas.
+
+---
+
+*Documento gerado: 2025-12-31*  
+*Versão: 2.0*
