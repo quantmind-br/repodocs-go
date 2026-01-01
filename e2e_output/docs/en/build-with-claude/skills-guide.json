@@ -1,0 +1,28 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+  "title": "Using Agent Skills with the API",
+  "description": "Learn how to use Agent Skills to extend Claude's capabilities through the API.",
+  "fetched_at": "2026-01-01T02:46:05.514655275-03:00",
+  "content_hash": "1dbd17537b5f921f5cf691979ab7132bfac5345ac9d7781f1fdcf92af6015d4a",
+  "word_count": 37,
+  "char_count": 219,
+  "links": [
+    "https://www.anthropic.com/legal/cookies"
+  ],
+  "headers": {
+    "h3": [
+      "Cookie settings"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "crawler",
+  "cache_hit": false,
+  "summary": "document explaining cookie usage and consent policies for service personalization and analytics",
+  "tags": [
+    "cookie-consent",
+    "privacy-policy",
+    "user-tracking",
+    "data-collection"
+  ],
+  "category": "other"
+}

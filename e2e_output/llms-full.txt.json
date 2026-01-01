@@ -1,0 +1,23 @@
+{
+  "url": "https://platform.claude.com/llms-full.txt",
+  "title": "",
+  "fetched_at": "2026-01-01T02:46:24.175220707-03:00",
+  "content_hash": "808d84335d402f535bc14e3d0cf2719906f161fbd64d7e000d237337f7ce37ac",
+  "word_count": 88675,
+  "char_count": 689671,
+  "rendered_with_js": false,
+  "source_strategy": "crawler",
+  "cache_hit": false,
+  "summary": "Document explains the Files API for Anthropic Claude, covering file upload, management, and download procedures, including content blocks, error handling, and storage limits.",
+  "tags": [
+    "files-api",
+    "anthropic-claude",
+    "file-management",
+    "api-guide",
+    "document-blocks",
+    "image-blocks",
+    "file-upload",
+    "file-limits"
+  ],
+  "category": "guide"
+}

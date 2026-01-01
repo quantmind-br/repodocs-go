@@ -1,0 +1,73 @@
+{
+  "url": "https://platform.claude.com/docs/en/claude_api_primer.md",
+  "title": "API usage primer for Claude",
+  "description": "This guide is designed to give Claude the basics of using the Claude API. It gives explanation and examples of model IDs/the basic messages API, tool use, streaming, extended thinking, and nothing else.",
+  "fetched_at": "2026-01-01T02:46:22.076913051-03:00",
+  "content_hash": "77970340ae51aa8a5de1bf218096d46cf04a224f9007ab7cbad5445cdcb0d22d",
+  "word_count": 1183,
+  "char_count": 8282,
+  "links": [
+    "https://json-schema.org/",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use#providing-tool-use-examples"
+  ],
+  "headers": {
+    "h1": [
+      "API usage primer for Claude",
+      "API usage primer for Claude"
+    ],
+    "h2": [
+      "Models",
+      "Calling the API",
+      "Extended thinking",
+      "Extended thinking with tool use",
+      "Tool Use",
+      "Controlling Claude's output",
+      "Handling tool use and tool result content blocks",
+      "Troubleshooting errors",
+      "Streaming Messages"
+    ],
+    "h3": [
+      "Basic request and response",
+      "Multiple conversational turns",
+      "Putting words in Claude's mouth",
+      "Vision",
+      "How extended thinking works",
+      "Preserving thinking blocks",
+      "Interleaved thinking",
+      "Specifying client tools",
+      "Best practices for tool definitions",
+      "Forcing tool use",
+      "JSON output",
+      "Chain of thought",
+      "Parallel tool use",
+      "Handling results from client tools",
+      "Handling the `max_tokens` stop reason",
+      "Handling the `pause_turn` stop reason",
+      "Tool execution error",
+      "Invalid tool name",
+      "Streaming with SDKs",
+      "Event types",
+      "Content block delta types",
+      "Basic streaming request example"
+    ],
+    "h4": [
+      "Text delta",
+      "Input JSON delta",
+      "Thinking delta"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "crawler",
+  "cache_hit": false,
+  "summary": "Introduces foundational API usage for Claude, covering model selection, message handling, tool integration, and advanced features like streaming and extended thinking.",
+  "tags": [
+    "claude-api",
+    "model-selection",
+    "messages-api",
+    "tool-integration",
+    "extended-thinking",
+    "vision-support",
+    "api-requests"
+  ],
+  "category": "guide"
+}
