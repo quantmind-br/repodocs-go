@@ -1,0 +1,49 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/messages/create.md",
+  "title": "Create a Message (Beta) (TypeScript)",
+  "description": "`client.beta.messages.create(MessageCreateParamsparams, RequestOptionsoptions?): BetaMessage | Stream\u003cBetaRawMessageStreamEvent\u003e`",
+  "fetched_at": "2026-01-01T02:09:37.258976252-03:00",
+  "content_hash": "1c2c662b778f7ed5845b1d7fbb112e9df24c6290f9cc99e3fa5d0d30f7c19254",
+  "word_count": 99,
+  "char_count": 1082,
+  "links": [
+    "https://docs.claude.com/en/docs/initial-setup",
+    "https://docs.claude.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/service-tiers",
+    "https://docs.claude.com/en/api/messages-streaming",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Claude API's `create` endpoint for generating conversational messages with structured input parameters, including text and image handling.",
+  "tags": [
+    "api-messages",
+    "conversational-ai",
+    "message-creation",
+    "beta-api",
+    "content-blocks",
+    "image-support"
+  ],
+  "category": "api"
+}

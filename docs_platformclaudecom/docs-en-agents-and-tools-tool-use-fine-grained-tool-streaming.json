@@ -1,0 +1,36 @@
+{
+  "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming.md",
+  "title": "Fine-grained tool streaming",
+  "description": "Tool use now supports fine-grained [streaming](/docs/en/build-with-claude/streaming) for parameter values. This allows developers to stream tool use parameters without buffering / JSON validation, reducing the latency to begin receiving large parameters.",
+  "fetched_at": "2026-01-01T02:08:03.527481045-03:00",
+  "content_hash": "59f78994e86fa332869e77e701e2bf34f1dffbe0a562f0424e90bf3ee0c02f6b",
+  "word_count": 433,
+  "char_count": 2842,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "https://forms.gle/D4Fjr7GvQRzfTZT96",
+    "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons"
+  ],
+  "headers": {
+    "h1": [
+      "Fine-grained tool streaming"
+    ],
+    "h2": [
+      "How to use fine-grained tool streaming",
+      "Handling invalid JSON in tool responses"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how fine-grained tool streaming enables real-time parameter streaming for API tool use without buffering, reducing latency and improving efficiency in large data transfers.",
+  "tags": [
+    "api-streaming",
+    "beta-feature",
+    "tool-use",
+    "low-latency",
+    "json-validation",
+    "parameter-streaming"
+  ],
+  "category": "guide"
+}

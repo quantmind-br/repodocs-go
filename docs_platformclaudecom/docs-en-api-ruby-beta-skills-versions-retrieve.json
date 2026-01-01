@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/beta/skills/versions/retrieve.md",
+  "title": "Get Skill Version (Beta) (Ruby)",
+  "description": "`beta.skills.versions.retrieve(version, **kwargs) -\u003e VersionRetrieveResponse`",
+  "fetched_at": "2026-01-01T02:10:58.225420162-03:00",
+  "content_hash": "ba4d97bb9fdef3e3a678a258f587ad32713cf8e37871115570c7df8d38d3593c",
+  "word_count": 88,
+  "char_count": 862,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to retrieve a skill version using a beta API endpoint with parameters like skill_id and version timestamp, returning structured metadata about the version.",
+  "tags": [
+    "api-endpoint",
+    "skill-version-retrieval",
+    "unix-epoch-timestamp",
+    "beta-api",
+    "version-retrieval-response"
+  ],
+  "category": "api"
+}

@@ -1,0 +1,43 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests.md",
+  "title": "Create strong empirical evaluations",
+  "description": "After defining your success criteria, the next step is designing evaluations to measure LLM performance against those criteria. This is a vital part of the prompt engineering cycle.",
+  "fetched_at": "2026-01-01T02:07:56.694674828-03:00",
+  "content_hash": "37bdcec2a7e6a9511176529e60bdbe53563c844e84c427c3d49d1193c169e4dd",
+  "word_count": 411,
+  "char_count": 3247,
+  "links": [
+    "https://platform.claude.com/docs/images/how-to-prompt-eng.png"
+  ],
+  "headers": {
+    "h1": [
+      "Create strong empirical evaluations"
+    ],
+    "h2": [
+      "Building evals and test cases",
+      "Grading evals",
+      "Next steps"
+    ],
+    "h3": [
+      "Eval design principles",
+      "Example evals",
+      "Tips for LLM-based grading"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide on designing strong empirical evaluations for LLM performance, focusing on task-specific test cases, automation, and balancing volume with quality.",
+  "tags": [
+    "llm-evaluation",
+    "prompt-engineering",
+    "test-case-design",
+    "automated-grading",
+    "edge-cases",
+    "sentiment-analysis",
+    "cosine-similarity",
+    "rouge-l",
+    "llm-grading"
+  ],
+  "category": "guide"
+}

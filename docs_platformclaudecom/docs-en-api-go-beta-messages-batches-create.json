@@ -1,0 +1,49 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/messages/batches/create.md",
+  "title": "Create a Message Batch (Beta) (Go)",
+  "description": "`client.Beta.Messages.Batches.New(ctx, params) (*BetaMessageBatch, error)`",
+  "fetched_at": "2026-01-01T02:09:44.46323984-03:00",
+  "content_hash": "83c56f867de0b2dae7249a3b9fe0d0572d2c082f926066fa93c09d9345152b0e",
+  "word_count": 91,
+  "char_count": 904,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing",
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/service-tiers",
+    "https://docs.claude.com/en/api/messages-streaming",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to use the Message Batches API for batching multiple message creation requests in Claude.",
+  "tags": [
+    "api-batch-processing",
+    "message-api",
+    "batch-requests",
+    "claude-ai",
+    "conversational-turns"
+  ],
+  "category": "api"
+}

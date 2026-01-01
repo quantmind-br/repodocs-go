@@ -1,0 +1,33 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/messages/batches/delete.md",
+  "title": "Delete a Message Batch (Go)",
+  "description": "`client.Messages.Batches.Delete(ctx, messageBatchID) (*DeletedMessageBatch, error)`",
+  "fetched_at": "2026-01-01T02:10:13.594198448-03:00",
+  "content_hash": "36c3956e0e0b313a656543b82a46bc1d38225f9419790e6e30540936ddaece0c",
+  "word_count": 62,
+  "char_count": 533,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to delete a completed Message Batch in the Claude API using the Delete endpoint",
+  "tags": [
+    "api-delete",
+    "message-batch",
+    "claude-sdk",
+    "batch-processing"
+  ],
+  "category": "api"
+}

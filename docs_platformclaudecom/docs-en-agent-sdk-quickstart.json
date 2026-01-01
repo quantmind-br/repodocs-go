@@ -1,0 +1,58 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/quickstart.md",
+  "title": "Quickstart",
+  "description": "Get started with the Python or TypeScript Agent SDK to build AI agents that work autonomously",
+  "fetched_at": "2026-01-01T02:07:41.287918043-03:00",
+  "content_hash": "d1953ed0d03c8f51d01d4782ebf0d3a871a2f150da3a4a0b1ec5c0563feb3707",
+  "word_count": 915,
+  "char_count": 6012,
+  "links": [
+    "https://console.anthropic.com/",
+    "https://code.claude.com/docs/en/setup",
+    "https://docs.astral.sh/uv/",
+    "https://code.claude.com/docs/en/amazon-bedrock",
+    "https://code.claude.com/docs/en/google-vertex-ai",
+    "https://code.claude.com/docs/en/azure-ai-foundry",
+    "https://platform.claude.com/docs/en/agent-sdk/python#query",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript#query",
+    "https://platform.claude.com/docs/en/agent-sdk/python#claudeagentoptions",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript#claudeagentoptions",
+    "https://platform.claude.com/docs/en/agent-sdk/streaming-vs-single-mode",
+    "https://code.claude.com/docs/en/troubleshooting",
+    "https://platform.claude.com/docs/en/agent-sdk/permissions#canusetool",
+    "https://platform.claude.com/docs/en/agent-sdk/permissions",
+    "https://platform.claude.com/docs/en/agent-sdk/hooks",
+    "https://platform.claude.com/docs/en/agent-sdk/sessions",
+    "https://platform.claude.com/docs/en/agent-sdk/mcp",
+    "https://platform.claude.com/docs/en/agent-sdk/hosting",
+    "https://github.com/anthropics/claude-agent-sdk-demos"
+  ],
+  "headers": {
+    "h1": [
+      "Quickstart"
+    ],
+    "h2": [
+      "Prerequisites",
+      "Setup",
+      "Create a buggy file",
+      "Build an agent that finds and fixes bugs",
+      "Key concepts",
+      "Next steps"
+    ],
+    "h3": [
+      "Run your agent",
+      "Try other prompts",
+      "Customize your agent"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "A concise overview of basic setup or initial steps for getting started with a system or project.",
+  "tags": [
+    "beginner",
+    "tutorial",
+    "introduction"
+  ],
+  "category": "guide"
+}

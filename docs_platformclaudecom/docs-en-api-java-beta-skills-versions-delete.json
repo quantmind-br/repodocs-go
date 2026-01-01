@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/skills/versions/delete.md",
+  "title": "Delete Skill Version (Beta) (Java)",
+  "description": "`VersionDeleteResponse beta().skills().versions().delete(VersionDeleteParamsparams, RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:24.472007338-03:00",
+  "content_hash": "fc39e11901dc8d88d38f3747a05cfc3a1f51bd7567910a7ad92f428412cb9d94",
+  "word_count": 28,
+  "char_count": 461,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint and method for deleting a skill version in an Anthropic client library",
+  "tags": [
+    "api-delete",
+    "skill-version",
+    "unix-epoch-timestamp",
+    "beta-features"
+  ],
+  "category": "api"
+}

@@ -1,0 +1,32 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/beta/models/retrieve.md",
+  "title": "Get a Model (Beta)",
+  "description": "**get** `/v1/models/{model_id}`",
+  "fetched_at": "2026-01-01T02:10:36.760685014-03:00",
+  "content_hash": "06a1704e1c8a7a1b3c3256956ca0a9bf888ec4926339566b875d0fdbd4a72dc4",
+  "word_count": 88,
+  "char_count": 723,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Header Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving details of a specific model via its ID or alias, including response structure and optional beta headers.",
+  "tags": [
+    "api-endpoint",
+    "model-retrieval",
+    "anthropic-beta",
+    "api-response",
+    "model-details"
+  ],
+  "category": "api"
+}

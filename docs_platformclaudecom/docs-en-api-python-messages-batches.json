@@ -1,0 +1,82 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/messages/batches.md",
+  "title": "Batches",
+  "description": "`messages.batches.create(BatchCreateParams**kwargs)  -\u003e MessageBatch`",
+  "fetched_at": "2026-01-01T02:08:59.464087745-03:00",
+  "content_hash": "60ce140f195e7acfa76c1ead3f78e9e1368da57a097da535cac2f07fa38c0422",
+  "word_count": 779,
+  "char_count": 10191,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing",
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/service-tiers",
+    "https://docs.claude.com/en/api/messages-streaming",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h1": [
+      "Batches"
+    ],
+    "h2": [
+      "Create",
+      "Retrieve",
+      "List",
+      "Cancel",
+      "Delete",
+      "Results",
+      "Domain Types"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Deleted Message Batch",
+      "Message Batch",
+      "Message Batch Canceled Result",
+      "Message Batch Errored Result",
+      "Message Batch Expired Result",
+      "Message Batch Individual Response",
+      "Message Batch Request Counts",
+      "Message Batch Result",
+      "Message Batch Succeeded Result"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Message Batches API for processing multiple message requests in parallel, including parameters, request structure, and batch processing timelines.",
+  "tags": [
+    "api-batch-processing",
+    "message-api",
+    "parallel-requests",
+    "batch-creation",
+    "claude-api"
+  ],
+  "category": "api"
+}

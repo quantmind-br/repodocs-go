@@ -1,0 +1,32 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/beta/files/list.md",
+  "title": "List Files (Beta)",
+  "description": "**get** `/v1/files`",
+  "fetched_at": "2026-01-01T02:11:02.295283726-03:00",
+  "content_hash": "04bdbf72854f96d043c310d79dd9fc1f750edb5a97af2af8c19f7ff99cd0eb55",
+  "word_count": 167,
+  "char_count": 1238,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Query Parameters",
+      "Header Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint for listing files with pagination controls and optional beta feature selection",
+  "tags": [
+    "api-endpoint",
+    "pagination",
+    "file-management",
+    "beta-features",
+    "files-api"
+  ],
+  "category": "api"
+}

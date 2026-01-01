@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/files/download.md",
+  "title": "Download File (Beta) (Go)",
+  "description": "`client.Beta.Files.Download(ctx, fileID, query) (*Response, error)`",
+  "fetched_at": "2026-01-01T02:10:28.122578913-03:00",
+  "content_hash": "145a821e09bfc89e1388ce652d259723c68e9ac437d9fedd4834de779a0db4f0",
+  "word_count": 26,
+  "char_count": 351,
+  "headers": {
+    "h2": [
+      "Download"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides instructions for downloading a file using the Anthropic API with optional beta version parameters.",
+  "tags": [
+    "api-files",
+    "file-download",
+    "beta-versions",
+    "anthropic-sdk"
+  ],
+  "category": "guide"
+}

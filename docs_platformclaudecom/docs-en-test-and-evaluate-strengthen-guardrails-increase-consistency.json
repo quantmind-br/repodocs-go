@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency.md",
+  "title": "Increase output consistency",
+  "description": "\u003cTip\u003e **For guaranteed JSON schema conformance**",
+  "fetched_at": "2026-01-01T02:08:06.097394427-03:00",
+  "content_hash": "63b3c3ca2aa258df916f208582a742a4a6f8d70624f2c1ad9afb06bc6f64c645",
+  "word_count": 216,
+  "char_count": 1690,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "headers": {
+    "h1": [
+      "Increase output consistency"
+    ],
+    "h2": [
+      "Specify the desired output format",
+      "Prefill Claude's response",
+      "Constrain with examples",
+      "Use retrieval for contextual consistency",
+      "Chain prompts for complex tasks"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides techniques for ensuring consistent JSON output from Claude by specifying output format, prefilling responses, and using examples.",
+  "tags": [
+    "structured-outputs",
+    "json-formatting",
+    "prompt-engineering"
+  ],
+  "category": "guide"
+}

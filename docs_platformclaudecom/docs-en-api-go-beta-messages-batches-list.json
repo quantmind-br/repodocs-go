@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/messages/batches/list.md",
+  "title": "List Message Batches (Beta) (Go)",
+  "description": "`client.Beta.Messages.Batches.List(ctx, params) (*Page[BetaMessageBatch], error)`",
+  "fetched_at": "2026-01-01T02:11:07.424253983-03:00",
+  "content_hash": "08e7c4ee1cc786648253584c0effa57fbbd5c80479c160d175908d3408813548",
+  "word_count": 68,
+  "char_count": 790,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for listing message batches with pagination and beta version filtering in the Claude API.",
+  "tags": [
+    "api-endpoint",
+    "message-batches",
+    "pagination",
+    "beta-versions",
+    "anthropic-sdk"
+  ],
+  "category": "api"
+}

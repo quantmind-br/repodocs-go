@@ -1,0 +1,33 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/long-context-tips.md",
+  "title": "Long context prompting tips",
+  "description": "\u003cNote\u003e While these tips apply broadly to all Claude models, you can find prompting tips specific to extended thinking models [here](/docs/en/build-with-claude/prompt-engineering/extended-thinking-tips). \u003c/Note\u003e",
+  "fetched_at": "2026-01-01T02:08:09.270315482-03:00",
+  "content_hash": "c848861729c5fa653b158d6edd835da2310c38c920e50171d68e7172e69acae8",
+  "word_count": 182,
+  "char_count": 1511,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/extended-thinking-tips"
+  ],
+  "headers": {
+    "h1": [
+      "Long context prompting tips"
+    ],
+    "h2": [
+      "Essential tips for long context prompts"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides best practices for structuring and optimizing long-form prompts to leverage extended context windows effectively.",
+  "tags": [
+    "prompt-engineering",
+    "long-context",
+    "ai-prompting",
+    "document-structure",
+    "xml-tags",
+    "metadata-extraction"
+  ],
+  "category": "guide"
+}

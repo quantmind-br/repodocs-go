@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/skills/versions/create.md",
+  "title": "Create Skill Version (Beta) (TypeScript)",
+  "description": "`client.beta.skills.versions.create(stringskillID, VersionCreateParamsparams?, RequestOptionsoptions?): VersionCreateResponse`",
+  "fetched_at": "2026-01-01T02:10:08.265641042-03:00",
+  "content_hash": "62e4d10d01760f18c145fa9ebd0306b1de16de72b3a80bb9c458fe248801f2f8",
+  "word_count": 55,
+  "char_count": 642,
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for creating a new skill version with version-specific parameters and response structure.",
+  "tags": [
+    "api-endpoint",
+    "skill-version",
+    "upload-files",
+    "beta-features",
+    "version-create"
+  ],
+  "category": "api"
+}

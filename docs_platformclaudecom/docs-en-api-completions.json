@@ -1,0 +1,46 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/completions.md",
+  "title": "Completions",
+  "description": "**post** `/v1/complete`",
+  "fetched_at": "2026-01-01T02:09:15.49298062-03:00",
+  "content_hash": "c93eef493280c0abb627d4b0b1722f97865acab30efbbc4628d7afdffa105b57",
+  "word_count": 461,
+  "char_count": 3383,
+  "links": [
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/api/migrating-from-text-completions-to-messages",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/prompt-validation",
+    "https://docs.claude.com/en/docs/intro-to-prompting",
+    "https://docs.claude.com/en/api/streaming",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h1": [
+      "Completions"
+    ],
+    "h2": [
+      "Create",
+      "Domain Types"
+    ],
+    "h3": [
+      "Header Parameters",
+      "Body Parameters",
+      "Returns",
+      "Example",
+      "Completion"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document provides an overview of the deprecated Text Completions API endpoint for Claude, detailing its header, body parameters, and return structure, alongside migration guidance to the Messages API.",
+  "tags": [
+    "api-deprecation",
+    "text-completion",
+    "anthropic-beta",
+    "model-selection",
+    "prompt-engineering"
+  ],
+  "category": "reference"
+}

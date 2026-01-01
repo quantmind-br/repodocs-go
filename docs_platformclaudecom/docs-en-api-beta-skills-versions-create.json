@@ -1,0 +1,32 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/beta/skills/versions/create.md",
+  "title": "Create Skill Version (Beta)",
+  "description": "**post** `/v1/skills/{skill_id}/versions`",
+  "fetched_at": "2026-01-01T02:10:05.195121644-03:00",
+  "content_hash": "6a6dd0393121fbd335e2acb4e49f69cec0219d01b83b9c25f6a7b0d4b78207dc",
+  "word_count": 186,
+  "char_count": 1414,
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Header Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for creating a new skill version in the Anthropic platform.",
+  "tags": [
+    "api-post",
+    "skill-version",
+    "anthropic-beta",
+    "skill-upload",
+    "versioning"
+  ],
+  "category": "api"
+}

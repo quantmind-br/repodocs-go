@@ -1,0 +1,65 @@
+{
+  "url": "https://platform.claude.com/docs/en/about-claude/models/migrating-to-claude-4.md",
+  "title": "Migrating to Claude 4.5",
+  "description": "This guide covers two key migration paths to Claude 4.5 models:",
+  "fetched_at": "2026-01-01T02:08:13.129842494-03:00",
+  "content_hash": "5387e55786276e761eab224961baf384ea744499569f79f1056b49717519d695",
+  "word_count": 1518,
+  "char_count": 10959,
+  "links": [
+    "https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-5",
+    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool#upgrade-to-latest-tool-version",
+    "https://platform.claude.com/docs/en/api/beta-headers",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching#caching-with-thinking-blocks",
+    "https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-5#key-improvements-in-haiku-4-5-over-haiku-3-5",
+    "https://platform.claude.com/docs/en/about-claude/pricing",
+    "https://platform.claude.com/docs/en/api/rate-limits",
+    "https://github.com/anthropics/claude-code/tree/main/plugins/claude-opus-4-5-migration",
+    "https://platform.claude.com/docs/en/api/overview",
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/release-notes/api"
+  ],
+  "headers": {
+    "h1": [
+      "Migrating to Claude 4.5"
+    ],
+    "h2": [
+      "Migrating from Claude Sonnet 3.7 to Claude Sonnet 4.5",
+      "Migrating from Claude Haiku 3.5 to Claude Haiku 4.5",
+      "Choosing between Sonnet 4.5 and Haiku 4.5",
+      "Other migration scenarios",
+      "Need help?"
+    ],
+    "h3": [
+      "Migration steps",
+      "Sonnet 3.7 → 4.5 migration checklist",
+      "Features removed from Claude Sonnet 3.7",
+      "Migration steps",
+      "Haiku 3.5 → 4.5 migration checklist",
+      "Choose Claude Sonnet 4.5 (most intelligent) for:",
+      "Choose Claude Haiku 4.5 (fastest and most intelligent Haiku) for:",
+      "Extended thinking recommendations",
+      "Migrating from Claude Sonnet 4 → Sonnet 4.5",
+      "Migrating from Claude Opus 4.1 → Sonnet 4.5",
+      "Migrating from Claude Opus 4.1 → Opus 4.5",
+      "Migrating between Claude 4.5 models"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide explaining migration steps and breaking changes for updating implementations from Claude Sonnet 3.7/3.5 to Claude Sonnet 4.5/Haiku 4.5 models, including model ID updates, parameter adjustments, and tool configurations.",
+  "tags": [
+    "claude-migration",
+    "api-updates",
+    "breaking-changes",
+    "model-version",
+    "sampling-parameters",
+    "tool-configuration"
+  ],
+  "category": "guide"
+}

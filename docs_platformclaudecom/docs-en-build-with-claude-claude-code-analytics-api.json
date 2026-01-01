@@ -1,0 +1,69 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/claude-code-analytics-api.md",
+  "title": "Claude Code Analytics API",
+  "description": "Programmatically access your organization's Claude Code usage analytics and productivity metrics with the Claude Code Analytics Admin API.",
+  "fetched_at": "2026-01-01T02:07:51.182732644-03:00",
+  "content_hash": "65b65e2d21fe9b0a176869ba1af9ec48ed96dcef69127ffe790eb77846288134",
+  "word_count": 1170,
+  "char_count": 8140,
+  "links": [
+    "https://platform.claude.com/claude-code",
+    "https://platform.claude.com/docs/en/build-with-claude/administration-api",
+    "https://platform.claude.com/settings/admin-keys",
+    "https://platform.claude.com/docs/en/api/admin-api/claude-code/get-claude-code-usage-report",
+    "https://code.claude.com/docs/en/monitoring-usage",
+    "https://platform.claude.com/docs/en/api/admin",
+    "https://platform.claude.com/docs/en/build-with-claude/usage-cost-api",
+    "https://code.claude.com/docs/en/iam"
+  ],
+  "headers": {
+    "h1": [
+      "Claude Code Analytics API"
+    ],
+    "h2": [
+      "Quick start",
+      "Claude Code Analytics API",
+      "Pagination",
+      "Common use cases",
+      "Frequently asked questions",
+      "See also"
+    ],
+    "h3": [
+      "Key concepts",
+      "Basic examples",
+      "Request parameters",
+      "Available metrics",
+      "Response structure",
+      "How fresh is the analytics data?",
+      "Can I get real-time metrics?",
+      "How are users identified in the data?",
+      "What's the data retention period?",
+      "Which Claude Code deployments are supported?",
+      "What does it cost to use this API?",
+      "How do I calculate tool acceptance rates?",
+      "What time zone is used for the date parameter?"
+    ],
+    "h4": [
+      "Get analytics for a specific day",
+      "Get analytics with pagination",
+      "Dimensions",
+      "Core metrics",
+      "Tool action metrics",
+      "Model breakdown"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides programmatic access to organization-level Claude Code analytics for tracking developer productivity, tool usage, and cost metrics via an admin API.",
+  "tags": [
+    "claude-code-analytics",
+    "api-admin",
+    "developer-productivity",
+    "usage-metrics",
+    "organization-admin",
+    "pagination",
+    "token-cost-analysis"
+  ],
+  "category": "api"
+}

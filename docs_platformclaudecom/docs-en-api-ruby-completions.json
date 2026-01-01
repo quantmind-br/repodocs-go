@@ -1,0 +1,45 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/completions.md",
+  "title": "Completions",
+  "description": "`completions.create(**kwargs) -\u003e Completion`",
+  "fetched_at": "2026-01-01T02:09:18.414551106-03:00",
+  "content_hash": "f8a079fbdc7ede474291c52d49c2a5e4104233bc41b45fae7be78cb8da4b2db1",
+  "word_count": 426,
+  "char_count": 3197,
+  "links": [
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/api/migrating-from-text-completions-to-messages",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/prompt-validation",
+    "https://docs.claude.com/en/docs/intro-to-prompting",
+    "https://docs.claude.com/en/api/streaming",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h1": [
+      "Completions"
+    ],
+    "h2": [
+      "Create",
+      "Domain Types"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example",
+      "Completion"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the legacy Text Completions API endpoint for generating text completions via Anthropic’s API, including its deprecation and migration guidance to the Messages API.",
+  "tags": [
+    "api-deprecation",
+    "text-completion",
+    "anthropic-api",
+    "model-selection",
+    "prompting"
+  ],
+  "category": "guide"
+}

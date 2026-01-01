@@ -1,0 +1,70 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry.md",
+  "title": "Claude in Microsoft Foundry",
+  "description": "Access Claude models through Microsoft Foundry with Azure-native endpoints and authentication.",
+  "fetched_at": "2026-01-01T02:07:51.446855642-03:00",
+  "content_hash": "363374eecb2af300724af3eecb971319d4bec075655a867f9847fbeb84831bd0",
+  "word_count": 1369,
+  "char_count": 10095,
+  "links": [
+    "https://claude.com/pricing#api",
+    "https://ai.azure.com/",
+    "https://docs.microsoft.com/en-us/cli/azure/install-azure-cli",
+    "https://platform.claude.com/docs/en/api/client-sdks",
+    "https://learn.microsoft.com/en-us/azure/ai-services/multi-service-resource?pivots=azportal#create-a-new-azure-ai-foundry-resource",
+    "https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/create-projects?tabs=ai-foundry",
+    "https://platform.claude.com/docs/en/build-with-claude/overview",
+    "https://platform.claude.com/docs/en/api/messages",
+    "https://ai.azure.com/catalog/publishers/anthropic",
+    "https://azure.microsoft.com/en-us/pricing/",
+    "https://platform.claude.com/docs/en/about-claude/pricing#third-party-platform-pricing",
+    "https://portal.azure.com/"
+  ],
+  "headers": {
+    "h1": [
+      "Claude in Microsoft Foundry"
+    ],
+    "h2": [
+      "Preview",
+      "Prerequisites",
+      "Install an SDK",
+      "Provisioning",
+      "Authentication",
+      "Microsoft Entra authentication",
+      "Correlation request IDs",
+      "Supported features",
+      "API responses",
+      "API model IDs and deployments",
+      "Monitoring and logging",
+      "Troubleshooting",
+      "Additional resources"
+    ],
+    "h3": [
+      "Provisioning Foundry resources",
+      "Creating Foundry deployments",
+      "API key authentication",
+      "Features not supported",
+      "Authentication errors",
+      "Rate limiting",
+      "Model and deployment errors"
+    ],
+    "h4": [
+      "Rate limit headers"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide on integrating and using Claude models via Microsoft Foundry with Azure authentication, covering setup, SDK installation, and API call procedures.",
+  "tags": [
+    "azure-foundry",
+    "claude-api",
+    "azure-authentication",
+    "anthropic-sdk",
+    "api-key",
+    "entra-id",
+    "python-typescript",
+    "http-requests"
+  ],
+  "category": "guide"
+}

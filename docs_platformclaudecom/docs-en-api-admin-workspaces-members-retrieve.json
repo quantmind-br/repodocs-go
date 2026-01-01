@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/workspaces/members/retrieve.md",
+  "title": "Get Workspace Member",
+  "description": "**get** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`",
+  "fetched_at": "2026-01-01T02:11:00.751467359-03:00",
+  "content_hash": "44bf02f61633c1b011eac961846e29cd8da8d15205e21ae4dc9353b3e9b67970",
+  "word_count": 45,
+  "char_count": 461,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to retrieve a workspace member's details via API using workspace and user IDs",
+  "tags": [
+    "api-endpoint",
+    "workspace-membership",
+    "role-access",
+    "authentication"
+  ],
+  "category": "api"
+}

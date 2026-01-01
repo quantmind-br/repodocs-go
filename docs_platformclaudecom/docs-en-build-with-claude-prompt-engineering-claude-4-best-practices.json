@@ -1,0 +1,75 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices.md",
+  "title": "Prompting best practices",
+  "description": "This guide provides specific prompt engineering techniques for Claude 4.x models, with specific guidance for Sonnet 4.5, Haiku 4.5, and Opus 4.5. These models have been trained for more precise instruction following than previous generations of Claude models. \u003cTip\u003e For an overview of Claude 4.5's...",
+  "fetched_at": "2026-01-01T02:08:22.135317374-03:00",
+  "content_hash": "1bd8b813e6da66a6cf6faa3862d69254699c11829fdb4ea843d6ec69575795cf",
+  "word_count": 2499,
+  "char_count": 17117,
+  "links": [
+    "https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-5",
+    "https://platform.claude.com/docs/en/about-claude/models/migrating-to-claude-4",
+    "https://platform.claude.com/docs/en/build-with-claude/context-windows#context-awareness-in-claude-sonnet-4-5",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+    "https://github.com/anthropics/claude-cookbooks/blob/main/multimodal/crop_tool.ipynb",
+    "https://www.claude.com/blog/improving-frontend-design-through-skills",
+    "https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md"
+  ],
+  "headers": {
+    "h1": [
+      "Prompting best practices"
+    ],
+    "h2": [
+      "General principles",
+      "Guidance for specific situations",
+      "Migration considerations"
+    ],
+    "h3": [
+      "Be explicit with your instructions",
+      "Add context to improve performance",
+      "Be vigilant with examples \u0026 details",
+      "Long-horizon reasoning and state tracking",
+      "Communication style",
+      "Balance verbosity",
+      "Tool usage patterns",
+      "Tool usage and triggering",
+      "Control the format of responses",
+      "Research and information gathering",
+      "Subagent orchestration",
+      "Model self-knowledge",
+      "Thinking sensitivity",
+      "Leverage thinking \u0026 interleaved thinking capabilities",
+      "Document creation",
+      "Improved vision capabilities",
+      "Optimize parallel tool calling",
+      "Reduce file creation in agentic coding",
+      "Overeagerness and file creation",
+      "Frontend design",
+      "Avoid focusing on passing tests and hard-coding",
+      "Encouraging code exploration",
+      "Minimizing hallucinations in agentic coding"
+    ],
+    "h4": [
+      "Context awareness and multi-window workflows",
+      "Multi-context window workflows",
+      "State management best practices"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides best practices for prompt engineering with Claude 4.x models, focusing on explicit instructions, context awareness, state tracking, and multi-window workflows for improved precision and efficiency.",
+  "tags": [
+    "prompt-engineering",
+    "claude-4-x",
+    "context-awareness",
+    "state-tracking",
+    "multi-window-workflows",
+    "long-horizon-reasoning",
+    "structured-data",
+    "model-improvement"
+  ],
+  "category": "guide"
+}

@@ -1,0 +1,47 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/invites.md",
+  "title": "Invites",
+  "description": "**post** `/v1/organizations/invites`",
+  "fetched_at": "2026-01-01T02:11:01.357192726-03:00",
+  "content_hash": "5c4b48461b2f35b3cdbc7efcaf50fd840550f0e5166e8163e12be87456af9301",
+  "word_count": 355,
+  "char_count": 2560,
+  "headers": {
+    "h1": [
+      "Invites"
+    ],
+    "h2": [
+      "Create",
+      "Retrieve",
+      "List",
+      "Delete",
+      "Domain Types"
+    ],
+    "h3": [
+      "Body Parameters",
+      "Returns",
+      "Example",
+      "Path Parameters",
+      "Returns",
+      "Example",
+      "Query Parameters",
+      "Returns",
+      "Example",
+      "Path Parameters",
+      "Returns",
+      "Example",
+      "Invite"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document outlines the Anthropic API endpoints for managing organization invites, detailing create, retrieve, list, and delete operations with parameters and response structures.",
+  "tags": [
+    "api-invite-management",
+    "organization-invites",
+    "role-based-access",
+    "pagination-cursors"
+  ],
+  "category": "api"
+}

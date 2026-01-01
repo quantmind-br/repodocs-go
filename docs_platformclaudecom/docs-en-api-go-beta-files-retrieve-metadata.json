@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/files/retrieve_metadata.md",
+  "title": "Get File Metadata (Beta) (Go)",
+  "description": "`client.Beta.Files.GetMetadata(ctx, fileID, query) (*FileMetadata, error)`",
+  "fetched_at": "2026-01-01T02:10:47.563775098-03:00",
+  "content_hash": "29a6bf6a7f5acbd0b30383eff9472676862d977dab8a10ff933b8f517fd8cd88",
+  "word_count": 42,
+  "char_count": 468,
+  "headers": {
+    "h2": [
+      "Retrieve Metadata"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes how to retrieve metadata for files using the Anthropic API's `GetMetadata` endpoint with optional beta version parameters.",
+  "tags": [
+    "api-files",
+    "metadata-retrieval",
+    "anthropic-sdk",
+    "file-api"
+  ],
+  "category": "api"
+}

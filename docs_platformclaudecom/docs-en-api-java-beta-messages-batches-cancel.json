@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/messages/batches/cancel.md",
+  "title": "Cancel a Message Batch (Beta) (Java)",
+  "description": "`BetaMessageBatch beta().messages().batches().cancel(BatchCancelParamsparams = BatchCancelParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:09:08.816432523-03:00",
+  "content_hash": "a28e505800f4a10d8aa3ec706e2cdf727250655b08fef30995fad49c07904f33",
+  "word_count": 122,
+  "char_count": 1306,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Cancel"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint and method for canceling a Claude Message Batch before processing completion, detailing state transitions and request handling.",
+  "tags": [
+    "api-endpoint",
+    "batch-cancellation",
+    "processing-status",
+    "request-counts",
+    "non-interruptible-requests"
+  ],
+  "category": "api"
+}

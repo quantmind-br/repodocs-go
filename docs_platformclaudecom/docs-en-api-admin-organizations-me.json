@@ -1,0 +1,29 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/organizations/me.md",
+  "title": "Get Current Organization",
+  "description": "**get** `/v1/organizations/me`",
+  "fetched_at": "2026-01-01T02:10:46.690014967-03:00",
+  "content_hash": "e3898d9cb02cd171811bb23d3408981e581c9de9f7229f3930988097220f72fc",
+  "word_count": 30,
+  "char_count": 236,
+  "headers": {
+    "h2": [
+      "Me"
+    ],
+    "h3": [
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to retrieve authenticated organization details via API endpoint `/v1/organizations/me`",
+  "tags": [
+    "api-endpoint",
+    "organization-data",
+    "authentication-key",
+    "api-response"
+  ],
+  "category": "api"
+}

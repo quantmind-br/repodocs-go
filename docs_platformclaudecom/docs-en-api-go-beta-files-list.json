@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/files/list.md",
+  "title": "List Files (Beta) (Go)",
+  "description": "`client.Beta.Files.List(ctx, params) (*Page[FileMetadata], error)`",
+  "fetched_at": "2026-01-01T02:11:02.728335123-03:00",
+  "content_hash": "8477bc9659d5e49720ceb61289293f041491856c7fac9326e018325763c0428b",
+  "word_count": 39,
+  "char_count": 477,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for listing files with pagination, beta version filtering, and metadata retrieval.",
+  "tags": [
+    "files-api",
+    "pagination",
+    "beta-versions",
+    "file-metadata",
+    "anthropic-sdk"
+  ],
+  "category": "api"
+}

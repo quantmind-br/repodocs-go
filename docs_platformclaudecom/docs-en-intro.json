@@ -1,0 +1,38 @@
+{
+  "url": "https://platform.claude.com/docs/en/intro.md",
+  "title": "Intro to Claude",
+  "description": "Claude is a highly performant, trustworthy, and intelligent AI platform built by Anthropic. Claude excels at tasks involving language, reasoning, analysis, coding, and more.",
+  "fetched_at": "2026-01-01T02:07:39.333356171-03:00",
+  "content_hash": "556c2a7efc7aae56d2847a5ad15611d0443b98dc8ba7d699263904ec2394527f",
+  "word_count": 212,
+  "char_count": 2032,
+  "links": [
+    "https://www.anthropic.com/news/claude-opus-4-5",
+    "https://www.anthropic.com/news/claude-haiku-4-5",
+    "http://www.claude.ai"
+  ],
+  "headers": {
+    "h1": [
+      "Intro to Claude"
+    ],
+    "h2": [
+      "Get started",
+      "Develop with Claude",
+      "Key capabilities",
+      "Support"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Introduction to the Claude AI platform, its model variants (Opus, Sonnet, Haiku), and developer resources for integration, API access, and capabilities like text/code generation and vision processing.",
+  "tags": [
+    "ai-platform",
+    "claude-models",
+    "developer-tools",
+    "api-integration",
+    "vision-capabilities",
+    "text-generation"
+  ],
+  "category": "guide"
+}

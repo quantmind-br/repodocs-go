@@ -1,0 +1,43 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/messages/count_tokens.md",
+  "title": "Count tokens in a Message (Beta) (Java)",
+  "description": "`BetaMessageTokensCount beta().messages().countTokens(MessageCountTokensParamsparams, RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:09:23.389351614-03:00",
+  "content_hash": "3ba10068618729e7c1b3264050c2c63050f2ed42eb9feae0f91f55262e4b605c",
+  "word_count": 83,
+  "char_count": 2101,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/token-counting",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones"
+  ],
+  "headers": {
+    "h2": [
+      "Count Tokens"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the token counting API for Claude, allowing users to estimate the number of tokens in messages (text, tools, images, documents) without creating them.",
+  "tags": [
+    "token-counting",
+    "claude-api",
+    "message-processing",
+    "ai-tokenization"
+  ],
+  "category": "api"
+}

@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/beta/skills/retrieve.md",
+  "title": "Get Skill (Beta) (Ruby)",
+  "description": "`beta.skills.retrieve(skill_id, **kwargs) -\u003e SkillRetrieveResponse`",
+  "fetched_at": "2026-01-01T02:10:54.217258299-03:00",
+  "content_hash": "33944413bed3cb20cb7fd33e4939c12a2d7c2575fbf8690a75e349c77e93e75c",
+  "word_count": 67,
+  "char_count": 671,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "document describes the API endpoint for retrieving a skill using its unique identifier via the `beta.skills.retrieve` method, including parameters and response structure.",
+  "tags": [
+    "api-endpoint",
+    "skill-retrieval",
+    "anthropic-beta",
+    "skill-id",
+    "response-structure"
+  ],
+  "category": "api"
+}

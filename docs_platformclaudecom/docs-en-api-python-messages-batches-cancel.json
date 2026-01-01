@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/messages/batches/cancel.md",
+  "title": "Cancel a Message Batch (Python)",
+  "description": "`messages.batches.cancel(strmessage_batch_id)  -\u003e MessageBatch`",
+  "fetched_at": "2026-01-01T02:09:13.841678516-03:00",
+  "content_hash": "2036e376cfbcd204e722c55fc22051a8b2a1fcb35797c569756f0018e555183c",
+  "word_count": 121,
+  "char_count": 1111,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Cancel"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes how to cancel a message batch in the Claude API, detailing its state transitions, parameters, and return structure.",
+  "tags": [
+    "api-cancellation",
+    "message-batch",
+    "processing-status",
+    "request-counts",
+    "non-interruptible-requests"
+  ],
+  "category": "reference"
+}

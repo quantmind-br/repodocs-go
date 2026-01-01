@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/files/list.md",
+  "title": "List Files (Beta) (Kotlin)",
+  "description": "`beta().files().list(FileListParamsparams = FileListParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : FileListPage`",
+  "fetched_at": "2026-01-01T02:11:03.837227338-03:00",
+  "content_hash": "dd1fc862f054de0477e7b253d625f342e21f4b45cd3d71534e06bb2dbe797e1c",
+  "word_count": 43,
+  "char_count": 574,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint and parameters for listing files in a file system with pagination and beta version support.",
+  "tags": [
+    "files-api",
+    "pagination",
+    "file-list",
+    "beta-versions",
+    "file-metadata"
+  ],
+  "category": "api"
+}

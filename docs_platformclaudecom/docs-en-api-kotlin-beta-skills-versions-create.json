@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/skills/versions/create.md",
+  "title": "Create Skill Version (Beta) (Kotlin)",
+  "description": "`beta().skills().versions().create(VersionCreateParamsparams = VersionCreateParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : VersionCreateResponse`",
+  "fetched_at": "2026-01-01T02:10:06.659359294-03:00",
+  "content_hash": "18cf2bd32464a3c58aab00df7825aa9b4e5859e1aecf7e0f8bb8d8cb30f687f6",
+  "word_count": 43,
+  "char_count": 577,
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for creating a new skill version with optional beta parameters and file uploads.",
+  "tags": [
+    "api-endpoint",
+    "skill-version",
+    "beta-parameters",
+    "file-upload",
+    "version-create"
+  ],
+  "category": "api"
+}

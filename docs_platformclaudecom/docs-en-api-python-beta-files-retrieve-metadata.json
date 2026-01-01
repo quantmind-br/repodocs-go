@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/beta/files/retrieve_metadata.md",
+  "title": "Get File Metadata (Beta) (Python)",
+  "description": "`beta.files.retrieve_metadata(strfile_id, FileRetrieveMetadataParams**kwargs)  -\u003e FileMetadata`",
+  "fetched_at": "2026-01-01T02:10:48.993903618-03:00",
+  "content_hash": "36d033242e01b23f4cd41f85a723c9a277335d3d06bfc6689631d57df6a8f9a9",
+  "word_count": 60,
+  "char_count": 675,
+  "headers": {
+    "h2": [
+      "Retrieve Metadata"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides documentation for an API endpoint to retrieve metadata of a file using its ID, including fields like ID, creation timestamp, filename, and file properties.",
+  "tags": [
+    "api-endpoint",
+    "file-metadata",
+    "metadata-retrieval",
+    "file-api",
+    "file-details"
+  ],
+  "category": "guide"
+}

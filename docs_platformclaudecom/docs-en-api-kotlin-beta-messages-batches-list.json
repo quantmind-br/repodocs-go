@@ -1,0 +1,35 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/messages/batches/list.md",
+  "title": "List Message Batches (Beta) (Kotlin)",
+  "description": "`beta().messages().batches().list(BatchListParamsparams = BatchListParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : BatchListPage`",
+  "fetched_at": "2026-01-01T02:11:08.832714167-03:00",
+  "content_hash": "fc7a83525065c9c79b7151fdbfb21644b8135c7a62c69b00fef96ed8608ed975",
+  "word_count": 72,
+  "char_count": 933,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for listing all Message Batches in a Workspace with pagination and beta version support.",
+  "tags": [
+    "api-endpoint",
+    "batch-processing",
+    "pagination",
+    "beta-versions",
+    "message-batches",
+    "anthropic-api"
+  ],
+  "category": "api"
+}

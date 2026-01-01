@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/skills/retrieve.md",
+  "title": "Get Skill (Beta) (Go)",
+  "description": "`client.Beta.Skills.Get(ctx, skillID, query) (*BetaSkillGetResponse, error)`",
+  "fetched_at": "2026-01-01T02:10:52.185378341-03:00",
+  "content_hash": "ed278c85fac476221bfe903fa05f9a0f3150227634ccf2b777080fc48bf5c93b",
+  "word_count": 51,
+  "char_count": 538,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving a skill with optional beta version parameters in the Anthropic SDK.",
+  "tags": [
+    "api-endpoint",
+    "skills-retrieval",
+    "beta-version",
+    "anthropic-sdk"
+  ],
+  "category": "api"
+}

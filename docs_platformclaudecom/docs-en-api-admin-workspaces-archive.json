@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/workspaces/archive.md",
+  "title": "Archive Workspace",
+  "description": "**post** `/v1/organizations/workspaces/{workspace_id}/archive`",
+  "fetched_at": "2026-01-01T02:08:51.830381994-03:00",
+  "content_hash": "e99370e452dd1d544b00fa665ec74fb0cb6a74259930740dd107a7810c9665ff",
+  "word_count": 37,
+  "char_count": 344,
+  "headers": {
+    "h2": [
+      "Archive"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to archive a workspace via API endpoint for Anthropic organization management",
+  "tags": [
+    "api-endpoint",
+    "workspace-management",
+    "archive-operation",
+    "rpc-method"
+  ],
+  "category": "api"
+}

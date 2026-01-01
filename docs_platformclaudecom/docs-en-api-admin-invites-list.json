@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/invites/list.md",
+  "title": "List Invites",
+  "description": "**get** `/v1/organizations/invites`",
+  "fetched_at": "2026-01-01T02:11:05.953380588-03:00",
+  "content_hash": "334779e55c4e09e0884212feb117078501f4f1178fac3162ad89c1bb0a102ad1",
+  "word_count": 157,
+  "char_count": 1027,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Query Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "A guide explaining how to manage and respond to list invites, likely in a communication or collaboration platform.",
+  "tags": [
+    "invites",
+    "list",
+    "management",
+    "response"
+  ],
+  "category": "guide"
+}

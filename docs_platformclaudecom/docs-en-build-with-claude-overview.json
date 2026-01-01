@@ -1,0 +1,63 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/overview.md",
+  "title": "Features overview",
+  "description": "Explore Claude's advanced features and capabilities.",
+  "fetched_at": "2026-01-01T02:07:38.609225648-03:00",
+  "content_hash": "f966bdffd470568569552a457a210f6228709acff6c0a91b2fdd600ba3c8a40b",
+  "word_count": 869,
+  "char_count": 6291,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/context-windows#1m-token-context-window",
+    "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "https://platform.claude.com/docs/en/build-with-claude/context-editing",
+    "https://platform.claude.com/docs/en/build-with-claude/effort",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://platform.claude.com/docs/en/build-with-claude/files",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching#1-hour-cache-duration",
+    "https://platform.claude.com/docs/en/build-with-claude/search-results",
+    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "https://platform.claude.com/docs/en/api/messages-count-tokens",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/bash-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming",
+    "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+    "https://platform.claude.com/docs/en/mcp",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool"
+  ],
+  "headers": {
+    "h1": [
+      "Features overview"
+    ],
+    "h2": [
+      "Core capabilities",
+      "Tools"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document provides an overview of Claude's advanced features, including core capabilities for content processing, advanced tooling, and platform-specific integrations.",
+  "tags": [
+    "claude-features",
+    "ai-capabilities",
+    "context-windows",
+    "agent-skills",
+    "batch-processing",
+    "citations",
+    "structured-outputs",
+    "tool-use",
+    "platform-availability"
+  ],
+  "category": "guide"
+}

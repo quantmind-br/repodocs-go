@@ -1,0 +1,61 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/pdf-support.md",
+  "title": "PDF support",
+  "description": "Process PDFs with Claude. Extract text, analyze charts, and understand visual content from your documents.",
+  "fetched_at": "2026-01-01T02:08:16.406138962-03:00",
+  "content_hash": "1adc9442c82430562207772d2cee24a6e0c03353b7aba8c73091fef0d8225b8b",
+  "word_count": 816,
+  "char_count": 5476,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/vision#limitations",
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "https://platform.claude.com/docs/en/build-with-claude/files#working-with-other-file-formats",
+    "https://platform.claude.com/docs/en/build-with-claude/files",
+    "https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size",
+    "https://platform.claude.com/docs/en/build-with-claude/token-counting"
+  ],
+  "headers": {
+    "h1": [
+      "PDF support"
+    ],
+    "h2": [
+      "Before you begin",
+      "Process PDFs with Claude",
+      "Optimize PDF processing",
+      "Next steps"
+    ],
+    "h3": [
+      "Check PDF requirements",
+      "Supported platforms and models",
+      "Amazon Bedrock PDF Support",
+      "Send your first PDF request",
+      "How PDF support works",
+      "Estimate your costs",
+      "Improve performance",
+      "Scale your implementation"
+    ],
+    "h4": [
+      "Document Processing Modes",
+      "Key Limitations",
+      "Common Issues",
+      "Option 1: URL-based PDF document",
+      "Option 2: Base64-encoded PDF document",
+      "Option 3: Files API",
+      "Use prompt caching",
+      "Process document batches"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Overview of PDF file support, including creation, viewing, editing, and security features across various platforms and software tools.",
+  "tags": [
+    "PDF",
+    "document",
+    "support",
+    "format",
+    "tools"
+  ],
+  "category": "guide"
+}

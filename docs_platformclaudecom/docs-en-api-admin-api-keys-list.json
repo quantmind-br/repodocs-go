@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/api_keys/list.md",
+  "title": "List Api Keys",
+  "description": "**get** `/v1/organizations/api_keys`",
+  "fetched_at": "2026-01-01T02:11:01.89182158-03:00",
+  "content_hash": "5b3bf0b8841679ef08e14c87b60a08711b492b0078de4e8db6247089755a984d",
+  "word_count": 191,
+  "char_count": 1291,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Query Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint for listing API keys with pagination and filtering capabilities",
+  "tags": [
+    "api-key-list",
+    "pagination",
+    "filtering",
+    "api-query-parameters",
+    "status-filtering"
+  ],
+  "category": "api"
+}

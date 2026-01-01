@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/models/retrieve.md",
+  "title": "Get a Model (Beta) (Kotlin)",
+  "description": "`beta().models().retrieve(ModelRetrieveParamsparams = ModelRetrieveParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : BetaModelInfo`",
+  "fetched_at": "2026-01-01T02:10:39.658217872-03:00",
+  "content_hash": "6d15353f485e18fd75410813ae90317bf91f8cfb7d4f8aa3ea18b7604a7bf94c",
+  "word_count": 58,
+  "char_count": 632,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving model details via model ID or alias with optional beta version headers.",
+  "tags": [
+    "api-endpoint",
+    "model-retrieval",
+    "beta-versions",
+    "anthropic-client"
+  ],
+  "category": "api"
+}

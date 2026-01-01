@@ -1,0 +1,63 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/embeddings.md",
+  "title": "Embeddings",
+  "description": "Text embeddings are numerical representations of text that enable measuring semantic similarity. This guide introduces embeddings, their applications, and how to use embedding models for tasks like search, recommendations, and anomaly detection.",
+  "fetched_at": "2026-01-01T02:08:00.495692536-03:00",
+  "content_hash": "2bf89327c6a181d0bec6260826b75e302cc319e27de4bdb239f3523a2a9964a6",
+  "word_count": 893,
+  "char_count": 5908,
+  "links": [
+    "https://blog.voyageai.com/2025/01/07/voyage-3-large/",
+    "https://blog.voyageai.com/2025/05/20/voyage-3-5/",
+    "https://blog.voyageai.com/2024/12/04/voyage-code-3/",
+    "https://blog.voyageai.com/2024/06/03/domain-specific-embeddings-finance-edition-voyage-finance-2/",
+    "https://blog.voyageai.com/2024/04/15/domain-specific-embeddings-and-retrieval-legal-edition-voyage-law-2/",
+    "https://blog.voyageai.com/2024/11/12/voyage-multimodal-3/",
+    "https://docs.voyageai.com/docs/faq#what-embedding-models-are-available-and-which-one-should-i-use\u0026ref=anthropic",
+    "https://github.com/voyage-ai/voyageai-python",
+    "https://docs.voyageai.com/docs/embeddings#python-api",
+    "https://docs.voyageai.com/reference/embeddings-api",
+    "https://aws.amazon.com/marketplace/seller-profile?id=seller-snt4gb6fd7ljg",
+    "https://docs.voyageai.com/docs/aws-marketplace-model-package?ref=anthropic",
+    "https://platform.claude.com/docs/en/build-with-claude/embeddings#voyage-python-package",
+    "https://github.com/anthropics/anthropic-cookbook/blob/main/third_party/Pinecone/rag_using_pinecone.ipynb",
+    "https://blog.voyageai.com/",
+    "https://www.pinecone.io/learn/vector-similarity/",
+    "https://docs.voyageai.com/docs/tokenization?ref=anthropic",
+    "https://huggingface.co/mteb",
+    "https://github.com/voyage-ai/voyage-large-2-instruct",
+    "https://docs.voyageai.com/docs/pricing?ref=anthropic"
+  ],
+  "headers": {
+    "h1": [
+      "Embeddings"
+    ],
+    "h2": [
+      "Before implementing embeddings",
+      "How to get embeddings with Anthropic",
+      "Available Models",
+      "Getting started with Voyage AI",
+      "Quickstart example",
+      "FAQ",
+      "Pricing"
+    ],
+    "h3": [
+      "Voyage Python library",
+      "Voyage HTTP API",
+      "AWS Marketplace"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide on selecting and implementing text embeddings for semantic search, retrieval, and applications like recommendations and anomaly detection, focusing on Voyage AI models.",
+  "tags": [
+    "text-embeddings",
+    "semantic-search",
+    "domain-specific-models",
+    "api-integration",
+    "latency-performance",
+    "multimodal-embeddings"
+  ],
+  "category": "guide"
+}

@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/beta/files/download.md",
+  "title": "Download File (Beta) (Python)",
+  "description": "`beta.files.download(strfile_id, FileDownloadParams**kwargs)  -\u003e BinaryResponseContent`",
+  "fetched_at": "2026-01-01T02:10:29.416244988-03:00",
+  "content_hash": "3eb2dbf168814c631e7aa98967dd52536f9ff4b8305c3c182c3a3d13a06e060d",
+  "word_count": 42,
+  "char_count": 523,
+  "headers": {
+    "h2": [
+      "Download"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the download functionality for file API endpoints with optional beta parameter support",
+  "tags": [
+    "api-files",
+    "file-download",
+    "beta-parameters",
+    "anthropic-beta"
+  ],
+  "category": "api"
+}

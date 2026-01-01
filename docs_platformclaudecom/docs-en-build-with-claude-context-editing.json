@@ -1,0 +1,74 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/context-editing.md",
+  "title": "Context editing",
+  "description": "Automatically manage conversation context as it grows with context editing.",
+  "fetched_at": "2026-01-01T02:07:55.643747381-03:00",
+  "content_hash": "c3d46d46b585f5b3bdc80e66b132af3091735f6703c0b19207a523c263a15801",
+  "word_count": 2043,
+  "char_count": 14770,
+  "links": [
+    "https://platform.claude.com/docs/en/api/client-sdks",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use#tool-runner-beta",
+    "https://forms.gle/YXC2EKGMhjN1c4L88",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking#interleaved-thinking",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "https://platform.claude.com/docs/en/build-with-claude/token-counting",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "https://platform.claude.com/docs/en/build-with-claude/context-windows",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool"
+  ],
+  "headers": {
+    "h1": [
+      "Context editing"
+    ],
+    "h2": [
+      "Overview",
+      "Server-side strategies",
+      "Supported models",
+      "Tool result clearing usage",
+      "Thinking block clearing usage",
+      "Configuration options for tool result clearing",
+      "Context editing response",
+      "Token counting",
+      "Using with the Memory Tool",
+      "Client-side compaction (SDK)"
+    ],
+    "h3": [
+      "Tool result clearing",
+      "Thinking block clearing",
+      "Advanced configuration",
+      "Configuration options for thinking block clearing",
+      "Combining strategies",
+      "How compaction works",
+      "Using compaction",
+      "Configuration options",
+      "Default summary prompt",
+      "Limitations",
+      "Monitoring compaction",
+      "When to use compaction"
+    ],
+    "h4": [
+      "What happens during compaction",
+      "Choosing a token threshold",
+      "Using a different model for summaries",
+      "Custom summary prompts",
+      "Server-side tools",
+      "Tool use edge cases"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to implement server-side and client-side strategies for managing conversation context to optimize costs and maintain context window limits in Claude API interactions.",
+  "tags": [
+    "context-management",
+    "api-strategies",
+    "server-side-sdk",
+    "client-side-compaction",
+    "tool-use-clearing",
+    "thinking-blocks",
+    "prompt-caching"
+  ],
+  "category": "guide"
+}

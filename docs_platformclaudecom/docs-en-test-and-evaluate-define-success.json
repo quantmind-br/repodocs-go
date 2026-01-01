@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/define-success.md",
+  "title": "Define your success criteria",
+  "description": "Building a successful LLM-based application starts with clearly defining your success criteria. How will you know when your application is good enough to publish?",
+  "fetched_at": "2026-01-01T02:07:58.20788705-03:00",
+  "content_hash": "8bc68de1743a9d7b6ed3f93ab2fdcb99948a8efbe4de29f770b39270d7157989",
+  "word_count": 246,
+  "char_count": 2212,
+  "headers": {
+    "h1": [
+      "Define your success criteria"
+    ],
+    "h2": [
+      "Building strong criteria",
+      "Common success criteria to consider",
+      "Next steps"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "A guide explaining how to establish measurable and clear success criteria for projects or goals to ensure alignment and accountability.",
+  "tags": [
+    "goal-setting",
+    "metrics",
+    "performance",
+    "objectives"
+  ],
+  "category": "guide"
+}

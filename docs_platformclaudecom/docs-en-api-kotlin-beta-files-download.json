@@ -1,0 +1,29 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/files/download.md",
+  "title": "Download File (Beta) (Kotlin)",
+  "description": "`beta().files().download(FileDownloadParamsparams = FileDownloadParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : HttpResponse`",
+  "fetched_at": "2026-01-01T02:10:29.073373276-03:00",
+  "content_hash": "ffd9326d09bfd9a6e7ea05f0a0a021394ffbbdf7752babc16cde383f14adc48a",
+  "word_count": 21,
+  "char_count": 364,
+  "headers": {
+    "h2": [
+      "Download"
+    ],
+    "h3": [
+      "Parameters",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint and method for downloading files with optional beta version parameters",
+  "tags": [
+    "files-api",
+    "download-method",
+    "beta-versions",
+    "http-response"
+  ],
+  "category": "api"
+}

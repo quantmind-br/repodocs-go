@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/users/retrieve.md",
+  "title": "Get User",
+  "description": "**get** `/v1/organizations/users/{user_id}`",
+  "fetched_at": "2026-01-01T02:10:59.472905269-03:00",
+  "content_hash": "96e76899c8fb135754e395343436e006816211c6e137dd9e6b04e9283f99b212",
+  "word_count": 44,
+  "char_count": 312,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "document describes the API endpoint for retrieving user details from an organization's API.",
+  "tags": [
+    "api-endpoint",
+    "user-retrieval",
+    "organization-api",
+    "authentication-key"
+  ],
+  "category": "api"
+}

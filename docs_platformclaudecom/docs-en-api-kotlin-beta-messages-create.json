@@ -1,0 +1,48 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/messages/create.md",
+  "title": "Create a Message (Beta) (Kotlin)",
+  "description": "`beta().messages().create(MessageCreateParamsparams, RequestOptionsrequestOptions = RequestOptions.none()) : BetaMessage`",
+  "fetched_at": "2026-01-01T02:09:34.851484855-03:00",
+  "content_hash": "9cb75c75dd006a9d616aa95a59a58745d0d4e9740950006b0c55f8bc0e78f930",
+  "word_count": 123,
+  "char_count": 1608,
+  "links": [
+    "https://docs.claude.com/en/docs/initial-setup",
+    "https://docs.claude.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/service-tiers",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Messages API for Claude, detailing how to create, send, and structure conversational messages with text or image content, including parameters for beta versions, token limits, and message formatting.",
+  "tags": [
+    "api-messages",
+    "conversational-ai",
+    "message-creation",
+    "beta-features",
+    "content-blocks",
+    "role-based-messages"
+  ],
+  "category": "api"
+}

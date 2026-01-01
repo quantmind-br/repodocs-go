@@ -1,0 +1,53 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/typescript-v2-preview.md",
+  "title": "TypeScript SDK V2 interface (preview)",
+  "description": "Preview of the simplified V2 TypeScript Agent SDK, with session-based send/receive patterns for multi-turn conversations.",
+  "fetched_at": "2026-01-01T02:08:38.943486045-03:00",
+  "content_hash": "154986f62e0363cb7c35ecf69ba0ea54aaf7e467245747f3d0ddedd873ac5aa6",
+  "word_count": 511,
+  "char_count": 3711,
+  "links": [
+    "https://platform.claude.com/docs/en/agent-sdk/typescript",
+    "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#using-declarations-and-explicit-resource-management",
+    "https://github.com/anthropics/claude-code/issues",
+    "https://platform.claude.com/docs/en/agent-sdk/overview",
+    "https://github.com/anthropics/claude-agent-sdk-demos/tree/main/hello-world-v2"
+  ],
+  "headers": {
+    "h1": [
+      "TypeScript SDK V2 interface (preview)"
+    ],
+    "h2": [
+      "Installation",
+      "Quick start",
+      "API reference",
+      "Feature availability",
+      "Feedback",
+      "See also"
+    ],
+    "h3": [
+      "One-shot prompt",
+      "Basic session",
+      "Multi-turn conversation",
+      "Session resume",
+      "Cleanup",
+      "`unstable_v2_createSession()`",
+      "`unstable_v2_resumeSession()`",
+      "`unstable_v2_prompt()`",
+      "Session interface"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Introduces the preview V2 TypeScript Agent SDK for Claude, simplifying multi-turn conversations with session-based send/receive patterns and reduced complexity compared to V1.",
+  "tags": [
+    "typescript-sdk",
+    "multi-turn-conversations",
+    "session-management",
+    "api-preview",
+    "agent-sdk-v2",
+    "session-resume"
+  ],
+  "category": "guide"
+}

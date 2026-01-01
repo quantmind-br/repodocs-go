@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/models/retrieve.md",
+  "title": "Get a Model (Ruby)",
+  "description": "`models.retrieve(model_id, **kwargs) -\u003e ModelInfo`",
+  "fetched_at": "2026-01-01T02:10:43.967287611-03:00",
+  "content_hash": "fac3a31ae0e2ebdc2a5fe8a17c3c42023d4bf08712732f1f9191aeb08e94c045",
+  "word_count": 75,
+  "char_count": 659,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to fetch model details via API using a model identifier and optional beta parameters",
+  "tags": [
+    "api-endpoint",
+    "models-retrieval",
+    "anthropic-beta",
+    "model-info"
+  ],
+  "category": "api"
+}

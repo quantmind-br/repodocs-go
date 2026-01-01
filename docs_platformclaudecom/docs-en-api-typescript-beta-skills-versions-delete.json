@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/skills/versions/delete.md",
+  "title": "Delete Skill Version (Beta) (TypeScript)",
+  "description": "`client.beta.skills.versions.delete(stringversion, VersionDeleteParamsparams, RequestOptionsoptions?): VersionDeleteResponse`",
+  "fetched_at": "2026-01-01T02:10:26.454253281-03:00",
+  "content_hash": "6973c08abfee6a5998f036888eed8a61beb9c0867587791c39bf13f1a45d8567",
+  "word_count": 42,
+  "char_count": 553,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "document explains how to delete a skill version in an API using version-specific parameters and beta headers",
+  "tags": [
+    "api-delete",
+    "skill-version",
+    "unix-epoch-timestamp",
+    "anthropic-beta",
+    "version-delete"
+  ],
+  "category": "api"
+}

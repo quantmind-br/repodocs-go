@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/files/delete.md",
+  "title": "Delete File (Beta) (Java)",
+  "description": "`DeletedFile beta().files().delete(FileDeleteParamsparams = FileDeleteParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:17.423444898-03:00",
+  "content_hash": "5da684dfec2eb389cf129d873e952e34ee56ae2ad8c3adf4eb0b3eb8bdf37333",
+  "word_count": 27,
+  "char_count": 411,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint and method for deleting files in the Anthropic beta system, including parameters and response structure.",
+  "tags": [
+    "api-delete-files",
+    "anthropic-beta",
+    "files-api",
+    "file-deletion"
+  ],
+  "category": "api"
+}

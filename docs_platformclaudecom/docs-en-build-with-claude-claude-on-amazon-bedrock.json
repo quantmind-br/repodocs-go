@@ -1,0 +1,68 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock.md",
+  "title": "Claude on Amazon Bedrock",
+  "description": "Anthropic's Claude models are now generally available through Amazon Bedrock.",
+  "fetched_at": "2026-01-01T02:07:52.20878289-03:00",
+  "content_hash": "6d9d06b8b8f56afe872e49f3b7ae312b1f5460c2cf522d3e24c70e8b518f9420",
+  "word_count": 902,
+  "char_count": 5940,
+  "links": [
+    "https://portal.aws.amazon.com/billing/signup",
+    "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html",
+    "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html",
+    "https://platform.claude.com/docs/en/api/client-sdks",
+    "https://console.aws.amazon.com/bedrock/home?region=us-west-2#/modelaccess",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html",
+    "https://docs.aws.amazon.com/bedrock/",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html",
+    "https://platform.claude.com/docs/en/api/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support#amazon-bedrock-pdf-support",
+    "https://platform.claude.com/docs/en/build-with-claude/context-windows#1m-token-context-window",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages-request-response.html",
+    "https://aws.amazon.com/bedrock/pricing/",
+    "https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-pricing.html",
+    "https://aws.amazon.com/blogs/aws/introducing-claude-sonnet-4-5-in-amazon-bedrock-anthropics-most-intelligent-model-best-for-coding-and-complex-agents/",
+    "https://platform.claude.com/docs/en/about-claude/pricing#third-party-platform-pricing"
+  ],
+  "headers": {
+    "h1": [
+      "Claude on Amazon Bedrock"
+    ],
+    "h2": [
+      "Install and configure the AWS CLI",
+      "Install an SDK for accessing Bedrock",
+      "Accessing Bedrock",
+      "Activity logging",
+      "Feature support",
+      "Global vs regional endpoints"
+    ],
+    "h3": [
+      "Subscribe to Anthropic models",
+      "List available models",
+      "Making requests",
+      "PDF Support on Bedrock",
+      "1M token context window",
+      "When to use each option",
+      "Implementation",
+      "Additional resources"
+    ],
+    "h4": [
+      "API model IDs"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide explaining how to interact with Claude models via Amazon Bedrock, including setup, API calls, and regional model availability.",
+  "tags": [
+    "aws-bedrock",
+    "claude-api",
+    "amazon-api",
+    "aws-sdk",
+    "anthropic-models",
+    "aws-credentials",
+    "python-typescript",
+    "aws-cli"
+  ],
+  "category": "guide"
+}

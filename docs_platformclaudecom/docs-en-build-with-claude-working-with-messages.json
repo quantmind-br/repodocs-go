@@ -1,0 +1,40 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/working-with-messages.md",
+  "title": "Using the Messages API",
+  "description": "Practical patterns and examples for using the Messages API effectively",
+  "fetched_at": "2026-01-01T02:08:45.098585493-03:00",
+  "content_hash": "3ed62b1a0dd40ea6c9dc5bfe73b3d3949e847486bcbba43935ecfd8401fc81e4",
+  "word_count": 241,
+  "char_count": 1672,
+  "links": [
+    "https://platform.claude.com/docs/en/api/messages",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prefill-claudes-response",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool",
+    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs"
+  ],
+  "headers": {
+    "h1": [
+      "Using the Messages API"
+    ],
+    "h2": [
+      "Basic request and response",
+      "Multiple conversational turns",
+      "Putting words in Claude's mouth",
+      "Vision",
+      "Tool use and computer use"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Overview of the Messages API, including its purpose, key features, and methods for interacting with messaging services programmatically.",
+  "tags": [
+    "API",
+    "Messaging",
+    "Communication",
+    "Development"
+  ],
+  "category": "guide"
+}

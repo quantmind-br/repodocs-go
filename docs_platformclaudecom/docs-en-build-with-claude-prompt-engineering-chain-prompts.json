@@ -1,0 +1,52 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/chain-prompts.md",
+  "title": "Chain complex prompts for stronger performance",
+  "description": "\u003cNote\u003e While these tips apply broadly to all Claude models, you can find prompting tips specific to extended thinking models [here](/docs/en/build-with-claude/prompt-engineering/extended-thinking-tips). \u003c/Note\u003e",
+  "fetched_at": "2026-01-01T02:07:49.221087003-03:00",
+  "content_hash": "733c4480b4bd10b3da2d9771f2cebda7b00c82b5cc8a6be655b7db84e9ee6e71",
+  "word_count": 385,
+  "char_count": 3138,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/extended-thinking-tips"
+  ],
+  "headers": {
+    "h1": [
+      "Chain complex prompts for stronger performance"
+    ],
+    "h2": [
+      "Why chain prompts?",
+      "When to chain prompts",
+      "How to chain prompts",
+      "Examples"
+    ],
+    "h3": [
+      "Example chained workflows:",
+      "Advanced: Self-correction chains"
+    ],
+    "h4": [
+      "Prompt 1",
+      "Prompt 2",
+      "Prompt 3",
+      "Prompt 1",
+      "Prompt 2",
+      "Prompt 3",
+      "Prompt 1",
+      "Prompt 2",
+      "Prompt 3"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to break down complex tasks into smaller subtasks using prompt chaining for better accuracy, clarity, and traceability in AI interactions with Claude models.",
+  "tags": [
+    "prompt-engineering",
+    "ai-chaining",
+    "multi-step-processes",
+    "task-breakdown",
+    "model-performance",
+    "xml-structuring",
+    "self-correction"
+  ],
+  "category": "guide"
+}

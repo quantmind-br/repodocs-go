@@ -1,0 +1,55 @@
+{
+  "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/bash-tool.md",
+  "title": "Bash tool",
+  "description": "The bash tool enables Claude to execute shell commands in a persistent bash session, allowing system operations, script execution, and command-line automation.",
+  "fetched_at": "2026-01-01T02:07:46.607100818-03:00",
+  "content_hash": "f3c3c6a00ec0499f673ebc25ed81a81f0aba9905640f2b20591f37a914e9e5ae",
+  "word_count": 668,
+  "char_count": 4893,
+  "links": [
+    "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview#pricing",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool"
+  ],
+  "headers": {
+    "h1": [
+      "Bash tool"
+    ],
+    "h2": [
+      "Overview",
+      "Model compatibility",
+      "Use cases",
+      "Quick start",
+      "How it works",
+      "Parameters",
+      "Example: Multi-step automation",
+      "Implement the bash tool",
+      "Security",
+      "Pricing",
+      "Common patterns",
+      "Limitations",
+      "Combining with other tools",
+      "Next steps"
+    ],
+    "h3": [
+      "Handle errors",
+      "Follow implementation best practices",
+      "Key recommendations",
+      "Development workflows",
+      "File operations",
+      "System tasks"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the bash tool for Claude, enabling persistent shell command execution with state maintenance for automation tasks.",
+  "tags": [
+    "bash-tool",
+    "shell-automation",
+    "persistent-session",
+    "command-execution",
+    "api-integration"
+  ],
+  "category": "guide"
+}

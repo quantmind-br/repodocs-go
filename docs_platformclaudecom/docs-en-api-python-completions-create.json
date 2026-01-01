@@ -1,0 +1,40 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/completions/create.md",
+  "title": "Create a Text Completion (Python)",
+  "description": "`completions.create(CompletionCreateParams**kwargs)  -\u003e Completion`",
+  "fetched_at": "2026-01-01T02:09:56.189715057-03:00",
+  "content_hash": "7e71470eb1ab2bb630964c07992ee2fd1e730b567748cd09771ffba4557d66ba",
+  "word_count": 413,
+  "char_count": 3233,
+  "links": [
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/api/migrating-from-text-completions-to-messages",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/prompt-validation",
+    "https://docs.claude.com/en/docs/intro-to-prompting",
+    "https://docs.claude.com/en/api/streaming",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document describes the `completions.create` API endpoint for the legacy Text Completions API, detailing its parameters, deprecated status, and model selection for text generation tasks.",
+  "tags": [
+    "api-deprecation",
+    "text-completion",
+    "model-selection",
+    "anthropic-claude",
+    "prompting"
+  ],
+  "category": "reference"
+}

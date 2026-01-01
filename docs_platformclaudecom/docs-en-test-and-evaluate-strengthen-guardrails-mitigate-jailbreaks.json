@@ -1,0 +1,39 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks.md",
+  "title": "Mitigate jailbreaks and prompt injections",
+  "description": "Jailbreaking and prompt injections occur when users craft prompts to exploit model vulnerabilities, aiming to generate inappropriate content. While Claude is inherently resilient to such attacks, here are additional steps to strengthen your guardrails, particularly against uses that either violat...",
+  "fetched_at": "2026-01-01T02:08:13.810014339-03:00",
+  "content_hash": "66324ee2cd0f4420f4d7302086d4e36e2fc2f9ceaa2c265710d74fc6e14c9157",
+  "word_count": 394,
+  "char_count": 3006,
+  "links": [
+    "https://www.anthropic.com/legal/commercial-terms",
+    "https://www.anthropic.com/legal/aup"
+  ],
+  "headers": {
+    "h1": [
+      "Mitigate jailbreaks and prompt injections"
+    ],
+    "h2": [
+      "Advanced: Chain safeguards"
+    ],
+    "h3": [
+      "Bot system prompt",
+      "Prompt within `harmlessness_screen` tool"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document outlines strategies to mitigate jailbreaks and prompt injections in Claude AI by implementing guardrails, input validation, ethical prompts, and continuous monitoring.",
+  "tags": [
+    "ai-security",
+    "jailbreak-prevention",
+    "prompt-engineering",
+    "content-moderation",
+    "guardrails",
+    "ethical-ai",
+    "compliance-strategies"
+  ],
+  "category": "guide"
+}

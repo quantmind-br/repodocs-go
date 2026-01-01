@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/files/list.md",
+  "title": "List Files (Beta) (Java)",
+  "description": "`FileListPage beta().files().list(FileListParamsparams = FileListParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:11:03.120165782-03:00",
+  "content_hash": "2b7ad1ff0d61299b7cf71d75ff1e4634b0a7fbbc4b0d353b9bde1c7100745953",
+  "word_count": 42,
+  "char_count": 560,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for listing files with pagination and beta version support in the Anthropic API.",
+  "tags": [
+    "files-api",
+    "pagination",
+    "beta-versions",
+    "file-metadata",
+    "request-options"
+  ],
+  "category": "api"
+}

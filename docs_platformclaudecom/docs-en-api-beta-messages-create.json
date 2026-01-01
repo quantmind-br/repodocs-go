@@ -1,0 +1,49 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/beta/messages/create.md",
+  "title": "Create a Message (Beta)",
+  "description": "**post** `/v1/messages`",
+  "fetched_at": "2026-01-01T02:09:32.490609909-03:00",
+  "content_hash": "688fca9a3876b6c8f455d379fc381784dcf2e1c051d2a849b59e9845650d625b",
+  "word_count": 1418,
+  "char_count": 10429,
+  "links": [
+    "https://docs.claude.com/en/docs/initial-setup",
+    "https://docs.claude.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/service-tiers",
+    "https://docs.claude.com/en/api/messages-streaming",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Header Parameters",
+      "Body Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Messages API for Claude, detailing how to send structured messages (text or images) for single queries or multi-turn conversations, including role-based message formatting and beta feature configurations.",
+  "tags": [
+    "api-messages",
+    "conversational-turns",
+    "beta-features",
+    "role-based-content",
+    "image-support"
+  ],
+  "category": "api"
+}

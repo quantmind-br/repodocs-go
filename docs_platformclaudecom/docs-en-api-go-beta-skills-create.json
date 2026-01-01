@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/skills/create.md",
+  "title": "Create Skill (Beta) (Go)",
+  "description": "`client.Beta.Skills.New(ctx, params) (*BetaSkillNewResponse, error)`",
+  "fetched_at": "2026-01-01T02:10:00.661285207-03:00",
+  "content_hash": "9dfe44ca350d93e01ac269713213a5666f2e44e268b82f7213e8998bfa98f534",
+  "word_count": 37,
+  "char_count": 480,
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains how to create a skill using the Anthropic API with Go SDK, detailing parameters like display title, file uploads, and beta version selection.",
+  "tags": [
+    "api-create-skill",
+    "anthropic-sdk-go",
+    "go-sdk",
+    "beta-version-selection",
+    "skill-upload"
+  ],
+  "category": "guide"
+}

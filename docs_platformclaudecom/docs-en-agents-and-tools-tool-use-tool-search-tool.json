@@ -1,0 +1,61 @@
+{
+  "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool.md",
+  "title": "Tool search tool",
+  "description": "The tool search tool enables Claude to work with hundreds or thousands of tools by dynamically discovering and loading them on-demand. Instead of loading all tool definitions into the context window upfront, Claude searches your tool catalog—including tool names, descriptions, argument names, a...",
+  "fetched_at": "2026-01-01T02:08:37.707322383-03:00",
+  "content_hash": "705a8ea20fb23ce2dcedce3a7ba164224771dcb41e183170eec88cf1ec7f87f5",
+  "word_count": 1261,
+  "char_count": 9291,
+  "links": [
+    "https://platform.claude.com/docs/en/api/beta-headers",
+    "https://forms.gle/MhcGFFwLxuwnWTkYA",
+    "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+    "https://github.com/anthropics/anthropic-cookbook",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h1": [
+      "Tool search tool"
+    ],
+    "h2": [
+      "How tool search works",
+      "Quick start",
+      "Tool definition",
+      "Response format",
+      "MCP integration",
+      "Custom tool search implementation",
+      "Error handling",
+      "Prompt caching",
+      "Streaming",
+      "Batch requests",
+      "Limits and best practices",
+      "Usage"
+    ],
+    "h3": [
+      "Deferred tool loading",
+      "Understanding the response",
+      "HTTP errors (400 status)",
+      "Tool result errors (200 status)",
+      "Common mistakes",
+      "Limits",
+      "When to use tool search",
+      "Optimization tips"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to implement dynamic tool discovery and loading for AI systems to optimize context efficiency and tool selection accuracy",
+  "tags": [
+    "tool-search",
+    "dynamic-loading",
+    "context-efficiency",
+    "api-beta",
+    "tool-integration",
+    "deferred-loading",
+    "regex-bm25",
+    "ai-tools"
+  ],
+  "category": "guide"
+}

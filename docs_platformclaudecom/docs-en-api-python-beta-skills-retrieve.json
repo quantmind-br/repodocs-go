@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/beta/skills/retrieve.md",
+  "title": "Get Skill (Beta) (Python)",
+  "description": "`beta.skills.retrieve(strskill_id, SkillRetrieveParams**kwargs)  -\u003e SkillRetrieveResponse`",
+  "fetched_at": "2026-01-01T02:10:53.68475843-03:00",
+  "content_hash": "c34b4bf07620c00a67d5ac0bbd8d95163cf7645f136550a81e2dc6204ed1355d",
+  "word_count": 69,
+  "char_count": 732,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving a skill by its ID, including parameters, return structure, and beta version options for Anthropic's skills system.",
+  "tags": [
+    "api-endpoint",
+    "skill-retrieval",
+    "beta-parameters",
+    "anthropic-skills",
+    "id-based-retrieval"
+  ],
+  "category": "reference"
+}

@@ -1,0 +1,38 @@
+{
+  "url": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model.md",
+  "title": "Choosing the right model",
+  "description": "Selecting the optimal Claude model for your application involves balancing three key considerations: capabilities, speed, and cost. This guide helps you make an informed decision based on your specific requirements.",
+  "fetched_at": "2026-01-01T02:07:49.883951437-03:00",
+  "content_hash": "16aa3e0201d636077e7f2d6db861bad601ceca55dd168abe87e105f22f1b9413",
+  "word_count": 563,
+  "char_count": 4141,
+  "links": [
+    "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests"
+  ],
+  "headers": {
+    "h1": [
+      "Choosing the right model"
+    ],
+    "h2": [
+      "Establish key criteria",
+      "Choose the best model to start with",
+      "Model selection matrix",
+      "Decide whether to upgrade or change models",
+      "Next steps"
+    ],
+    "h3": [
+      "Option 1: Start with a fast, cost-effective model",
+      "Option 2: Start with the most capable model"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "A guide explaining how to select the appropriate machine learning model based on project requirements, data characteristics, and performance needs.",
+  "tags": [
+    "machine learning",
+    "model selection",
+    "data science"
+  ],
+  "category": "guide"
+}

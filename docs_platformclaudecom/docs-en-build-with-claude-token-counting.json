@@ -1,0 +1,50 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/token-counting.md",
+  "title": "Token counting",
+  "description": "Token counting enables you to determine the number of tokens in a message before sending it to Claude, helping you make informed decisions about your prompts and usage. With token counting, you can",
+  "fetched_at": "2026-01-01T02:08:37.37604606-03:00",
+  "content_hash": "b4d7ca0b84c1ef373333a9b9112154c29d7f663296f3331fff27e5f47265eb64",
+  "word_count": 362,
+  "char_count": 2503,
+  "links": [
+    "https://platform.claude.com/docs/en/api/messages-count-tokens",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview#server-tools",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking#how-context-window-is-calculated-with-extended-thinking",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support#pdf-support-limitations",
+    "https://platform.claude.com/docs/en/api/rate-limits#rate-limits",
+    "https://platform.claude.com/settings/limits"
+  ],
+  "headers": {
+    "h1": [
+      "Token counting"
+    ],
+    "h2": [
+      "How to count message tokens",
+      "Pricing and rate limits",
+      "FAQ"
+    ],
+    "h3": [
+      "Supported models",
+      "Count tokens in basic messages",
+      "Count tokens in messages with tools",
+      "Count tokens in messages with images",
+      "Count tokens in messages with extended thinking",
+      "Count tokens in messages with PDFs"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explanation of how to count tokens in text for language models, including character, word, and context window considerations.",
+  "tags": [
+    "tokenization",
+    "AI",
+    "text analysis",
+    "machine learning"
+  ],
+  "category": "guide"
+}

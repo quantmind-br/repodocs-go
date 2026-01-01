@@ -1,0 +1,27 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/keep-claude-in-character.md",
+  "title": "Keep Claude in character with role prompting and prefilling",
+  "description": "This guide provides actionable tips to keep Claude in character, even during long, complex interactions.",
+  "fetched_at": "2026-01-01T02:08:07.396085362-03:00",
+  "content_hash": "49d1f25c93c8a5d9c532419a4404a8f060a0a6ef430e6d39a9d5875856882421",
+  "word_count": 102,
+  "char_count": 736,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+  ],
+  "headers": {
+    "h1": [
+      "Keep Claude in character with role prompting and prefilling"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Techniques for maintaining consistent character alignment in AI role-playing through structured prompting and prefilling",
+  "tags": [
+    "AI role-playing",
+    "prompt engineering",
+    "character consistency"
+  ],
+  "category": "guide"
+}

@@ -1,0 +1,67 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching.md",
+  "title": "Prompt caching",
+  "description": "Prompt caching is a powerful feature that optimizes your API usage by allowing resuming from specific prefixes in your prompts. This approach significantly reduces processing time and costs for repetitive tasks or prompts with consistent elements.",
+  "fetched_at": "2026-01-01T02:08:21.267090938-03:00",
+  "content_hash": "af3e527195fa50f808fd21ea758690611bda0a17fdf118af1712e1cbd2728ed4",
+  "word_count": 4360,
+  "char_count": 28591,
+  "links": [
+    "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching#tracking-cache-performance",
+    "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking#understanding-thinking-block-caching-behavior",
+    "https://platform.claude.com/docs/images/prompt-cache-mixed-ttl.svg",
+    "https://github.com/anthropics/anthropic-cookbook/blob/main/misc/prompt_caching.ipynb",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking#extended-thinking-and-prompt-caching",
+    "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h1": [
+      "Prompt caching"
+    ],
+    "h2": [
+      "How prompt caching works",
+      "Pricing",
+      "How to implement prompt caching",
+      "Cache storage and sharing",
+      "1-hour cache duration",
+      "Prompt caching examples",
+      "FAQ"
+    ],
+    "h3": [
+      "Supported models",
+      "Structuring your prompt",
+      "Cache limitations",
+      "Understanding cache breakpoint costs",
+      "What can be cached",
+      "What cannot be cached",
+      "What invalidates the cache",
+      "Tracking cache performance",
+      "Best practices for effective caching",
+      "Optimizing for different use cases",
+      "Troubleshooting common issues",
+      "Caching with thinking blocks",
+      "When to use the 1-hour cache",
+      "Mixing different TTLs"
+    ],
+    "h4": [
+      "How automatic prefix checking works",
+      "When to use multiple breakpoints"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to implement and utilize prompt caching in Anthropic's API to optimize repeated prompts by caching specific prefixes and reducing processing costs.",
+  "tags": [
+    "prompt-caching",
+    "api-optimization",
+    "token-efficiency",
+    "anthropic-api",
+    "cache-control"
+  ],
+  "category": "guide"
+}

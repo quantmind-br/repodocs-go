@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/files/delete.md",
+  "title": "Delete File (Beta) (TypeScript)",
+  "description": "`client.beta.files.delete(stringfileID, FileDeleteParamsparams?, RequestOptionsoptions?): DeletedFile`",
+  "fetched_at": "2026-01-01T02:10:19.060745937-03:00",
+  "content_hash": "de4574c5ef92456dcaa9727eb1ade5c31ec9bffd80278155b8a85314080c5f19",
+  "word_count": 27,
+  "char_count": 376,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Instructions or documentation for deleting a file using TypeScript in a beta version.",
+  "tags": [
+    "TypeScript",
+    "file deletion",
+    "beta",
+    "development"
+  ],
+  "category": "guide"
+}

@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/skills/versions/create.md",
+  "title": "Create Skill Version (Beta) (Go)",
+  "description": "`client.Beta.Skills.Versions.New(ctx, skillID, params) (*BetaSkillVersionNewResponse, error)`",
+  "fetched_at": "2026-01-01T02:10:05.532611262-03:00",
+  "content_hash": "3bb1ad1e9478fd2379047b2087858bf254ed58e0ea9de75edeac07ef0e298415",
+  "word_count": 56,
+  "char_count": 629,
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains how to create a new skill version using the Anthropic API with file uploads and beta version selection.",
+  "tags": [
+    "api-create",
+    "skill-version",
+    "file-upload",
+    "beta-selection",
+    "anthropic-sdk"
+  ],
+  "category": "guide"
+}

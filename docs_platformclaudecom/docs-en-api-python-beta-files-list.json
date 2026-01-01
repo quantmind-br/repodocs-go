@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/beta/files/list.md",
+  "title": "List Files (Beta) (Python)",
+  "description": "`beta.files.list(FileListParams**kwargs)  -\u003e SyncPage[FileMetadata]`",
+  "fetched_at": "2026-01-01T02:11:04.30510939-03:00",
+  "content_hash": "fd151cbbc3900f1684c81eaeadf321e6e2206c638000f9b0129b118aefe176f6",
+  "word_count": 116,
+  "char_count": 1008,
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint for listing files with pagination controls and metadata attributes",
+  "tags": [
+    "api-endpoint",
+    "file-listing",
+    "pagination-cursors",
+    "file-metadata",
+    "beta-api"
+  ],
+  "category": "api"
+}

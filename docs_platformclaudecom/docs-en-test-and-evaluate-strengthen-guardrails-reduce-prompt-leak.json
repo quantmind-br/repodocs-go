@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak.md",
+  "title": "Reduce prompt leak",
+  "description": "Prompt leaks can expose sensitive information that you expect to be \"hidden\" in your prompt. While no method is foolproof, the strategies below can significantly reduce the risk.",
+  "fetched_at": "2026-01-01T02:08:23.281031461-03:00",
+  "content_hash": "9d0a46d0e6cc5552549e8ee9a2d5b051dbed8b21141a85d2e312541831f29563",
+  "word_count": 260,
+  "char_count": 1828,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/system-prompts"
+  ],
+  "headers": {
+    "h1": [
+      "Reduce prompt leak"
+    ],
+    "h2": [
+      "Before you try to reduce prompt leak",
+      "Strategies to reduce prompt leak"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Strategies to minimize accidental disclosure of sensitive information in AI prompts to prevent unintended data leakage.",
+  "tags": [
+    "prompt engineering",
+    "data privacy",
+    "AI security"
+  ],
+  "category": "guide"
+}

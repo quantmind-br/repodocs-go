@@ -1,0 +1,29 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/invites/delete.md",
+  "title": "Delete Invite",
+  "description": "**delete** `/v1/organizations/invites/{invite_id}`",
+  "fetched_at": "2026-01-01T02:10:19.608279089-03:00",
+  "content_hash": "ad73d3264c791e9b63cafb7a7e82ad44e732e2bccd15dafb0a26f1691fea36e7",
+  "word_count": 33,
+  "char_count": 294,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "document describes how to delete an invite via API endpoint for Anthropic organizations",
+  "tags": [
+    "api-delete",
+    "invite-management",
+    "organization-api"
+  ],
+  "category": "api"
+}

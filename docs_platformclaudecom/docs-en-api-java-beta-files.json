@@ -1,0 +1,52 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/files.md",
+  "title": "Files",
+  "description": "`FileMetadata beta().files().upload(FileUploadParamsparams, RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:31.815842237-03:00",
+  "content_hash": "85ce29a07bd36ba8bb9b90ce1ae7f2d6746df67acd32b54794d36388afcb2fbc",
+  "word_count": 195,
+  "char_count": 2666,
+  "headers": {
+    "h1": [
+      "Files"
+    ],
+    "h2": [
+      "Upload",
+      "List",
+      "Download",
+      "Retrieve Metadata",
+      "Delete",
+      "Domain Types"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Deleted File",
+      "File Metadata"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Anthropic API endpoints for managing files, including uploading, listing, and downloading files with metadata and pagination support.",
+  "tags": [
+    "anthropic-api",
+    "file-management",
+    "upload-list-download",
+    "metadata-extraction",
+    "beta-features"
+  ],
+  "category": "api"
+}

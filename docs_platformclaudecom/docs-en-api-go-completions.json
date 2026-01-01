@@ -1,0 +1,44 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/completions.md",
+  "title": "Completions",
+  "description": "`client.Completions.New(ctx, params) (*Completion, error)`",
+  "fetched_at": "2026-01-01T02:09:16.023608116-03:00",
+  "content_hash": "e15c435fc6b85e39d219885de44c74277eb9b387df0d4acb282cc87787f9c8fc",
+  "word_count": 106,
+  "char_count": 1049,
+  "links": [
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/api/migrating-from-text-completions-to-messages",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/prompt-validation",
+    "https://docs.claude.com/en/docs/intro-to-prompting",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h1": [
+      "Completions"
+    ],
+    "h2": [
+      "Create",
+      "Domain Types"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example",
+      "Completion"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains the legacy Text Completions API for Claude, detailing its parameters, end-point, and migration guidance to the newer Messages API.",
+  "tags": [
+    "api-deprecation",
+    "text-completion",
+    "prompt-engineering",
+    "model-selection",
+    "stop-sequences"
+  ],
+  "category": "guide"
+}

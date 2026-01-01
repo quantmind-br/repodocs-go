@@ -1,0 +1,50 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/migration-guide.md",
+  "title": "Migrate to Claude Agent SDK",
+  "description": "Guide for migrating the Claude Code TypeScript and Python SDKs to the Claude Agent SDK",
+  "fetched_at": "2026-01-01T02:08:12.857691774-03:00",
+  "content_hash": "04a58d4175b43def18fab1bc0c7072c2c0b6cf54865e545f76d7925f476e7958",
+  "word_count": 615,
+  "char_count": 4603,
+  "links": [
+    "https://platform.claude.com/docs/en/agent-sdk/overview",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript",
+    "https://platform.claude.com/docs/en/agent-sdk/python",
+    "https://platform.claude.com/docs/en/agent-sdk/custom-tools",
+    "https://platform.claude.com/docs/en/agent-sdk/mcp"
+  ],
+  "headers": {
+    "h1": [
+      "Migrate to Claude Agent SDK"
+    ],
+    "h2": [
+      "Overview",
+      "What's Changed",
+      "Migration Steps",
+      "Breaking changes",
+      "Why the Rename?",
+      "Getting Help",
+      "Next Steps"
+    ],
+    "h3": [
+      "For TypeScript/JavaScript Projects",
+      "For Python Projects",
+      "Python: ClaudeCodeOptions renamed to ClaudeAgentOptions",
+      "System prompt no longer default",
+      "Settings Sources No Longer Loaded by Default"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide on migrating from the Claude Code SDK to the Claude Agent SDK, including package updates, import changes, and handling breaking differences like system prompt and settings sources.",
+  "tags": [
+    "sdk-migration",
+    "typescript-python",
+    "api-upgrade",
+    "agent-sdk",
+    "breaking-changes",
+    "cli-tool"
+  ],
+  "category": "guide"
+}

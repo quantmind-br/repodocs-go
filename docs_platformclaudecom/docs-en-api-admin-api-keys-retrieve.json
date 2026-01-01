@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/api_keys/retrieve.md",
+  "title": "Get Api Key",
+  "description": "**get** `/v1/organizations/api_keys/{api_key_id}`",
+  "fetched_at": "2026-01-01T02:10:45.112090206-03:00",
+  "content_hash": "8189fe5e084bf59146d646ad4d28314c749065eacdc3e8a5008a712e7efc9007",
+  "word_count": 51,
+  "char_count": 391,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "document describes the API endpoint for retrieving details of an API key with its metadata and status.",
+  "tags": [
+    "api-key-retrieval",
+    "api-key-details",
+    "organization-api",
+    "rest-api-endpoint"
+  ],
+  "category": "reference"
+}

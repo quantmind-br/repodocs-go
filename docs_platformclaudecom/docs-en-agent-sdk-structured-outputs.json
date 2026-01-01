@@ -1,0 +1,45 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/structured-outputs.md",
+  "title": "Structured outputs in the SDK",
+  "description": "Get validated JSON results from agent workflows",
+  "fetched_at": "2026-01-01T02:08:32.798475119-03:00",
+  "content_hash": "0f78341b9b61c01f9188fdaac6f26583b7b65bfc026f8b97ec6088c5b50be758",
+  "word_count": 583,
+  "char_count": 4285,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+    "https://platform.claude.com/docs/en/build-with-claude/structured-outputs#json-schema-limitations",
+    "https://json-schema.org/",
+    "https://platform.claude.com/docs/en/agent-sdk/custom-tools",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript",
+    "https://platform.claude.com/docs/en/agent-sdk/python"
+  ],
+  "headers": {
+    "h1": [
+      "Structured outputs in the SDK"
+    ],
+    "h2": [
+      "Why use structured outputs",
+      "Quick start",
+      "Defining schemas with Zod",
+      "Quick start",
+      "Defining schemas with Pydantic",
+      "How structured outputs work",
+      "Supported JSON Schema features",
+      "Example: TODO tracking agent",
+      "Error handling",
+      "Related resources"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explanation of how to generate structured outputs within the SDK framework, likely covering formatting, data extraction, and implementation best practices.",
+  "tags": [
+    "SDK",
+    "structured outputs",
+    "data extraction",
+    "API documentation"
+  ],
+  "category": "guide"
+}

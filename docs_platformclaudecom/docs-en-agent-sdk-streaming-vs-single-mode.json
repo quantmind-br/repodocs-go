@@ -1,0 +1,41 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md",
+  "title": "Streaming Input",
+  "description": "Understanding the two input modes for Claude Agent SDK and when to use each",
+  "fetched_at": "2026-01-01T02:08:30.045986302-03:00",
+  "content_hash": "936bba60eba33a99bf858a981dc6c0ce9d8a0769a4269f68ad41b1d540599168",
+  "word_count": 248,
+  "char_count": 1879,
+  "headers": {
+    "h1": [
+      "Streaming Input"
+    ],
+    "h2": [
+      "Overview",
+      "Streaming Input Mode (Recommended)",
+      "Single Message Input"
+    ],
+    "h3": [
+      "How It Works",
+      "Benefits",
+      "Implementation Example",
+      "When to Use Single Message Input",
+      "Limitations",
+      "Implementation Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains the differences between streaming input mode (recommended) and single message input mode in the Claude Agent SDK, including their use cases, benefits, and limitations.",
+  "tags": [
+    "agent-sdk",
+    "streaming-input",
+    "single-message-input",
+    "interactive-session",
+    "one-shot-query",
+    "tool-integration",
+    "image-uploads"
+  ],
+  "category": "guide"
+}

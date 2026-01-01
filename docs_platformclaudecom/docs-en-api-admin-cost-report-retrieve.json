@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/cost_report/retrieve.md",
+  "title": "Get Cost Report",
+  "description": "**get** `/v1/organizations/cost_report`",
+  "fetched_at": "2026-01-01T02:10:46.228914745-03:00",
+  "content_hash": "96143dbc25c3f7368bcac484df2018700e873497125a9f75fd0db6ee75f4862c",
+  "word_count": 129,
+  "char_count": 927,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Query Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides API documentation for retrieving cost reports with configurable time parameters, grouping options, and pagination.",
+  "tags": [
+    "api-endpoint",
+    "cost-report",
+    "time-buckets",
+    "query-parameters",
+    "paginated-results"
+  ],
+  "category": "api"
+}

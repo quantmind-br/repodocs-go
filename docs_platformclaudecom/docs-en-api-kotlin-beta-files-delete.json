@@ -1,0 +1,29 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/files/delete.md",
+  "title": "Delete File (Beta) (Kotlin)",
+  "description": "`beta().files().delete(FileDeleteParamsparams = FileDeleteParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : DeletedFile`",
+  "fetched_at": "2026-01-01T02:10:17.804069002-03:00",
+  "content_hash": "abd31db9c649acbb0e565533af52af17bcd158ac042b09ae1f74f0471392d43d",
+  "word_count": 28,
+  "char_count": 418,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for deleting files in the Anthropic files system with optional beta version parameters and return structure.",
+  "tags": [
+    "api-delete-files",
+    "anthropic-beta",
+    "files-api-endpoint"
+  ],
+  "category": "api"
+}

@@ -1,0 +1,62 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/hosting.md",
+  "title": "Hosting the Agent SDK",
+  "description": "Deploy and host Claude Agent SDK in production environments",
+  "fetched_at": "2026-01-01T02:08:05.199089916-03:00",
+  "content_hash": "92c5a2b14ab8d39acf80a7f42d56fd8d9c35674e6e63d1de8fc1810a2fb431f5",
+  "word_count": 843,
+  "char_count": 5887,
+  "links": [
+    "https://platform.claude.com/docs/en/agent-sdk/secure-deployment",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript#sandbox-settings",
+    "https://github.com/cloudflare/sandbox-sdk",
+    "https://modal.com/docs/guide/sandbox",
+    "https://www.daytona.io/",
+    "https://e2b.dev/",
+    "https://fly.io/docs/machines/",
+    "https://vercel.com/docs/functions/sandbox",
+    "https://platform.claude.com/docs/en/agent-sdk/secure-deployment#isolation-technologies",
+    "https://platform.claude.com/docs/en/agent-sdk/sessions",
+    "https://platform.claude.com/docs/en/agent-sdk/permissions",
+    "https://platform.claude.com/docs/en/agent-sdk/cost-tracking",
+    "https://platform.claude.com/docs/en/agent-sdk/mcp"
+  ],
+  "headers": {
+    "h1": [
+      "Hosting the Agent SDK",
+      "FAQ"
+    ],
+    "h2": [
+      "Hosting Requirements",
+      "Understanding the SDK Architecture",
+      "Sandbox Provider Options",
+      "Production Deployment Patterns",
+      "Next Steps"
+    ],
+    "h3": [
+      "Container-Based Sandboxing",
+      "System Requirements",
+      "Pattern 1: Ephemeral Sessions",
+      "Pattern 2: Long-Running Sessions",
+      "Pattern 3: Hybrid Sessions",
+      "Pattern 4: Single Containers",
+      "How do I communicate with my sandboxes?",
+      "What is the cost of hosting a container?",
+      "When should I shut down idle containers vs. keeping them warm?",
+      "How often should I update the Claude Code CLI?",
+      "How do I monitor container health and agent performance?",
+      "How long can an agent session run before timing out?"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Overview of setting up and deploying the Agent SDK for integration with hosting platforms.",
+  "tags": [
+    "sdk",
+    "hosting",
+    "development",
+    "integration"
+  ],
+  "category": "guide"
+}

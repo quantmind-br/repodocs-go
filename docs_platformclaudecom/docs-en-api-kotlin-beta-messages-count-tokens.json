@@ -1,0 +1,44 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/messages/count_tokens.md",
+  "title": "Count tokens in a Message (Beta) (Kotlin)",
+  "description": "`beta().messages().countTokens(MessageCountTokensParamsparams, RequestOptionsrequestOptions = RequestOptions.none()) : BetaMessageTokensCount`",
+  "fetched_at": "2026-01-01T02:09:23.976717134-03:00",
+  "content_hash": "203d077926b172d64bbe8abad12520c6dbeb6d3cf53340e512df69f63e8b1a50",
+  "word_count": 84,
+  "char_count": 2117,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/token-counting",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones"
+  ],
+  "headers": {
+    "h2": [
+      "Count Tokens"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the token counting API for Claude, allowing users to estimate token usage in messages (text, tools, images, documents) without creating them.",
+  "tags": [
+    "token-counting",
+    "api-endpoint",
+    "claude-ai",
+    "message-processing",
+    "beta-features"
+  ],
+  "category": "api"
+}

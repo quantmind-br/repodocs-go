@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/skills/versions/retrieve.md",
+  "title": "Get Skill Version (Beta) (Kotlin)",
+  "description": "`beta().skills().versions().retrieve(VersionRetrieveParamsparams, RequestOptionsrequestOptions = RequestOptions.none()) : VersionRetrieveResponse`",
+  "fetched_at": "2026-01-01T02:10:57.144112251-03:00",
+  "content_hash": "87c74c8c3698d1afbcf5571e8d23e3c84ff4543d5932b2d3218ab8115c770ad5",
+  "word_count": 41,
+  "char_count": 588,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving a skill version with parameters like skill ID and optional version identifier, including response structure and beta version options.",
+  "tags": [
+    "api-endpoint",
+    "skill-version-retrieval",
+    "unix-epoch-timestamp",
+    "beta-features"
+  ],
+  "category": "api"
+}

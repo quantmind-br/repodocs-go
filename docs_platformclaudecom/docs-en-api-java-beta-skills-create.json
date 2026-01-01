@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/skills/create.md",
+  "title": "Create Skill (Beta) (Java)",
+  "description": "`SkillCreateResponse beta().skills().create(SkillCreateParamsparams = SkillCreateParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:01.606107133-03:00",
+  "content_hash": "5fe3aa289407be7cc5c366c63a703859f4fc1745c4d6cb3eb706584a23f2f2f9",
+  "word_count": 39,
+  "char_count": 529,
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for creating skills with optional beta version headers and file uploads.",
+  "tags": [
+    "api-endpoint",
+    "skill-creation",
+    "beta-features",
+    "file-uploads",
+    "anthropic-client"
+  ],
+  "category": "api"
+}

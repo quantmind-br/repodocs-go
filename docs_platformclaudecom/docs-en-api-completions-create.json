@@ -1,0 +1,43 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/completions/create.md",
+  "title": "Create a Text Completion",
+  "description": "**post** `/v1/complete`",
+  "fetched_at": "2026-01-01T02:09:53.426793669-03:00",
+  "content_hash": "465f50724285301df9d6b6a949158f17997e8e09686b4e74084b8241ab0bd199",
+  "word_count": 437,
+  "char_count": 3196,
+  "links": [
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/api/migrating-from-text-completions-to-messages",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/prompt-validation",
+    "https://docs.claude.com/en/docs/intro-to-prompting",
+    "https://docs.claude.com/en/api/streaming",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Header Parameters",
+      "Body Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document provides an overview of the legacy Text Completions API endpoint for Claude, detailing its parameters, body inputs, and migration guidance to the newer Messages API.",
+  "tags": [
+    "api-endpoint",
+    "text-completion",
+    "legacy-api",
+    "anthropic-beta",
+    "model-selection",
+    "prompting",
+    "migration-guide"
+  ],
+  "category": "guide"
+}

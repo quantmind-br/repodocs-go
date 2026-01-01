@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/skills/retrieve.md",
+  "title": "Get Skill (Beta) (Java)",
+  "description": "`SkillRetrieveResponse beta().skills().retrieve(SkillRetrieveParamsparams = SkillRetrieveParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:52.68025637-03:00",
+  "content_hash": "bed65bffb78260f7203e80daba66f61ef987d450abe412ee502027c569da06eb",
+  "word_count": 37,
+  "char_count": 550,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving skill details with optional beta version parameters and response structure.",
+  "tags": [
+    "api-endpoint",
+    "skill-retrieval",
+    "beta-versions",
+    "request-options",
+    "response-structure"
+  ],
+  "category": "api"
+}

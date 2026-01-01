@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/models/retrieve.md",
+  "title": "Get a Model (Python)",
+  "description": "`models.retrieve(strmodel_id, ModelRetrieveParams**kwargs)  -\u003e ModelInfo`",
+  "fetched_at": "2026-01-01T02:10:43.496270745-03:00",
+  "content_hash": "75f31a9b63d67b4ac4993d8699250f51f33930ff5e51439234f1320520c7e183",
+  "word_count": 77,
+  "char_count": 729,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes how to retrieve model information via API using the `retrieve` method and its parameters (e.g., model_id, betas).",
+  "tags": [
+    "api-endpoint",
+    "model-retrieval",
+    "anthropic-beta-parameters",
+    "model-info"
+  ],
+  "category": "api"
+}

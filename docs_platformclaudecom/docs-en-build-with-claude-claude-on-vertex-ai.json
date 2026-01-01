@@ -1,0 +1,60 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai.md",
+  "title": "Claude on Vertex AI",
+  "description": "Anthropic's Claude models are now generally available through [Vertex AI](https://cloud.google.com/vertex-ai).",
+  "fetched_at": "2026-01-01T02:07:53.913667422-03:00",
+  "content_hash": "3f608926ec1066207589a8a1981d7103b62f1f038a7309c99660ffa063916b23",
+  "word_count": 694,
+  "char_count": 5319,
+  "links": [
+    "https://cloud.google.com/vertex-ai",
+    "https://platform.claude.com/docs/en/api/messages",
+    "https://platform.claude.com/docs/en/api/client-sdks",
+    "https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude",
+    "https://cloud.google.com/model-garden",
+    "https://cloud.google.com/vertex-ai/docs",
+    "https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/request-response-logging",
+    "https://platform.claude.com/docs/en/api/overview",
+    "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+    "https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude",
+    "https://cloud.google.com/blog/products/ai-machine-learning/global-endpoint-for-claude-models-generally-available-on-vertex-ai",
+    "https://platform.claude.com/docs/en/about-claude/pricing#third-party-platform-pricing"
+  ],
+  "headers": {
+    "h1": [
+      "Claude on Vertex AI"
+    ],
+    "h2": [
+      "Install an SDK for accessing Vertex AI",
+      "Accessing Vertex AI",
+      "Activity logging",
+      "Feature support",
+      "Global vs regional endpoints"
+    ],
+    "h3": [
+      "Model Availability",
+      "Making requests",
+      "When to use each option",
+      "Implementation",
+      "Additional resources"
+    ],
+    "h4": [
+      "API model IDs"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Guide explaining how to use Anthropic's Claude models via Vertex AI, including API setup, SDK installation, and regional/global endpoint configurations.",
+  "tags": [
+    "vertex-ai",
+    "anthropic-claude",
+    "api-integration",
+    "gcp",
+    "client-sdk",
+    "model-availability",
+    "endpoint-configuration",
+    "pricing-structure"
+  ],
+  "category": "guide"
+}

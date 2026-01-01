@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/beta/skills/delete.md",
+  "title": "Delete Skill (Beta) (Python)",
+  "description": "`beta.skills.delete(strskill_id, SkillDeleteParams**kwargs)  -\u003e SkillDeleteResponse`",
+  "fetched_at": "2026-01-01T02:10:22.194577144-03:00",
+  "content_hash": "3a61e9dba408c66b579a2b447cf1d41e6e32d8592644ab56d08271373ab50184",
+  "word_count": 59,
+  "char_count": 621,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains how to delete a skill using the Anthropic API's beta skills deletion endpoint.",
+  "tags": [
+    "api-delete",
+    "skills-management",
+    "anthropic-beta",
+    "endpoint-specification"
+  ],
+  "category": "api"
+}

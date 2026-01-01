@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/messages/batches/delete.md",
+  "title": "Delete a Message Batch (Beta) (Kotlin)",
+  "description": "`beta().messages().batches().delete(BatchDeleteParamsparams = BatchDeleteParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : BetaDeletedMessageBatch`",
+  "fetched_at": "2026-01-01T02:10:11.781828341-03:00",
+  "content_hash": "1b12fb7533f2e968be168fd2c42f0ae5d8f7cc46f6ab2cfc7d55804a73c845d5",
+  "word_count": 65,
+  "char_count": 725,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "explains how to delete a completed message batch in the Claude API via HTTP endpoint and SDK method",
+  "tags": [
+    "api-endpoint",
+    "batch-deletion",
+    "claude-api",
+    "message-batch",
+    "beta-versions"
+  ],
+  "category": "guide"
+}

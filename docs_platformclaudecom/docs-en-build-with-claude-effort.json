@@ -1,0 +1,38 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/effort.md",
+  "title": "Effort",
+  "description": "Control how many tokens Claude uses when responding with the effort parameter, trading off between response thoroughness and token efficiency.",
+  "fetched_at": "2026-01-01T02:07:58.96115963-03:00",
+  "content_hash": "1a0b2d81e663e60dbe890fc8e1107c982d3b084b0f5b45fe70379d6c5515bd63",
+  "word_count": 684,
+  "char_count": 5022,
+  "links": [
+    "https://platform.claude.com/docs/en/api/beta-headers"
+  ],
+  "headers": {
+    "h1": [
+      "Effort"
+    ],
+    "h2": [
+      "How effort works",
+      "Basic usage",
+      "When should I adjust the effort parameter?",
+      "Effort with tool use",
+      "Effort with extended thinking",
+      "Best practices"
+    ],
+    "h3": [
+      "Effort levels"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Exploration of the concept of effort in achieving goals, emphasizing persistence and dedication.",
+  "tags": [
+    "effort",
+    "achievement",
+    "persistence"
+  ],
+  "category": "guide"
+}

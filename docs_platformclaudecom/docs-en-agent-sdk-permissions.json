@@ -1,0 +1,56 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/permissions.md",
+  "title": "Handling Permissions",
+  "description": "Control tool usage and permissions in the Claude Agent SDK",
+  "fetched_at": "2026-01-01T02:08:04.478202145-03:00",
+  "content_hash": "ce3acbbb55a10c6934bd6c6cbbcaa11dc4c469eaecaad6cc3d5e604757fe2eb3",
+  "word_count": 901,
+  "char_count": 6428,
+  "links": [
+    "https://platform.claude.com/docs/en/agent-sdk/typescript",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript#canusetool",
+    "https://platform.claude.com/docs/en/agent-sdk/hooks",
+    "https://code.claude.com/docs/en/settings#permission-settings"
+  ],
+  "headers": {
+    "h1": [
+      "Handling Permissions",
+      "SDK Permissions"
+    ],
+    "h2": [
+      "Overview",
+      "Permission Flow Diagram",
+      "Permission Modes",
+      "canUseTool",
+      "Handling the AskUserQuestion Tool",
+      "Related Resources"
+    ],
+    "h3": [
+      "Available Modes",
+      "Setting Permission Mode",
+      "Mode-Specific Behaviors",
+      "Mode Priority in Permission Flow",
+      "Best Practices",
+      "Input Structure",
+      "Returning Answers"
+    ],
+    "h4": [
+      "1. Initial Configuration",
+      "2. Dynamic Mode Changes (Streaming Only)",
+      "Accept Edits Mode (`acceptEdits`)",
+      "Bypass Permissions Mode (`bypassPermissions`)"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains how to implement permission systems in the Claude Agent SDK using modes, callbacks, hooks, and JSON rules for tool access control.",
+  "tags": [
+    "agent-sdk",
+    "permission-management",
+    "tool-access-control",
+    "runtime-hooks",
+    "declarative-rules"
+  ],
+  "category": "guide"
+}

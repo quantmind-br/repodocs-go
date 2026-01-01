@@ -1,0 +1,35 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/beta/messages/batches/list.md",
+  "title": "List Message Batches (Beta)",
+  "description": "**get** `/v1/messages/batches`",
+  "fetched_at": "2026-01-01T02:11:06.985069302-03:00",
+  "content_hash": "0aaa2086cc50ea9d35eaff7c874b61779945109799a99e69f754afd3faf5da82",
+  "word_count": 208,
+  "char_count": 1561,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "List"
+    ],
+    "h3": [
+      "Query Parameters",
+      "Header Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Message Batches API endpoint for listing batches in a workspace with pagination controls and beta version support.",
+  "tags": [
+    "api-endpoint",
+    "message-batches",
+    "pagination",
+    "beta-versions",
+    "workspace-api"
+  ],
+  "category": "api"
+}

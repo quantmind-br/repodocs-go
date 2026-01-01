@@ -1,0 +1,33 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/python/beta/messages/batches/delete.md",
+  "title": "Delete a Message Batch (Beta) (Python)",
+  "description": "`beta.messages.batches.delete(strmessage_batch_id, BatchDeleteParams**kwargs)  -\u003e BetaDeletedMessageBatch`",
+  "fetched_at": "2026-01-01T02:10:12.115402739-03:00",
+  "content_hash": "e77adff1795e4895952d66f4bd73595b384c592af589109ffb68653a53534316",
+  "word_count": 85,
+  "char_count": 850,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Instructions for deleting multiple messages in a batch using Python (beta feature).",
+  "tags": [
+    "Python",
+    "API",
+    "Batch Deletion",
+    "Beta"
+  ],
+  "category": "guide"
+}

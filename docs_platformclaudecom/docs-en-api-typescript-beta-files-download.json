@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/files/download.md",
+  "title": "Download File (Beta) (TypeScript)",
+  "description": "`client.beta.files.download(stringfileID, FileDownloadParamsparams?, RequestOptionsoptions?): Response`",
+  "fetched_at": "2026-01-01T02:10:30.351073341-03:00",
+  "content_hash": "5cb933c8dc6d1dd8260e180d537945901fc7d66645ad2b788d631aff453510f0",
+  "word_count": 25,
+  "char_count": 361,
+  "headers": {
+    "h2": [
+      "Download"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "provides documentation for the file download API endpoint in the Anthropic SDK, detailing its purpose, parameters, and usage for retrieving file content.",
+  "tags": [
+    "api-file-download",
+    "anthropic-sdk",
+    "file-management",
+    "beta-features"
+  ],
+  "category": "api"
+}

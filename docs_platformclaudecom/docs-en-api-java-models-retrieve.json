@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/models/retrieve.md",
+  "title": "Get a Model (Java)",
+  "description": "`ModelInfo models().retrieve(ModelRetrieveParamsparams = ModelRetrieveParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:42.44588919-03:00",
+  "content_hash": "fd50887cbfe4e20e793551251ec20d17020703feccf7f1fa49d3605f71ba432b",
+  "word_count": 57,
+  "char_count": 608,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving model details via model ID or alias, including optional beta version headers and response structure.",
+  "tags": [
+    "api-endpoint",
+    "model-retrieval",
+    "model-details",
+    "anthropic-beta",
+    "request-options"
+  ],
+  "category": "api"
+}

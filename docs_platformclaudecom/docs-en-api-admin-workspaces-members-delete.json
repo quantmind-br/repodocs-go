@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/admin/workspaces/members/delete.md",
+  "title": "Delete Workspace Member",
+  "description": "**delete** `/v1/organizations/workspaces/{workspace_id}/members/{user_id}`",
+  "fetched_at": "2026-01-01T02:10:27.031423445-03:00",
+  "content_hash": "78322120933ad196329b999dbaf70f14ec1ee266d816d9eb3697a8b00ed437f9",
+  "word_count": 47,
+  "char_count": 453,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "document describes the API endpoint for removing a user from a workspace membership",
+  "tags": [
+    "api-delete",
+    "workspace-members",
+    "user-management",
+    "api-endpoint"
+  ],
+  "category": "api"
+}

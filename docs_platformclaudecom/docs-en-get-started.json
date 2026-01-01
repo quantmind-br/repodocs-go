@@ -1,0 +1,35 @@
+{
+  "url": "https://platform.claude.com/docs/en/get-started.md",
+  "title": "Get started with Claude",
+  "description": "Make your first API call to Claude and build a simple web search assistant",
+  "fetched_at": "2026-01-01T02:07:38.608987436-03:00",
+  "content_hash": "6ebe4f3b0e8efec761ade8eb655378537095f3c85ff52031bd0451ee4a13a01c",
+  "word_count": 91,
+  "char_count": 980,
+  "links": [
+    "https://platform.claude.com/",
+    "https://platform.claude.com/settings/keys",
+    "https://central.sonatype.com/artifact/com.anthropic/anthropic-java"
+  ],
+  "headers": {
+    "h1": [
+      "Get started with Claude"
+    ],
+    "h2": [
+      "Prerequisites",
+      "Call the API",
+      "Next steps"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "A concise introduction to setting up and using the Claude AI platform for beginners.",
+  "tags": [
+    "AI",
+    "climate",
+    "technology",
+    "beginner"
+  ],
+  "category": "guide"
+}

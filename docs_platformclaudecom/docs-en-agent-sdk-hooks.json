@@ -1,0 +1,67 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/hooks.md",
+  "title": "Intercept and control agent behavior with hooks",
+  "description": "Intercept and customize agent behavior at key execution points with hooks",
+  "fetched_at": "2026-01-01T02:08:06.770308259-03:00",
+  "content_hash": "f1653b21d899a1654ed81f08854be9856812dc75299b975df83645a16b179005",
+  "word_count": 2440,
+  "char_count": 16978,
+  "links": [
+    "https://platform.claude.com/docs/en/agent-sdk/python#configuration-options",
+    "https://platform.claude.com/docs/en/agent-sdk/permissions",
+    "https://platform.claude.com/docs/en/agent-sdk/custom-tools",
+    "https://platform.claude.com/docs/en/agent-sdk/typescript",
+    "https://platform.claude.com/docs/en/agent-sdk/python"
+  ],
+  "headers": {
+    "h1": [
+      "Intercept and control agent behavior with hooks"
+    ],
+    "h2": [
+      "Available hooks",
+      "Common use cases",
+      "Configure hooks",
+      "Handle advanced scenarios",
+      "Fix common issues",
+      "Learn more"
+    ],
+    "h3": [
+      "Matchers",
+      "Callback function inputs",
+      "Input data",
+      "Callback outputs",
+      "Chaining multiple hooks",
+      "Tool-specific matchers with regex",
+      "Tracking subagent activity",
+      "Async operations in hooks",
+      "Sending notifications (TypeScript only)",
+      "Hook not firing",
+      "Matcher not filtering as expected",
+      "Hook timeout",
+      "Tool blocked unexpectedly",
+      "Modified input not applied",
+      "Session hooks not available",
+      "Subagent permission prompts multiplying",
+      "Recursive hook loops with subagents",
+      "systemMessage not appearing in output"
+    ],
+    "h4": [
+      "Permission decision flow",
+      "Block a tool",
+      "Modify tool input",
+      "Add a system message",
+      "Auto-approve specific tools"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to intercept and manage agent behavior using hooks for system integration or automation.",
+  "tags": [
+    "hooks",
+    "agent behavior",
+    "interception",
+    "control mechanisms"
+  ],
+  "category": "guide"
+}

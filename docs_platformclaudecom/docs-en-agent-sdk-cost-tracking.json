@@ -1,0 +1,56 @@
+{
+  "url": "https://platform.claude.com/docs/en/agent-sdk/cost-tracking.md",
+  "title": "Tracking Costs and Usage",
+  "description": "Understand and track token usage for billing in the Claude Agent SDK",
+  "fetched_at": "2026-01-01T02:08:38.618148189-03:00",
+  "content_hash": "e121e5a104baf34523139c01349332239a861fdf2f32541732395f7a1b6e820b",
+  "word_count": 703,
+  "char_count": 5154,
+  "links": [
+    "https://platform.claude.com/docs/en/agent-sdk/typescript",
+    "https://github.com/anthropics/claude-code/issues",
+    "https://platform.claude.com/docs/en/agent-sdk/overview",
+    "https://platform.claude.com/docs/en/agent-sdk/permissions"
+  ],
+  "headers": {
+    "h1": [
+      "Tracking Costs and Usage",
+      "SDK Cost Tracking"
+    ],
+    "h2": [
+      "Understanding Token Usage",
+      "Usage Reporting Structure",
+      "Important Usage Rules",
+      "Implementation: Cost Tracking System",
+      "Handling Edge Cases",
+      "Best Practices",
+      "Usage Fields Reference",
+      "Example: Building a Billing Dashboard",
+      "Related Documentation"
+    ],
+    "h3": [
+      "Key Concepts",
+      "Single vs Parallel Tool Use",
+      "Message Flow Example",
+      "1. Same ID = Same Usage",
+      "2. Charge Once Per Step",
+      "3. Result Message Contains Cumulative Usage",
+      "Output Token Discrepancies",
+      "Cache Token Tracking"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to implement and manage token usage tracking for cost billing in the Claude Agent SDK, covering usage reporting, parallel tool execution, and cost calculation.",
+  "tags": [
+    "token-tracking",
+    "cost-billing",
+    "claude-agent-sdk",
+    "parallel-tools",
+    "usage-reporting",
+    "multi-step-conversations",
+    "api-costs"
+  ],
+  "category": "guide"
+}

@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/kotlin/beta/skills/delete.md",
+  "title": "Delete Skill (Beta) (Kotlin)",
+  "description": "`beta().skills().delete(SkillDeleteParamsparams = SkillDeleteParams.none(), RequestOptionsrequestOptions = RequestOptions.none()) : SkillDeleteResponse`",
+  "fetched_at": "2026-01-01T02:10:21.712644602-03:00",
+  "content_hash": "0807e9d4499b20057ba4e57680b91bb323756ff6ada8605aed5236dbbd540c77",
+  "word_count": 28,
+  "char_count": 432,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for deleting a skill with optional beta version parameters and response handling.",
+  "tags": [
+    "api-delete",
+    "skill-management",
+    "beta-versions",
+    "anthropic-client"
+  ],
+  "category": "api"
+}

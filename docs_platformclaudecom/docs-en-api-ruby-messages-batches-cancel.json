@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/messages/batches/cancel.md",
+  "title": "Cancel a Message Batch (Ruby)",
+  "description": "`messages.batches.cancel(message_batch_id) -\u003e MessageBatch`",
+  "fetched_at": "2026-01-01T02:09:14.429366845-03:00",
+  "content_hash": "4298b40f6ca1d727d18844acdd47dca621da84bb4ff3f1e654ccf9153a0c7889",
+  "word_count": 122,
+  "char_count": 1031,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Cancel"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to cancel a message batch in the Claude API before processing completes, detailing state transitions and request handling",
+  "tags": [
+    "api-cancel-batch",
+    "message-batch",
+    "processing-status",
+    "non-interruptible-requests",
+    "request-counts"
+  ],
+  "category": "reference"
+}

@@ -1,0 +1,75 @@
+{
+  "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool.md",
+  "title": "Computer use tool",
+  "description": "Claude can interact with computer environments through the computer use tool, which provides screenshot capabilities and mouse/keyboard control for autonomous desktop interaction.",
+  "fetched_at": "2026-01-01T02:07:55.354830224-03:00",
+  "content_hash": "6355b90db23c2ca2a5b2dab78fe3a87a6bdc6030e32cee054075c106f534170b",
+  "word_count": 2965,
+  "char_count": 20412,
+  "links": [
+    "https://platform.claude.com/docs/en/api/beta-headers",
+    "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "https://forms.gle/H6UFuXaaLywri9hz6",
+    "https://support.claude.com/en/",
+    "https://forms.gle/BT1hpBrqDPDUrCqo7",
+    "https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo",
+    "https://github.com/anthropics/anthropic-quickstarts/blob/main/computer-use-demo/Dockerfile",
+    "https://github.com/anthropics/anthropic-quickstarts/tree/main/computer-use-demo/computer_use_demo/tools",
+    "https://github.com/anthropics/anthropic-quickstarts/blob/main/computer-use-demo/computer_use_demo/loop.py",
+    "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/implement-tool-use#tool-use-system-prompt",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/bash-tool",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool",
+    "https://platform.claude.com/docs/en/build-with-claude/vision#evaluate-image-size",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview#pricing",
+    "https://platform.claude.com/docs/en/build-with-claude/vision"
+  ],
+  "headers": {
+    "h1": [
+      "Computer use tool"
+    ],
+    "h2": [
+      "Overview",
+      "Model compatibility",
+      "Security considerations",
+      "Quick start",
+      "How computer use works",
+      "How to implement computer use",
+      "Understand computer use limitations",
+      "Pricing",
+      "Next steps"
+    ],
+    "h3": [
+      "The computing environment",
+      "Start with our reference implementation",
+      "Understanding the multi-agent loop",
+      "Optimize model performance with prompting",
+      "System prompts",
+      "Available actions",
+      "Tool parameters",
+      "Enable thinking capability in Claude 4 models and Claude Sonnet 3.7",
+      "Augmenting computer use with other tools",
+      "Build a custom computer use environment"
+    ],
+    "h4": [
+      "Implement the computer use tool",
+      "Handle errors",
+      "Handle coordinate scaling for higher resolutions",
+      "Follow implementation best practices"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains the beta feature of Claude’s computer use tool, detailing its capabilities, model compatibility, API integration, and security considerations for desktop interaction.",
+  "tags": [
+    "desktop-interaction",
+    "api-beta",
+    "computer-use-tool",
+    "mouse-keyboard-control",
+    "screenshot-capture",
+    "automation",
+    "claude-api"
+  ],
+  "category": "guide"
+}

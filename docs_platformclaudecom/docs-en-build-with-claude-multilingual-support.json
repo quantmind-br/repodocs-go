@@ -1,0 +1,38 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/multilingual-support.md",
+  "title": "Multilingual support",
+  "description": "Claude excels at tasks across multiple languages, maintaining strong cross-lingual performance relative to English.",
+  "fetched_at": "2026-01-01T02:08:15.541243208-03:00",
+  "content_hash": "f60b9e15b27c915ae5ccc0b93cc6b4d274390043ebb784a1bd0463c508ba3c7d",
+  "word_count": 523,
+  "char_count": 3548,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://en.wikipedia.org/wiki/MMLU",
+    "https://github.com/openai/simple-evals/blob/main/multilingual_mmlu_benchmark_results.md",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview"
+  ],
+  "headers": {
+    "h1": [
+      "Multilingual support"
+    ],
+    "h2": [
+      "Overview",
+      "Performance data",
+      "Best practices",
+      "Language support considerations"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes Claude's multilingual capabilities, performance metrics across languages, and best practices for effective multilingual interactions.",
+  "tags": [
+    "multilingual-capabilities",
+    "language-performance",
+    "crosslingual-modeling",
+    "prompt-engineering",
+    "low-resource-languages"
+  ],
+  "category": "guide"
+}

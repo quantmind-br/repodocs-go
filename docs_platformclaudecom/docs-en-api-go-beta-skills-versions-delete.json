@@ -1,0 +1,31 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/skills/versions/delete.md",
+  "title": "Delete Skill Version (Beta) (Go)",
+  "description": "`client.Beta.Skills.Versions.Delete(ctx, version, params) (*BetaSkillVersionDeleteResponse, error)`",
+  "fetched_at": "2026-01-01T02:10:24.004554976-03:00",
+  "content_hash": "1a91ebd962326fc20e8b2eb8d519f2bac8ea4a937a472333c2d6b3aa05c177e6",
+  "word_count": 45,
+  "char_count": 577,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for deleting a skill version in Anthropic's SDK with version-specific parameters and response structure.",
+  "tags": [
+    "api-delete",
+    "skill-version",
+    "unix-timestamp",
+    "anthropic-sdk",
+    "beta-parameters"
+  ],
+  "category": "api"
+}

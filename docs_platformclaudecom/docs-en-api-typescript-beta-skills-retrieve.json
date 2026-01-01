@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/skills/retrieve.md",
+  "title": "Get Skill (Beta) (TypeScript)",
+  "description": "`client.beta.skills.retrieve(stringskillID, SkillRetrieveParamsparams?, RequestOptionsoptions?): SkillRetrieveResponse`",
+  "fetched_at": "2026-01-01T02:10:54.807551945-03:00",
+  "content_hash": "ca6b24a2ab10b23873bce4889a0db495e4c0f0d478bd667247ea3a32bb588e3a",
+  "word_count": 52,
+  "char_count": 584,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes how to retrieve a skill using the Anthropic API with optional beta parameters and response details.",
+  "tags": [
+    "api-retrieve",
+    "skills-management",
+    "anthropic-beta",
+    "skill-parameters"
+  ],
+  "category": "guide"
+}

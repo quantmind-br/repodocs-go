@@ -1,0 +1,54 @@
+{
+  "url": "https://platform.claude.com/docs/en/about-claude/models/overview.md",
+  "title": "Models overview",
+  "description": "Claude is a family of state-of-the-art large language models developed by Anthropic. This guide introduces our models and compares their performance.",
+  "fetched_at": "2026-01-01T02:07:39.965433623-03:00",
+  "content_hash": "0cd7a42d46febc2db414c73d0c087a34755b83716d98edbb3dc5e38b84180a34",
+  "word_count": 1210,
+  "char_count": 8638,
+  "links": [
+    "https://platform.claude.com/docs/en/get-started",
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://platform.claude.com/docs/en/api/service-tiers",
+    "https://platform.claude.com/docs/en/about-claude/pricing",
+    "https://platform.claude.com/docs/en/build-with-claude/context-windows#1m-token-context-window",
+    "https://platform.claude.com/docs/en/about-claude/pricing#long-context-pricing",
+    "https://www.anthropic.com/transparency",
+    "https://platform.claude.com/docs/en/about-claude/pricing#third-party-platform-pricing",
+    "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "https://platform.claude.com/docs/en/api/errors#long-requests",
+    "http://www.anthropic.com/news/claude-4",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices",
+    "https://platform.claude.com/docs/en/about-claude/models/migrating-to-claude-4",
+    "http://www.claude.ai",
+    "https://support.claude.com/",
+    "https://www.anthropic.com/discord"
+  ],
+  "headers": {
+    "h1": [
+      "Models overview"
+    ],
+    "h2": [
+      "Choosing a model",
+      "Prompt and output performance",
+      "Migrating to Claude 4.5",
+      "Get started with Claude"
+    ],
+    "h3": [
+      "Latest models comparison"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Provides an overview of Anthropic's Claude models, including their features, performance, pricing, and compatibility across platforms (API, AWS Bedrock, Google Vertex AI), to help users select the right model for their needs.",
+  "tags": [
+    "claude-models",
+    "llm-performance",
+    "api-compatibility",
+    "pricing-comparison",
+    "anthropic-platform"
+  ],
+  "category": "guide"
+}

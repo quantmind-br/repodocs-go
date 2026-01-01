@@ -1,0 +1,64 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/files.md",
+  "title": "Files API",
+  "description": "The Files API lets you upload and manage files to use with the Claude API without re-uploading content with each request. This is particularly useful when using the [code execution tool](/docs/en/agents-and-tools/tool-use/code-execution-tool) to provide inputs (e.g. datasets and documents) and th...",
+  "fetched_at": "2026-01-01T02:08:02.709265218-03:00",
+  "content_hash": "fb56b60ab2f43610792be90b919b501a773008559d50097f2997a7cd2e4d06e7",
+  "word_count": 897,
+  "char_count": 5780,
+  "links": [
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+    "https://platform.claude.com/docs/en/api/files-create",
+    "https://forms.gle/tisHyierGwgN4DUE9",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool#supported-file-types",
+    "https://platform.claude.com/docs/en/api/messages",
+    "https://platform.claude.com/docs/en/build-with-claude/skills-guide",
+    "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data"
+  ],
+  "headers": {
+    "h1": [
+      "Files API"
+    ],
+    "h2": [
+      "Supported models",
+      "How the Files API works",
+      "How to use the Files API",
+      "File storage and limits",
+      "Error handling",
+      "Usage and billing"
+    ],
+    "h3": [
+      "Uploading a file",
+      "Using a file in messages",
+      "File types and content blocks",
+      "Working with other file formats",
+      "Managing files",
+      "Downloading a file",
+      "Storage limits",
+      "File lifecycle",
+      "Rate limits"
+    ],
+    "h4": [
+      "Document blocks",
+      "Image blocks",
+      "List files",
+      "Get file metadata",
+      "Delete a file"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the Files API for uploading and managing files to reuse across Claude API calls, enabling efficient file handling for tools like code execution and vision models.",
+  "tags": [
+    "files-api",
+    "file-upload",
+    "claude-api",
+    "beta-feature",
+    "file-management",
+    "api-reference"
+  ],
+  "category": "guide"
+}

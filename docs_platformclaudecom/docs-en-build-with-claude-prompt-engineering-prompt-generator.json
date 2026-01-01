@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompt-generator.md",
+  "title": "Automatically generate first draft prompt templates",
+  "description": "\u003cNote\u003e Our prompt generator is compatible with all Claude models, including those with extended thinking capabilities. For prompting tips specific to extended thinking models, see [here](/docs/en/build-with-claude/extended-thinking). \u003c/Note\u003e",
+  "fetched_at": "2026-01-01T02:07:45.926187498-03:00",
+  "content_hash": "f39de9730602482ece841291e089c2c2603bf4cfafb38c57882cbafc7d56047c",
+  "word_count": 197,
+  "char_count": 1671,
+  "links": [
+    "https://platform.claude.com/docs/en/build-with-claude/extended-thinking",
+    "https://platform.claude.com/dashboard",
+    "https://anthropic.com/metaprompt-notebook/",
+    "https://platform.claude.com/settings/keys"
+  ],
+  "headers": {
+    "h1": [
+      "Automatically generate first draft prompt templates"
+    ],
+    "h2": [
+      "Next steps"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains how to create automated first draft prompt templates for efficient content generation.",
+  "tags": [
+    "AI",
+    "prompt engineering",
+    "automation",
+    "drafting"
+  ],
+  "category": "guide"
+}

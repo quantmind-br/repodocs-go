@@ -1,0 +1,33 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/beta/messages/batches/delete.md",
+  "title": "Delete a Message Batch (Beta) (Ruby)",
+  "description": "`beta.messages.batches.delete(message_batch_id, **kwargs) -\u003e BetaDeletedMessageBatch`",
+  "fetched_at": "2026-01-01T02:10:12.537470016-03:00",
+  "content_hash": "c64a9aa07eea68eefe169fc247207755bd07e101bdfa6168bb2deaa97fb82cc6",
+  "word_count": 83,
+  "char_count": 785,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "explains how to delete a completed message batch in the Claude API via a deletion endpoint",
+  "tags": [
+    "api-endpoint",
+    "message-batch-deletion",
+    "claude-api",
+    "batch-processing"
+  ],
+  "category": "api"
+}

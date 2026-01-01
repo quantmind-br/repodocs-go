@@ -1,0 +1,36 @@
+{
+  "url": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md",
+  "title": "Streaming refusals",
+  "description": "Starting with Claude 4 models, streaming responses from Claude's API return **`stop_reason`: `\"refusal\"`** when streaming classifiers intervene to handle potential policy violations. This new safety feature helps maintain content compliance during real-time streaming.",
+  "fetched_at": "2026-01-01T02:08:31.715406348-03:00",
+  "content_hash": "697765494237f230d5badae572b1195b4f4da46233d5d94a3e418f96e28ea9cf",
+  "word_count": 392,
+  "char_count": 2867,
+  "links": [
+    "https://support.claude.com/en/articles/12449294-understanding-sonnet-4-5-s-api-safety-filters"
+  ],
+  "headers": {
+    "h1": [
+      "Streaming refusals"
+    ],
+    "h2": [
+      "API response format",
+      "Reset context after refusal",
+      "Implementation guide",
+      "Current refusal types",
+      "Best practices",
+      "Migration notes"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Analysis of reasons and processes behind streaming service refusal of content submissions, including platform policies and submission guidelines.",
+  "tags": [
+    "content-refusal",
+    "streaming-platforms",
+    "policies",
+    "submission-guidelines"
+  ],
+  "category": "guide"
+}

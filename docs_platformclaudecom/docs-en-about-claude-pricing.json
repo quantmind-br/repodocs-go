@@ -1,0 +1,82 @@
+{
+  "url": "https://platform.claude.com/docs/en/about-claude/pricing.md",
+  "title": "Pricing",
+  "description": "Learn about Anthropic's pricing structure for models and features",
+  "fetched_at": "2026-01-01T02:08:19.009682951-03:00",
+  "content_hash": "5f1da5e48750d4321eb836b4969c2a09b56bca61c576c0f6c9b801e8282b31b2",
+  "word_count": 2431,
+  "char_count": 15660,
+  "links": [
+    "https://claude.com/pricing",
+    "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock",
+    "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai",
+    "https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry",
+    "https://aws.amazon.com/bedrock/pricing/",
+    "https://cloud.google.com/vertex-ai/generative-ai/pricing",
+    "https://azure.microsoft.com/en-us/pricing/details/ai-foundry/#pricing",
+    "https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock#global-vs-regional-endpoints",
+    "https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai#global-vs-regional-endpoints",
+    "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "https://platform.claude.com/docs/en/build-with-claude/context-windows#1m-token-context-window",
+    "https://platform.claude.com/docs/en/api/rate-limits",
+    "https://platform.claude.com/docs/en/api/messages#response-usage",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+    "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview#pricing",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+    "https://platform.claude.com/docs/en/about-claude/use-case-guides",
+    "https://claude.com/contact-sales",
+    "https://platform.claude.com/settings/limits",
+    "https://platform.claude.com/"
+  ],
+  "headers": {
+    "h1": [
+      "Pricing"
+    ],
+    "h2": [
+      "Model pricing",
+      "Third-party platform pricing",
+      "Feature-specific pricing",
+      "Agent use case pricing examples",
+      "Additional pricing considerations",
+      "Billing and payment",
+      "Frequently asked questions"
+    ],
+    "h3": [
+      "Batch processing",
+      "Long context pricing",
+      "Tool use pricing",
+      "Specific tool pricing",
+      "Customer support agent example",
+      "General agent workflow pricing",
+      "Cost optimization strategies",
+      "Rate limits",
+      "Volume discounts",
+      "Enterprise pricing"
+    ],
+    "h4": [
+      "Bash tool",
+      "Code execution tool",
+      "Text editor tool",
+      "Web search tool",
+      "Web fetch tool",
+      "Computer use tool"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Explains Anthropic's (Claude) pricing structure for different models, usage tiers, and features like batch processing, long context windows, and tool use.",
+  "tags": [
+    "claude-pricing",
+    "model-costs",
+    "api-token-pricing",
+    "usage-tier",
+    "batch-processing",
+    "long-context",
+    "regional-endpoints"
+  ],
+  "category": "guide"
+}

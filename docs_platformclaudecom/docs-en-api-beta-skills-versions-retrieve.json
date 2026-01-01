@@ -1,0 +1,32 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/beta/skills/versions/retrieve.md",
+  "title": "Get Skill Version (Beta)",
+  "description": "**get** `/v1/skills/{skill_id}/versions/{version}`",
+  "fetched_at": "2026-01-01T02:10:55.401636772-03:00",
+  "content_hash": "0c6c07b0d8dd75e46a22329c68bb72274e5b2438e100fee2054c2b21ffd68966",
+  "word_count": 204,
+  "char_count": 1561,
+  "headers": {
+    "h2": [
+      "Retrieve"
+    ],
+    "h3": [
+      "Path Parameters",
+      "Header Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for retrieving a skill version with details like ID, creation timestamp, and metadata from the skill upload.",
+  "tags": [
+    "api-endpoint",
+    "skill-version",
+    "unix-epoch-timestamp",
+    "beta-features",
+    "anthropic-api"
+  ],
+  "category": "api"
+}

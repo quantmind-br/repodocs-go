@@ -1,0 +1,29 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/beta/skills/delete.md",
+  "title": "Delete Skill (Beta) (Go)",
+  "description": "`client.Beta.Skills.Delete(ctx, skillID, body) (*BetaSkillDeleteResponse, error)`",
+  "fetched_at": "2026-01-01T02:10:20.575994751-03:00",
+  "content_hash": "a4955ca8270e8d7465b20e9b9484dc9a4bdbc5c05608b0f563fc145b5ada8fb2",
+  "word_count": 41,
+  "char_count": 455,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes how to delete a skill using Anthropic's API with optional beta version parameters",
+  "tags": [
+    "api-delete",
+    "anthropic-beta",
+    "skills-management"
+  ],
+  "category": "api"
+}

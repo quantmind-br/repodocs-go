@@ -1,0 +1,29 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/ruby/beta/files/delete.md",
+  "title": "Delete File (Beta) (Ruby)",
+  "description": "`beta.files.delete(file_id, **kwargs) -\u003e DeletedFile`",
+  "fetched_at": "2026-01-01T02:10:18.566141764-03:00",
+  "content_hash": "ae82d7d1b9f051028b5f54a199a570a4894469d873395896271feaf30c9cb392",
+  "word_count": 46,
+  "char_count": 483,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint and method for deleting files via the Anthropic beta files API",
+  "tags": [
+    "api-delete",
+    "files-api",
+    "anthropic-beta"
+  ],
+  "category": "api"
+}

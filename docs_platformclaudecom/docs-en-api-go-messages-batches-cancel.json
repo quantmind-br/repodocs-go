@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/messages/batches/cancel.md",
+  "title": "Cancel a Message Batch (Go)",
+  "description": "`client.Messages.Batches.Cancel(ctx, messageBatchID) (*MessageBatch, error)`",
+  "fetched_at": "2026-01-01T02:09:12.045149753-03:00",
+  "content_hash": "311b2364723df791e3a05be8e0e76c934e8056f2451bc254ca4d57e4aa443313",
+  "word_count": 120,
+  "char_count": 1045,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Cancel"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes how to cancel a message batch in the Claude API before processing completes, detailing state transitions, parameters, and return values.",
+  "tags": [
+    "api-cancellation",
+    "message-batch",
+    "batch-processing",
+    "clause-api",
+    "request-status"
+  ],
+  "category": "reference"
+}

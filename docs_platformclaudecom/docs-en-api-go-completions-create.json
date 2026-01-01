@@ -1,0 +1,41 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/go/completions/create.md",
+  "title": "Create a Text Completion (Go)",
+  "description": "`client.Completions.New(ctx, params) (*Completion, error)`",
+  "fetched_at": "2026-01-01T02:09:54.137759473-03:00",
+  "content_hash": "185a8f064142ef659c39ee5b31a0ad53004f4101ed39c98196aca72866f9cbcf",
+  "word_count": 89,
+  "char_count": 894,
+  "links": [
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/api/migrating-from-text-completions-to-messages",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/prompt-validation",
+    "https://docs.claude.com/en/docs/intro-to-prompting",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h2": [
+      "Create"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Document explains the legacy Text Completions API endpoint (`/v1/complete`) for Claude, detailing its parameters, usage, and migration to the newer Messages API.",
+  "tags": [
+    "api-deprecation",
+    "text-completion",
+    "prompt-engineering",
+    "temperature-control",
+    "stop-sequences",
+    "model-selection",
+    "legacy-api"
+  ],
+  "category": "guide"
+}

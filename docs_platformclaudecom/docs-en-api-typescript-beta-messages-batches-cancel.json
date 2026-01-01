@@ -1,0 +1,34 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/typescript/beta/messages/batches/cancel.md",
+  "title": "Cancel a Message Batch (Beta) (TypeScript)",
+  "description": "`client.beta.messages.batches.cancel(stringmessageBatchID, BatchCancelParamsparams?, RequestOptionsoptions?): BetaMessageBatch`",
+  "fetched_at": "2026-01-01T02:09:11.375918274-03:00",
+  "content_hash": "40320b0d4570d6c0f1925c3a73bf45a90f40a0a325c2d8254f05ab779370debf",
+  "word_count": 134,
+  "char_count": 1248,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing"
+  ],
+  "headers": {
+    "h2": [
+      "Cancel"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes how to cancel a Claude Message Batch API request before processing completes, detailing state transitions and request status tracking.",
+  "tags": [
+    "api-cancelation",
+    "message-batch",
+    "batch-processing",
+    "request-status",
+    "clause-api"
+  ],
+  "category": "reference"
+}

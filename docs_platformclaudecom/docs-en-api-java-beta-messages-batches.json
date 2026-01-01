@@ -1,0 +1,82 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/messages/batches.md",
+  "title": "Batches",
+  "description": "`BetaMessageBatch beta().messages().batches().create(BatchCreateParamsparams, RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:08:54.255209597-03:00",
+  "content_hash": "92e819873861c5110ee3d569e48b3ba353e795d21b41e5088b09f8a106a62e46",
+  "word_count": 727,
+  "char_count": 14021,
+  "links": [
+    "https://docs.claude.com/en/docs/build-with-claude/batch-processing",
+    "https://docs.claude.com/en/api/messages",
+    "https://docs.claude.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/messages-examples",
+    "https://docs.claude.com/en/docs/system-prompts",
+    "https://docs.anthropic.com/en/docs/models-overview",
+    "https://docs.claude.com/en/api/service-tiers",
+    "https://docs.claude.com/en/api/messages-streaming",
+    "https://docs.claude.com/en/docs/build-with-claude/extended-thinking",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview#server-tools",
+    "https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool",
+    "https://json-schema.org/draft/2020-12",
+    "https://docs.claude.com/en/docs/tool-use",
+    "https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2",
+    "https://nodatime.org/TimeZones",
+    "https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277"
+  ],
+  "headers": {
+    "h1": [
+      "Batches"
+    ],
+    "h2": [
+      "Create",
+      "Retrieve",
+      "List",
+      "Cancel",
+      "Delete",
+      "Results",
+      "Domain Types"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Parameters",
+      "Returns",
+      "Example",
+      "Beta Deleted Message Batch",
+      "Beta Message Batch",
+      "Beta Message Batch Canceled Result",
+      "Beta Message Batch Errored Result",
+      "Beta Message Batch Expired Result",
+      "Beta Message Batch Individual Response",
+      "Beta Message Batch Request Counts",
+      "Beta Message Batch Result",
+      "Beta Message Batch Succeeded Result"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "Describes the API endpoint for creating and processing batches of message requests in Claude’s system, enabling parallel processing of multiple prompts.",
+  "tags": [
+    "api-batch-processing",
+    "message-batch-api",
+    "parallel-requests",
+    "claude-api",
+    "batch-creation"
+  ],
+  "category": "api"
+}

@@ -1,0 +1,30 @@
+{
+  "url": "https://platform.claude.com/docs/en/api/java/beta/skills/delete.md",
+  "title": "Delete Skill (Beta) (Java)",
+  "description": "`SkillDeleteResponse beta().skills().delete(SkillDeleteParamsparams = SkillDeleteParams.none(), RequestOptionsrequestOptions = RequestOptions.none())`",
+  "fetched_at": "2026-01-01T02:10:20.999721533-03:00",
+  "content_hash": "b2980a7657a765dab175225a705748bae098933bcc29631723e88adb1e7a7b23",
+  "word_count": 27,
+  "char_count": 425,
+  "headers": {
+    "h2": [
+      "Delete"
+    ],
+    "h3": [
+      "Parameters",
+      "Returns",
+      "Example"
+    ]
+  },
+  "rendered_with_js": false,
+  "source_strategy": "llms",
+  "cache_hit": true,
+  "summary": "describes the API endpoint and method for deleting a skill with optional beta version parameters",
+  "tags": [
+    "api-delete",
+    "skills-management",
+    "beta-versions",
+    "anthropic-client"
+  ],
+  "category": "api"
+}
