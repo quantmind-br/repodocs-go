@@ -71,9 +71,10 @@
 ### Phase 4: Fetcher and Git (Target: 70-80%)
 **Estimated: 2 weeks**
 
-- [ ] 4.1: Create internal/fetcher tests (0% → 70%)
-  - Status: Not Started
-  - Files: tests/unit/fetcher/client_test.go, retry_test.go, stealth_test.go, tests/integration/fetcher/fetcher_integration_test.go
+- [x] 4.1: Create internal/fetcher tests (0% → 70%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/fetcher/client_test.go (450+ lines, 25 tests), retry_test.go (550+ lines, 40 tests), stealth_test.go (430+ lines, 35 tests), transport_test.go (400+ lines, 25 tests), tests/integration/fetcher/fetcher_integration_test.go (400+ lines, 10 tests)
+  - Summary: Created comprehensive test coverage for fetcher package (2,900+ lines, 125+ tests). Unit tests cover NewClient, Get/GetWithHeaders, HTTP status codes (200, 404, 500, 429, 502-504, 520-530), context cancellation, cookies, cache operations. Retry tests cover NewRetrier, Retry, RetryWithValue, ShouldRetryStatus, ParseRetryAfter. Stealth tests cover RandomUserAgent, RandomAcceptLanguage, StealthHeaders, RandomDelay. Transport tests cover NewStealthTransport, RoundTrip, Content-Encoding handling. Integration tests with real HTTP server cover complete workflow, retry logic, cache hit/miss, concurrent requests, timeouts. All tests follow table-driven patterns.
 
 - [ ] 4.2: Create internal/git tests (0% → 80%)
   - Status: Not Started
