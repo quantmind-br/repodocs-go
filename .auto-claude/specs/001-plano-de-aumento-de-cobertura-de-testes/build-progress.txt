@@ -59,9 +59,10 @@
 ### Phase 3: Output and Cache (Target: 75-80%)
 **Estimated: 2 weeks**
 
-- [ ] 3.1: Create internal/output tests (0% → 80%)
-  - Status: Not Started
-  - Files: tests/unit/output/writer_test.go, collector_test.go
+- [x] 3.1: Create internal/output tests (0% → 80%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/output/writer_test.go (783 lines, 20 tests), tests/unit/output/collector_test.go (831 lines, 17 tests)
+  - Summary: Created comprehensive unit tests for output package (1,614 total lines, 37 test functions). Writer tests cover Write, WriteMultiple, FlushMetadata, Exists, EnsureBaseDir, Clean, Stats, GetPath with flat/nested structures. MetadataCollector tests cover Add, Flush, Count, GetIndex, IsEnabled, SetStrategy, SetSourceURL. All tests follow table-driven patterns with proper temp directory management (t.TempDir()), error handling, edge cases (nil inputs, empty content, invalid paths), concurrent access testing (goroutines with sync.WaitGroup), and JSON marshaling verification.
 
 - [ ] 3.2: Expand internal/cache tests (0% → 75%)
   - Status: Not Started

@@ -277,7 +277,9 @@
           "id": "3.1",
           "name": "Create internal/output tests (0% \u2192 80%)",
           "description": "Create unit tests for output writer operations and metadata collector with temp directory management.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T18:30:00Z",
+          "notes": "Created comprehensive unit tests for output package (1,614 lines, 37 test functions). writer_test.go (783 lines) with 20 tests covering Writer operations: Write, WriteMultiple, FlushMetadata, Exists, EnsureBaseDir, Clean, Stats, GetPath, flat/nested structures. collector_test.go (831 lines) with 17 tests covering MetadataCollector operations: Add, Flush, Count, GetIndex, IsEnabled, SetStrategy, SetSourceURL. All tests follow table-driven patterns with proper temp directory management (t.TempDir()), error handling, edge cases (nil inputs, empty content, invalid paths), concurrent access testing (goroutines with sync.WaitGroup), and JSON marshaling verification. Tests cover all required functions and acceptance criteria.",
           "files": [
             "tests/unit/output/writer_test.go",
             "tests/unit/output/collector_test.go"
