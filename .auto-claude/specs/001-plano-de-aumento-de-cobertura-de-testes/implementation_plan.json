@@ -551,18 +551,17 @@
           "id": "7.1",
           "name": "Generate mocks for external dependencies",
           "description": "Generate mocks using go.uber.org/mock for GitClient, domain interfaces, and all external dependencies.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:30:00Z",
+          "notes": "Generated gomock-based mock for git.Client interface (tests/mocks/git.go). Verified domain.go already contains gomock mocks for all domain interfaces (Strategy, Fetcher, Renderer, Cache, Converter, Writer, LLMProvider). Fetcher and Renderer don't need separate files as they are domain interfaces already mocked in domain.go. Created tests/mocks/README.md with documentation. All mocks use go.uber.org/mock/gomock framework. Legacy testify/mock version (git_mock.go) retained for backward compatibility with existing tests.",
           "files": [
             "tests/mocks/git.go",
             "tests/mocks/domain.go",
-            "tests/mocks/fetcher.go",
-            "tests/mocks/renderer.go"
+            "tests/mocks/README.md"
           ],
           "commands": [
-            "mockgen -source=internal/git/client.go -destination=tests/mocks/git.go",
-            "mockgen -source=internal/domain/interfaces.go -destination=tests/mocks/domain.go",
-            "mockgen -source=internal/fetcher/client.go -destination=tests/mocks/fetcher.go",
-            "mockgen -source=internal/renderer/interface.go -destination=tests/mocks/renderer.go"
+            "mockgen -source=internal/git/interface.go -destination=tests/mocks/git.go -package mocks",
+            "mockgen -source=internal/domain/interfaces.go -destination=tests/mocks/domain.go -package mocks"
           ],
           "coverageTarget": 0,
           "acceptanceCriteria": [

@@ -16,7 +16,7 @@
 | 4 | Fetcher and Git | ✅ Completed | 2/2 subtasks |
 | 5 | CLI and Domain | ✅ Completed | 2/2 subtasks |
 | 6 | Renderer (High Complexity) | ✅ Completed | 1/1 subtasks |
-| 7 | Mock Generation and Infrastructure | Pending | 0/4 subtasks |
+| 7 | Mock Generation and Infrastructure | 🚧 In Progress | 1/4 subtasks | |
 
 ## Detailed Progress
 
@@ -105,9 +105,10 @@
 ### Phase 7: Mock Generation and Infrastructure
 **Estimated: 1 week**
 
-- [ ] 7.1: Generate mocks for external dependencies
-  - Status: Not Started
-  - Files: tests/mocks/git.go, domain.go, fetcher.go, renderer.go
+- [x] 7.1: Generate mocks for external dependencies
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/mocks/git.go (new), tests/mocks/domain.go (existing), tests/mocks/README.md (new)
+  - Summary: Generated gomock-based mock for git.Client interface (tests/mocks/git.go). Verified that domain.go already contains gomock mocks for all domain interfaces (Strategy, Fetcher, Renderer, Cache, Converter, Writer, LLMProvider). Fetcher and Renderer interfaces are mocked in domain.go as they are domain interfaces. Created README.md documenting all mocks, usage patterns, and regeneration instructions. All mocks use go.uber.org/mock/gomock framework for consistency. Legacy testify/mock version (git_mock.go) retained for backward compatibility.
 
 - [ ] 7.2: Create additional fixtures
   - Status: Not Started
