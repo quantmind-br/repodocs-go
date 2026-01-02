@@ -575,13 +575,17 @@
           "id": "7.2",
           "name": "Create additional fixtures",
           "description": "Create Git repository fixtures, sitemap fixtures, and llms.txt fixtures for test scenarios.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:45:00Z",
+          "notes": "Created comprehensive test fixtures for integration and unit tests:\n\nGit Repository Fixture:\n- tests/testdata/fixtures/git/sample_repo.tar.gz (18K)\n  * Sample project with README, docs/, examples/\n  * Git history with initial commit (2f0354a)\n  * Multiple documentation files (api.md, guide.md, basic.js, advanced.js)\n\nSitemap Fixtures (3 files):\n- sitemap.xml: Standard sitemap with 15 URLs including priority, changefreq, lastmod, and multilingual links\n- sitemap_index.xml: Sitemap index referencing 7 child sitemaps\n- sitemap_docs.xml: Documentation-specific sitemap with 5 URLs\n\nllms.txt Fixtures (3 files):\n- llms.txt: Comprehensive list (56 lines) of documentation URLs covering API docs, guides, SDKs, examples, tutorials\n- llms_with_filters.txt: URLs with filter directives (55 lines) for testing priority, type, language, include/exclude filters\n- llms_simple.txt: Basic llms.txt (5 lines) for simple test cases\n\nAll fixtures validated:\n- XML files are well-formed and valid (verified with Python ET parser)\n- Git archive is properly formatted (tar.gz with valid content)\n- llms.txt files follow specification format with proper comments and structure\n\nTotal: 7 fixture files created covering Git, sitemap, and llms.txt test scenarios.",
           "files": [
             "tests/testdata/fixtures/git/sample_repo.tar.gz",
             "tests/testdata/fixtures/sitemap/sitemap.xml",
             "tests/testdata/fixtures/sitemap/sitemap_index.xml",
+            "tests/testdata/fixtures/sitemap/sitemap_docs.xml",
             "tests/testdata/fixtures/llms/llms.txt",
-            "tests/testdata/fixtures/llms/llms_with_filters.txt"
+            "tests/testdata/fixtures/llms/llms_with_filters.txt",
+            "tests/testdata/fixtures/llms/llms_simple.txt"
           ],
           "coverageTarget": 0,
           "acceptanceCriteria": [
