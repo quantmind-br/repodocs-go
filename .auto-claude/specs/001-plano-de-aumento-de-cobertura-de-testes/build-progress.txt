@@ -1,7 +1,7 @@
 # Test Coverage Increase Progress
 # Goal: Increase coverage from 20.2% to 80%+ per package
 
-## Current Status: Phase 1 In Progress 🚧
+## Current Status: Phase 6 In Progress 🚧
 
 ### Plan Created: 2026-01-02
 ### Last Updated: 2026-01-02
@@ -14,7 +14,7 @@
 | 2 | LLM and Configuration | ✅ Completed | 2/2 subtasks |
 | 3 | Output and Cache | ✅ Completed | 2/2 subtasks |
 | 4 | Fetcher and Git | ✅ Completed | 2/2 subtasks |
-| 5 | CLI and Domain | In Progress | 1/2 subtasks |
+| 5 | CLI and Domain | ✅ Completed | 2/2 subtasks |
 | 6 | Renderer (High Complexity) | Pending | 0/1 subtasks |
 | 7 | Mock Generation and Infrastructure | Pending | 0/4 subtasks |
 
@@ -89,9 +89,10 @@
   - Files: cmd/repodocs/main_test.go (709 lines, 40+ test functions)
   - Summary: Created comprehensive unit tests for CLI operations. Tests cover run() main execution flow, initConfig() initialization, checkInternet() with timeout scenarios, checkChrome() with path detection (os.Stat, exec.LookPath), checkWritePermissions() with read-only directories and concurrent access, checkCacheDir() with files/dirs/symlinks, rootCmd with help/version/doctor, signal handling, context cancellation, and helper functions. All tests follow table-driven patterns with proper temp directory management and cleanup.
 
-- [ ] 5.2: Create internal/domain tests (0% → 85%)
-  - Status: Not Started
-  - Files: tests/unit/domain/models_test.go, errors_test.go
+- [x] 5.2: Create internal/domain tests (0% → 85%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/domain/models_test.go (627 lines, 8 test functions), tests/unit/domain/errors_test.go (1,100 lines, 22 test functions)
+  - Summary: Created comprehensive unit tests for domain package (1,727 total lines, 30 test functions). models_test.go tests all model conversion methods (ToMetadata, ToFrontmatter, ToDocumentMetadata, ToSimpleMetadata, ToSimpleDocumentMetadata) with various scenarios (full document with all fields, minimal document with only required fields, empty slices/maps, LLM-enhanced fields, different strategies, nested paths, conversion consistency, nil receiver edge cases, empty fields). errors_test.go tests all 12 general sentinel errors, all 11 LLM sentinel errors, all error constructors (NewFetchError, NewValidationError, NewStrategyError, NewLLMError), error methods (Error(), Unwrap()), IsRetryable() function with various error types and wrapped errors, type assertions, and error comparisons. All tests follow table-driven patterns with proper assertions using testify/assert.
 
 ### Phase 6: Renderer (Target: 40-50%)
 **Estimated: 2 weeks**

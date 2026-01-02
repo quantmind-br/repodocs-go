@@ -11,11 +11,131 @@
         }
       ],
       "status": "completed"
+    },
+    "1.2": {
+      "attempts": [
+        {
+          "session": 3,
+          "timestamp": "2026-01-02T11:21:58.081299",
+          "approach": "Implemented: Create comprehensive unit tests for converter pipeline components: pipeline orchestration, HTML sani",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "1.3": {
+      "attempts": [
+        {
+          "session": 4,
+          "timestamp": "2026-01-02T11:28:30.658270",
+          "approach": "Implemented: Expand tests for app package: detector for strategy routing and orchestrator for workflow coordinati",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "1.4": {
+      "attempts": [
+        {
+          "session": 5,
+          "timestamp": "2026-01-02T11:34:54.607312",
+          "approach": "Implemented: Create comprehensive HTML fixtures for converter tests: SPA pages, tables, code blocks, forms, navig",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "2.1": {
+      "attempts": [
+        {
+          "session": 6,
+          "timestamp": "2026-01-02T11:43:12.670457",
+          "approach": "Implemented: Create comprehensive unit tests for LLM providers, circuit breaker state machine, retry logic with b",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "2.2": {
+      "attempts": [
+        {
+          "session": 7,
+          "timestamp": "2026-01-02T11:48:24.199850",
+          "approach": "Implemented: Create unit tests for configuration validation, loading with Viper, default values, and directory ma",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "3.1": {
+      "attempts": [
+        {
+          "session": 8,
+          "timestamp": "2026-01-02T11:55:31.496686",
+          "approach": "Implemented: Create unit tests for output writer operations and metadata collector with temp directory management",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "3.2": {
+      "attempts": [
+        {
+          "session": 9,
+          "timestamp": "2026-01-02T11:59:45.252839",
+          "approach": "Implemented: Create comprehensive unit tests for BadgerCache operations and key generation. Add integration tests",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "4.1": {
+      "attempts": [
+        {
+          "session": 10,
+          "timestamp": "2026-01-02T12:08:44.896274",
+          "approach": "Implemented: Create unit tests for HTTP client operations, retry logic with exponential backoff, stealth headers,",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "4.2": {
+      "attempts": [
+        {
+          "session": 11,
+          "timestamp": "2026-01-02T12:14:42.872835",
+          "approach": "Implemented: Create unit tests for Git client wrapper with go-git mocking.",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "5.1": {
+      "attempts": [
+        {
+          "session": 12,
+          "timestamp": "2026-01-02T12:18:15.081455",
+          "approach": "Implemented: Create unit tests for CLI operations including initialization, checks, and main execution flow with ",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
     }
   },
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-02T11:01:28.012335",
-    "last_updated": "2026-01-02T11:10:57.795360"
+    "last_updated": "2026-01-02T12:18:15.081461"
   }
 }
