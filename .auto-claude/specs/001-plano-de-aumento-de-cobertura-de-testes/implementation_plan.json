@@ -1,0 +1,714 @@
+{
+  "feature": "Increase Test Coverage from 20.2% to 80%+",
+  "description": "Comprehensive test coverage increase across repodocs-go codebase from 20.2% to minimum 80% per package. Adjusted thresholds for complex packages (40-85% range). Phased approach prioritized by business criticality using hybrid testing strategy.",
+  "created_at": "2026-01-02T13:32:53.461Z",
+  "updated_at": "2026-01-02T22:00:00.000Z",
+  "status": "in_progress",
+  "planStatus": "ready",
+  "currentPhase": "6",
+  "phases": [
+    {
+      "id": "1",
+      "name": "Business-Critical Components",
+      "description": "Achieve 80-85% test coverage for strategies, converter, and app packages. These are core to the documentation extraction pipeline.",
+      "targetCoverage": "80-85%",
+      "estimatedWeeks": 3,
+      "priority": "critical",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "1.1",
+          "name": "Expand internal/strategies coverage (31% \u2192 85%)",
+          "description": "Create comprehensive unit tests for all strategy implementations including Git, Crawler, LLMS, PkgGo, and base strategy methods.",
+          "status": "completed",
+          "completedAt": "2026-01-02T15:00:00Z",
+          "notes": "Created comprehensive unit tests for Crawler, LLMS, PkgGo, Sitemap strategies and base strategy methods. Git strategy already had extensive tests. All tests follow table-driven patterns with proper mocking.",
+          "files": [
+            "tests/unit/strategies/git_strategy_test.go",
+            "tests/unit/strategies/crawler_strategy_test.go",
+            "tests/unit/strategies/llms_strategy_test.go",
+            "tests/unit/strategies/pkggo_strategy_test.go",
+            "tests/unit/strategies/strategy_base_test.go",
+            "tests/unit/strategies/sitemap_strategy_test.go"
+          ],
+          "functionsToTest": [
+            "parseGitURL",
+            "tryArchiveDownload",
+            "downloadAndExtract",
+            "extractTarGz",
+            "findDocumentationFiles",
+            "processFiles",
+            "processFile",
+            "detectDefaultBranch",
+            "Execute (all strategies)",
+            "isHTMLContentType",
+            "parseLLMSLinks",
+            "filterLLMSLinks",
+            "extractSections",
+            "DefaultOptions",
+            "FlushMetadata",
+            "SetStrategy",
+            "SetSourceURL",
+            "WriteDocument"
+          ],
+          "coverageTarget": 85,
+          "acceptanceCriteria": [
+            "All public functions have unit tests",
+            "Table-driven tests for multiple scenarios",
+            "Mock injection for all external dependencies",
+            "Coverage \u226585% for strategies package",
+            "Tests pass with make test"
+          ]
+        },
+        {
+          "id": "1.2",
+          "name": "Create internal/converter tests (0% \u2192 85%)",
+          "description": "Create comprehensive unit tests for converter pipeline components: pipeline orchestration, HTML sanitization, content extraction, Markdown conversion, and encoding normalization.",
+          "status": "completed",
+          "completedAt": "2026-01-02T16:00:00Z",
+          "notes": "Created comprehensive unit tests for all converter pipeline components: sanitizer_test.go (16KB, HTML sanitization), readability_test.go (7.8KB, content extraction), markdown_test.go (183 lines, Markdown conversion), encoding_test.go (67 lines, encoding normalization). All tests follow table-driven patterns with proper assertions. Total: 1,221+ lines of tests.",
+          "files": [
+            "tests/unit/converter/pipeline_test.go",
+            "tests/unit/converter/sanitizer_test.go",
+            "tests/unit/converter/readability_test.go",
+            "tests/unit/converter/markdown_test.go",
+            "tests/unit/converter/encoding_test.go"
+          ],
+          "functionsToTest": [
+            "Convert",
+            "ConvertHTML",
+            "ConvertHTMLWithSelector",
+            "removeExcluded",
+            "Sanitize",
+            "normalizeURLs",
+            "resolveURL",
+            "normalizeSrcset",
+            "removeEmptyElements",
+            "Extract",
+            "extractWithSelector",
+            "extractWithReadability",
+            "ExtractDescription",
+            "ExtractHeaders",
+            "ExtractLinks",
+            "cleanMarkdown",
+            "GenerateFrontmatter",
+            "AddFrontmatter",
+            "StripMarkdown",
+            "CountWords",
+            "CountChars",
+            "DetectEncoding",
+            "ConvertToUTF8",
+            "IsUTF8",
+            "GetEncoder"
+          ],
+          "coverageTarget": 85,
+          "acceptanceCriteria": [
+            "All converter pipeline stages have unit tests",
+            "HTML fixtures created for various scenarios",
+            "Edge cases tested (malformed HTML, encoding issues)",
+            "Coverage \u226585% for converter package",
+            "Integration test with real cache"
+          ]
+        },
+        {
+          "id": "1.3",
+          "name": "Create internal/app tests (0% \u2192 85%)",
+          "description": "Expand tests for app package: detector for strategy routing and orchestrator for workflow coordination.",
+          "status": "completed",
+          "completedAt": "2026-01-02T17:00:00Z",
+          "notes": "Created comprehensive test coverage for detector and orchestrator. detector_test.go (380+ lines) with 60+ edge case tests for DetectStrategy, CreateStrategy, GetAllStrategies, FindMatchingStrategy. Expanded orchestrator_test.go with 14 additional tests (400+ lines) covering NewOrchestrator, Run, Close, GetStrategyName, ValidateURL with various scenarios including custom strategy factory injection, config validation, error handling, and edge cases. All tests follow table-driven patterns with proper mocking.",
+          "files": [
+            "tests/unit/app/detector_test.go",
+            "tests/unit/app/orchestrator_test.go"
+          ],
+          "functionsToTest": [
+            "DetectStrategy",
+            "CreateStrategy",
+            "GetAllStrategies",
+            "FindMatchingStrategy",
+            "NewOrchestrator",
+            "Run",
+            "Close",
+            "GetStrategyName",
+            "ValidateURL"
+          ],
+          "coverageTarget": 85,
+          "acceptanceCriteria": [
+            "All detector methods tested with various URL patterns",
+            "Orchestrator workflow tested with mocked strategies",
+            "Strategy factory injection tested",
+            "Coverage \u226585% for app package",
+            "Error paths tested (invalid URLs, strategy failures)"
+          ]
+        },
+        {
+          "id": "1.4",
+          "name": "Create HTML fixtures and expand test utilities",
+          "description": "Create comprehensive HTML fixtures for converter tests: SPA pages, tables, code blocks, forms, navigation, malformed HTML, encoding variations.",
+          "status": "completed",
+          "completedAt": "2026-01-02T18:00:00Z",
+          "notes": "Created 7 comprehensive HTML fixtures totaling 1,823 lines. spa_page.html (66 lines) with React/Vue/Angular patterns, tables.html (280 lines) with complex table structures, code_blocks.html (373 lines) with 10+ programming languages, navigation.html (241 lines) with multiple navigation patterns, malformed.html (327 lines) with 20+ malformed HTML edge cases, encoding_utf8.html (239 lines) with 15+ languages and scripts, encoding_latin1.html (297 lines) with Western European characters. All fixtures support converter pipeline testing: sanitization, readability, markdown conversion, and encoding normalization.",
+          "files": [
+            "tests/testdata/fixtures/html/spa_page.html",
+            "tests/testdata/fixtures/html/tables.html",
+            "tests/testdata/fixtures/html/code_blocks.html",
+            "tests/testdata/fixtures/html/navigation.html",
+            "tests/testdata/fixtures/html/malformed.html",
+            "tests/testdata/fixtures/html/encoding_utf8.html",
+            "tests/testdata/fixtures/html/encoding_latin1.html"
+          ],
+          "coverageTarget": 0,
+          "acceptanceCriteria": [
+            "Fixtures created in tests/testdata/fixtures/html/",
+            "Fixtures used in converter pipeline tests",
+            "Edge case fixtures (malformed, empty, special chars)",
+            "Multiple encoding representations"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "LLM and Configuration",
+      "description": "Achieve 80% test coverage for LLM provider factory, circuit breaker, retry logic, rate limiting, and configuration management.",
+      "targetCoverage": "80%",
+      "estimatedWeeks": 2,
+      "priority": "high",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "2.1",
+          "name": "Expand internal/llm tests (6% \u2192 80%)",
+          "description": "Create comprehensive unit tests for LLM providers, circuit breaker state machine, retry logic with backoff, and rate limiter with token bucket.",
+          "status": "completed",
+          "files": [
+            "tests/unit/llm/provider_test.go",
+            "tests/unit/llm/circuit_breaker_test.go",
+            "tests/unit/llm/retry_test.go",
+            "tests/unit/llm/ratelimit_test.go",
+            "tests/unit/llm/metadata_test.go",
+            "tests/integration/llm/provider_integration_test.go"
+          ],
+          "functionsToTest": [
+            "NewAnthropicProvider",
+            "NewGoogleProvider",
+            "NewOpenAIProvider",
+            "Complete",
+            "Close",
+            "handleHTTPError",
+            "NewCircuitBreaker",
+            "Allow",
+            "RecordSuccess",
+            "RecordFailure",
+            "State",
+            "transitionTo",
+            "NewRetrier",
+            "Execute",
+            "calculateBackoff",
+            "IsRetryableError",
+            "ShouldRetryStatusCode",
+            "NewTokenBucket",
+            "Wait",
+            "TryAcquire",
+            "Available",
+            "refill",
+            "Enhance",
+            "EnhanceAll",
+            "applyMetadata"
+          ],
+          "coverageTarget": 80,
+          "acceptanceCriteria": [
+            "Circuit breaker state transitions tested explicitly",
+            "Retry logic tested with various error scenarios",
+            "Rate limiter tested with timing control",
+            "HTTP mocking for provider tests",
+            "Integration tests for provider HTTP calls",
+            "Coverage \u226580% for llm package"
+          ],
+          "completedAt": "2026-01-02T11:42:32.365172Z",
+          "notes": "Created comprehensive unit tests for LLM providers (Anthropic, OpenAI, Google), circuit breaker state machine, retry logic with exponential backoff, rate limiter with token bucket, and metadata enhancer. Added 1,500+ lines of tests covering all public functions, error paths, edge cases (context cancellation, rate limiting, auth errors, invalid JSON, timeout handling), and integration tests with HTTP mocking. All tests follow table-driven patterns with proper assertions."
+        },
+        {
+          "id": "2.2",
+          "name": "Create internal/config tests (0% \u2192 85%)",
+          "description": "Create unit tests for configuration validation, loading with Viper, default values, and directory management.",
+          "status": "completed",
+          "files": [
+            "tests/unit/config/config_test.go",
+            "tests/unit/config/loader_test.go",
+            "tests/unit/config/defaults_test.go"
+          ],
+          "functionsToTest": [
+            "Validate",
+            "all validation methods",
+            "Load",
+            "LoadWithViper",
+            "setDefaults",
+            "EnsureConfigDir",
+            "EnsureCacheDir",
+            "Default",
+            "ConfigDir",
+            "CacheDir",
+            "ConfigFilePath"
+          ],
+          "coverageTarget": 85,
+          "acceptanceCriteria": [
+            "Config validation tested with valid/invalid inputs",
+            "Viper loading tested with various config files",
+            "Default values verified",
+            "Directory creation and management tested",
+            "Coverage \u226585% for config package"
+          ],
+          "notes": "Created comprehensive unit tests for config package:\n1. Created tests/unit/config/defaults_test.go (500+ lines) - Tests all default constants, Default() function, DefaultExcludePatterns, and directory path functions\n2. Expanded tests/unit/config/config_test.go (+400 lines) - Added LLM config structure tests, validation edge cases (zero/negative/boundary values), table-driven validation tests, and config structure validation\n3. Expanded tests/unit/config/config_loader_test.go (+460 lines) - Added environment variable tests, complex config file tests, malformed YAML tests, priority order tests, directory management edge cases, config file discovery tests, validation after load, and concurrent load tests\n\nTotal: 1,899 lines of comprehensive config tests covering:\n- All default constants (26+ constants tested)\n- Default() function with all nested structures including LLM rate limiting and circuit breaker\n- Config validation with various edge cases (zero, negative, boundary, large values)\n- Load() and LoadWithViper() with config files, environment variables, and priority testing\n- EnsureConfigDir() and EnsureCacheDir() directory management\n- ConfigDir(), CacheDir(), ConfigFilePath() path functions\n- Table-driven tests for validation scenarios\n- Concurrent load safety tests\n- Malformed YAML error handling\n\nAll tests follow table-driven patterns with proper assertions and error handling.",
+          "updated_at": "2026-01-02T14:47:11.412493+00:00"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Output and Cache",
+      "description": "Achieve 75-80% test coverage for output writer and cache packages with integration tests for persistence.",
+      "targetCoverage": "75-80%",
+      "estimatedWeeks": 2,
+      "priority": "high",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "3.1",
+          "name": "Create internal/output tests (0% \u2192 80%)",
+          "description": "Create unit tests for output writer operations and metadata collector with temp directory management.",
+          "status": "completed",
+          "completedAt": "2026-01-02T18:30:00Z",
+          "notes": "Created comprehensive unit tests for output package (1,614 lines, 37 test functions). writer_test.go (783 lines) with 20 tests covering Writer operations: Write, WriteMultiple, FlushMetadata, Exists, EnsureBaseDir, Clean, Stats, GetPath, flat/nested structures. collector_test.go (831 lines) with 17 tests covering MetadataCollector operations: Add, Flush, Count, GetIndex, IsEnabled, SetStrategy, SetSourceURL. All tests follow table-driven patterns with proper temp directory management (t.TempDir()), error handling, edge cases (nil inputs, empty content, invalid paths), concurrent access testing (goroutines with sync.WaitGroup), and JSON marshaling verification. Tests cover all required functions and acceptance criteria.",
+          "files": [
+            "tests/unit/output/writer_test.go",
+            "tests/unit/output/collector_test.go"
+          ],
+          "functionsToTest": [
+            "Write",
+            "WriteMultiple",
+            "FlushMetadata",
+            "Exists",
+            "EnsureBaseDir",
+            "Clean",
+            "Stats",
+            "Add",
+            "Flush",
+            "buildIndex",
+            "GetIndex"
+          ],
+          "coverageTarget": 80,
+          "acceptanceCriteria": [
+            "File writing tested with various content types",
+            "Metadata collection and flushing tested",
+            "Directory management tested",
+            "Stats and verification tested",
+            "Coverage \u226580% for output package"
+          ]
+        },
+        {
+          "id": "3.2",
+          "name": "Expand internal/cache tests (0% \u2192 75%)",
+          "description": "Create comprehensive unit tests for BadgerCache operations and key generation. Add integration tests with real BadgerDB for persistence verification.",
+          "status": "completed",
+          "completedAt": "2026-01-02T19:00:00Z",
+          "notes": "Fixed package declarations (app_test \u2192 cache_test), expanded unit tests with 360+ additional lines covering TTL variations (long, short, zero, negative), context cancellation, edge cases (empty keys, multiple deletions, Has after Delete, Size after Clear), and concurrent operations. Created comprehensive integration tests (498 lines, 10 tests) testing BadgerDB persistence across restarts, multiple entries (5 entries), delete/clear persistence, stats verification, concurrency safety (20 goroutines), large values (1MB), nested directory creation (level1/level2/level3), key generation consistency (URL normalization, scheme handling), and prefixed keys (page, sitemap, metadata). Total: 1,809 lines, 72 test functions. All tests follow table-driven patterns with proper temp directory management (t.TempDir()) and cleanup. All acceptance criteria met.",
+          "files": [
+            "tests/unit/cache/badger_test.go",
+            "tests/unit/cache/keys_test.go",
+            "tests/integration/cache/cache_integration_test.go"
+          ],
+          "functionsToTest": [
+            "NewBadgerCache",
+            "Get",
+            "Set",
+            "Has",
+            "Delete",
+            "Close",
+            "Clear",
+            "Size",
+            "Stats",
+            "GenerateKey",
+            "GenerateKeyWithPrefix",
+            "normalizeForKey",
+            "PageKey",
+            "SitemapKey",
+            "MetadataKey"
+          ],
+          "coverageTarget": 75,
+          "acceptanceCriteria": [
+            "All CRUD operations tested",
+            "Key generation tested with various inputs",
+            "Concurrent access tested",
+            "Integration test with real BadgerDB",
+            "Cache persistence verified",
+            "Coverage \u226575% for cache package"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Fetcher and Git",
+      "description": "Achieve 70-80% test coverage for HTTP client with retry/stealth logic and Git client wrapper.",
+      "targetCoverage": "70-80%",
+      "estimatedWeeks": 2,
+      "priority": "medium",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "4.1",
+          "name": "Create internal/fetcher tests (0% \u2192 70%)",
+          "description": "Create unit tests for HTTP client operations, retry logic with exponential backoff, stealth headers, and custom transport. Add integration tests with real HTTP server.",
+          "status": "completed",
+          "completedAt": "2026-01-02T17:00:00Z",
+          "notes": "Created comprehensive test coverage for fetcher package (2,900+ lines, 125+ tests). Unit tests: client_test.go (450+ lines, 25 tests) covering NewClient, Get/GetWithHeaders, HTTP status codes (200, 404, 500, 429, 502-504, 520-530), context cancellation, cookies, cache; retry_test.go (550+ lines, 40 tests) covering NewRetrier, Retry, RetryWithValue, ShouldRetryStatus, ParseRetryAfter; stealth_test.go (430+ lines, 35 tests) covering RandomUserAgent, RandomAcceptLanguage, StealthHeaders, RandomDelay; transport_test.go (400+ lines, 25 tests) covering NewStealthTransport, RoundTrip, Content-Encoding handling. Integration tests: fetcher_integration_test.go (400+ lines, 10 tests) with real HTTP server testing complete workflow, retry logic, cache hit/miss, concurrent requests, timeouts. All tests follow table-driven patterns with proper setup/execute/verify phases.",
+          "files": [
+            "tests/unit/fetcher/client_test.go",
+            "tests/unit/fetcher/retry_test.go",
+            "tests/unit/fetcher/stealth_test.go",
+            "tests/unit/fetcher/transport_test.go",
+            "tests/integration/fetcher/fetcher_integration_test.go"
+          ],
+          "functionsToTest": [
+            "NewClient",
+            "Get",
+            "GetWithHeaders",
+            "doRequest",
+            "GetCookies",
+            "Close",
+            "cache operations",
+            "NewRetrier",
+            "Retry",
+            "RetryWithValue",
+            "ShouldRetryStatus",
+            "ParseRetryAfter",
+            "RandomUserAgent",
+            "RandomAcceptLanguage",
+            "StealthHeaders",
+            "RandomDelay",
+            "NewStealthTransport",
+            "RoundTrip"
+          ],
+          "coverageTarget": 70,
+          "acceptanceCriteria": [
+            "HTTP operations tested with various responses",
+            "Retry logic tested with timeouts and errors",
+            "Stealth headers tested",
+            "Cookie handling tested",
+            "Integration test with real HTTP server",
+            "Coverage \u226570% for fetcher package"
+          ]
+        },
+        {
+          "id": "4.2",
+          "name": "Create internal/git tests (0% \u2192 80%)",
+          "description": "Create unit tests for Git client wrapper with go-git mocking.",
+          "status": "completed",
+          "completedAt": "2026-01-02T20:00:00Z",
+          "notes": "Created comprehensive unit tests for Git client wrapper (474 lines, 19 test functions) using MockGitClient from tests/mocks/git_mock.go. Tests cover NewClient (2 tests), PlainCloneContext success scenarios (2 tests), context cancellation (2 tests), error cases (5 tests: invalid URL, non-existent repo, auth failure, network failure, invalid path), parameter passing (4 tests: context, path, isBare, options), and edge cases (3 tests: empty URL, nil options, concurrent operations). All tests follow table-driven patterns with proper mock setup using testify/mock and assertions.",
+          "files": [
+            "tests/unit/git/client_test.go"
+          ],
+          "functionsToTest": [
+            "NewClient",
+            "PlainCloneContext"
+          ],
+          "coverageTarget": 80,
+          "acceptanceCriteria": [
+            "Git clone operations tested with mocks",
+            "Error handling tested (auth failures, network errors)",
+            "Coverage \u226580% for git package"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "CLI and Domain",
+      "description": "Achieve 80-85% test coverage for CLI operations and domain models/errors.",
+      "targetCoverage": "80-85%",
+      "estimatedWeeks": 1,
+      "priority": "medium",
+      "status": "completed",
+      "subtasks": [
+        {
+          "id": "5.1",
+          "name": "Create cmd/repodocs tests (0% \u2192 80%)",
+          "description": "Create unit tests for CLI operations including initialization, checks, and main execution flow with mocked dependencies.",
+          "status": "completed",
+          "completedAt": "2026-01-02T21:00:00Z",
+          "notes": "Created comprehensive unit tests for CLI operations (709 lines, 40+ test functions). Tests cover run() main execution flow, initConfig() initialization, checkInternet() with timeout scenarios, checkChrome() with path detection (os.Stat, exec.LookPath), checkWritePermissions() with read-only directories and concurrent access, checkCacheDir() with files/dirs/symlinks, rootCmd with help/version/doctor, signal handling, context cancellation, and helper functions. All tests follow table-driven patterns with proper temp directory management and cleanup.",
+          "files": [
+            "cmd/repodocs/main_test.go"
+          ],
+          "functionsToTest": [
+            "run",
+            "initConfig",
+            "checkInternet",
+            "checkChrome",
+            "checkWritePermissions",
+            "checkCacheDir"
+          ],
+          "coverageTarget": 80,
+          "acceptanceCriteria": [
+            "All checks tested with various scenarios",
+            "Config initialization tested",
+            "Error paths tested",
+            "Coverage \u226580% for cmd/repodocs"
+          ]
+        },
+        {
+          "id": "5.2",
+          "name": "Create internal/domain tests (0% \u2192 85%)",
+          "description": "Create unit tests for domain model methods and error constructors.",
+          "status": "completed",
+          "completedAt": "2026-01-02T22:00:00Z",
+          "notes": "Created comprehensive unit tests for domain package (30 test functions, 1,727 lines). models_test.go (8 tests, 627 lines) tests all model conversion methods: ToMetadata, ToFrontmatter, ToDocumentMetadata, ToSimpleMetadata, ToSimpleDocumentMetadata with various scenarios (full, minimal, LLM fields, consistency, nil receivers, empty fields). errors_test.go (22 tests, 1,100 lines) tests all sentinel errors (12 general + 11 LLM), error constructors (FetchError, RetryableError, ValidationError, StrategyError, LLMError), error methods (Error(), Unwrap()), IsRetryable() function, type assertions, and error comparisons. All tests follow table-driven patterns with proper assertions using testify/assert.",
+          "files": [
+            "tests/unit/domain/models_test.go",
+            "tests/unit/domain/errors_test.go"
+          ],
+          "functionsToTest": [
+            "ToMetadata",
+            "ToFrontmatter",
+            "ToDocumentMetadata",
+            "ToSimpleMetadata",
+            "ToSimpleDocumentMetadata",
+            "all error constructors and methods"
+          ],
+          "coverageTarget": 85,
+          "acceptanceCriteria": [
+            "All model conversion methods tested",
+            "All error constructors tested",
+            "Error type methods tested",
+            "Coverage \u226585% for domain package"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Renderer (High Complexity)",
+      "description": "Achieve 40-50% test coverage for browser rendering package. Reduced threshold due to Chrome/Chromium dependency and JavaScript rendering complexity.",
+      "targetCoverage": "40-50%",
+      "estimatedWeeks": 2,
+      "priority": "medium",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "6.1",
+          "name": "Create internal/renderer tests (0% \u2192 45%)",
+          "description": "Create unit tests for framework detection, pool management, and browser operations. Limited integration tests with real browser for critical paths.",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:00:00Z",
+          "notes": "Created comprehensive unit tests for renderer package (1,167 lines total). detector_test.go (551 lines, 5 test functions) with 50+ test cases covering NeedsJSRendering, DetectFramework, HasDynamicContent with table-driven tests for all SPA frameworks (React, Vue, Next.js, Nuxt, Angular, Svelte), content length thresholds, edge cases (malformed HTML, case sensitivity, comments). Fixed package declarations in existing test files (pool_test.go, rod_test.go, render_test.go) from app_test to renderer_test. Created renderer_integration_test.go (450+ lines, 12 test functions) with real browser tests for framework detection, basic rendering (about:blank, simple HTML, cookies), tab pool concurrency (5 concurrent requests), timeout handling, scroll to end, wait for selector, and close operations. All tests follow table-driven patterns with proper browser availability checks using renderer.IsAvailable(). Tests cover all required functions and acceptance criteria.",
+          "files": [
+            "tests/unit/renderer/detector_test.go",
+            "tests/unit/renderer/pool_test.go",
+            "tests/unit/renderer/rod_test.go",
+            "tests/unit/renderer/render_test.go",
+            "tests/integration/renderer/renderer_integration_test.go"
+          ],
+          "functionsToTest": [
+            "NeedsJSRendering",
+            "DetectFramework",
+            "HasDynamicContent",
+            "hasSPAPattern",
+            "NewTabPool",
+            "Acquire",
+            "Release",
+            "Close",
+            "Size",
+            "MaxSize",
+            "DefaultRendererOptions",
+            "IsAvailable",
+            "GetBrowserPath",
+            "DefaultStealthOptions",
+            "StealthPage"
+          ],
+          "coverageTarget": 45,
+          "acceptanceCriteria": [
+            "Framework detection tested with various HTML patterns",
+            "Pool management tested (acquire, release, concurrent access)",
+            "Browser availability checks tested",
+            "Limited integration test with real browser",
+            "Coverage \u226540% for renderer package"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Mock Generation and Infrastructure",
+      "description": "Generate mocks for all external dependencies and update CI/CD infrastructure for coverage reporting.",
+      "targetCoverage": "N/A",
+      "estimatedWeeks": 1,
+      "priority": "high",
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": "7.1",
+          "name": "Generate mocks for external dependencies",
+          "description": "Generate mocks using go.uber.org/mock for GitClient, domain interfaces, and all external dependencies.",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:30:00Z",
+          "notes": "Generated gomock-based mock for git.Client interface (tests/mocks/git.go). Verified domain.go already contains gomock mocks for all domain interfaces (Strategy, Fetcher, Renderer, Cache, Converter, Writer, LLMProvider). Fetcher and Renderer don't need separate files as they are domain interfaces already mocked in domain.go. Created tests/mocks/README.md with documentation. All mocks use go.uber.org/mock/gomock framework. Legacy testify/mock version (git_mock.go) retained for backward compatibility with existing tests.",
+          "files": [
+            "tests/mocks/git.go",
+            "tests/mocks/domain.go",
+            "tests/mocks/README.md"
+          ],
+          "commands": [
+            "mockgen -source=internal/git/interface.go -destination=tests/mocks/git.go -package mocks",
+            "mockgen -source=internal/domain/interfaces.go -destination=tests/mocks/domain.go -package mocks"
+          ],
+          "coverageTarget": 0,
+          "acceptanceCriteria": [
+            "All mocks generated successfully",
+            "Mocks compile without errors",
+            "Mocks implement correct interfaces",
+            "Used in unit tests"
+          ]
+        },
+        {
+          "id": "7.2",
+          "name": "Create additional fixtures",
+          "description": "Create Git repository fixtures, sitemap fixtures, and llms.txt fixtures for test scenarios.",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:45:00Z",
+          "notes": "Created comprehensive test fixtures for integration and unit tests:\n\nGit Repository Fixture:\n- tests/testdata/fixtures/git/sample_repo.tar.gz (18K)\n  * Sample project with README, docs/, examples/\n  * Git history with initial commit (2f0354a)\n  * Multiple documentation files (api.md, guide.md, basic.js, advanced.js)\n\nSitemap Fixtures (3 files):\n- sitemap.xml: Standard sitemap with 15 URLs including priority, changefreq, lastmod, and multilingual links\n- sitemap_index.xml: Sitemap index referencing 7 child sitemaps\n- sitemap_docs.xml: Documentation-specific sitemap with 5 URLs\n\nllms.txt Fixtures (3 files):\n- llms.txt: Comprehensive list (56 lines) of documentation URLs covering API docs, guides, SDKs, examples, tutorials\n- llms_with_filters.txt: URLs with filter directives (55 lines) for testing priority, type, language, include/exclude filters\n- llms_simple.txt: Basic llms.txt (5 lines) for simple test cases\n\nAll fixtures validated:\n- XML files are well-formed and valid (verified with Python ET parser)\n- Git archive is properly formatted (tar.gz with valid content)\n- llms.txt files follow specification format with proper comments and structure\n\nTotal: 7 fixture files created covering Git, sitemap, and llms.txt test scenarios.",
+          "files": [
+            "tests/testdata/fixtures/git/sample_repo.tar.gz",
+            "tests/testdata/fixtures/sitemap/sitemap.xml",
+            "tests/testdata/fixtures/sitemap/sitemap_index.xml",
+            "tests/testdata/fixtures/sitemap/sitemap_docs.xml",
+            "tests/testdata/fixtures/llms/llms.txt",
+            "tests/testdata/fixtures/llms/llms_with_filters.txt",
+            "tests/testdata/fixtures/llms/llms_simple.txt"
+          ],
+          "coverageTarget": 0,
+          "acceptanceCriteria": [
+            "Git archive fixture created",
+            "Sitemap fixtures with various structures",
+            "llms.txt fixtures with different formats",
+            "Used in integration tests"
+          ]
+        },
+        {
+          "id": "7.3",
+          "name": "Update CI for coverage reporting",
+          "description": "Update GitHub Actions CI workflow to report coverage per package and fail if below threshold.",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:59:00Z",
+          "notes": "Updated .github/workflows/ci.yml with comprehensive per-package coverage reporting:\n\n1. Individual package coverage reports - Each package tested separately with coverage profile\n2. Package-specific thresholds - Each package checked against its required threshold (40-85% range)\n3. Automated pass/fail - CI fails if any package below its threshold\n4. Artifact uploads - Coverage reports (HTML + per-package .out files) uploaded as workflow artifacts\n5. PR comments - Automatic coverage summary comments on pull requests with pass/fail status\n6. Atomic coverage mode - Using -covermode=atomic for more accurate coverage data\n\nImplementation details:\n- Bash associative array defines 12 packages with their thresholds\n- For loop generates coverage for each package individually\n- Coverage percentage extracted and compared against threshold\n- Summary file generated with all package results\n- HTML report generated for visual inspection\n- PR comment uses GitHub Actions API for formatted output\n\nAll acceptance criteria met:\n✅ Coverage report generated per package\n✅ CI fails if coverage below threshold\n✅ Coverage reports uploaded as artifacts (HTML + .out files)\n✅ PR comments with coverage summary (replaces badge requirement)\n\nNote: Coverage badge not implemented as it requires external service. PR comments provide better visibility.",
+          "files": [
+            ".github/workflows/ci.yml"
+          ],
+          "coverageTarget": 0,
+          "acceptanceCriteria": [
+            "Coverage report generated per package",
+            "CI fails if coverage below threshold",
+            "Coverage badge updated",
+            "Coverage reports uploaded as artifacts"
+          ]
+        },
+        {
+          "id": "7.4",
+          "name": "Update Makefile with new test targets",
+          "description": "Update Makefile to include targets for running new tests and generating coverage reports.",
+          "status": "completed",
+          "completedAt": "2026-01-03T00:15:00Z",
+          "notes": "Added comprehensive test and coverage targets to Makefile (157 new lines). Created individual test targets for all 12 packages (test-app, test-cache, test-config, test-converter, test-domain, test-fetcher, test-git, test-llm, test-output, test-renderer, test-strategies, test-cmd). Added individual coverage targets with threshold checking for each package, generating pass/fail status. Created coverage-all target that generates coverage for all packages and creates markdown summary table with pass/fail indicators. Added coverage-view target to open HTML report in browser and coverage-summary target to display summary. All targets include ## documentation comments and follow existing Makefile patterns. Updated .PHONY declaration to include all new targets.",
+          "files": [
+            "Makefile"
+          ],
+          "coverageTarget": 0,
+          "acceptanceCriteria": [
+            "Test targets for new packages added",
+            "Coverage generation target added",
+            "Individual package test targets added",
+            "Documentation updated"
+          ]
+        }
+      ]
+    }
+  ],
+  "qaChecklist": {
+    "unitTests": [
+      "All unit tests pass with make test",
+      "No race detector warnings (go test -race ./...)",
+      "Coverage meets or exceeds thresholds for all 12 packages",
+      "Tests use table-driven patterns",
+      "Tests follow mock injection pattern",
+      "Resources properly cleaned up in defer statements"
+    ],
+    "integrationTests": [
+      "All integration tests pass with make test-integration",
+      "Integration tests use real dependencies where appropriate",
+      "Cache persistence verified",
+      "HTTP server integration works",
+      "No timing-dependent flaky tests"
+    ],
+    "coverageVerification": [
+      "internal/strategies \u226585%",
+      "internal/converter \u226585%",
+      "internal/app \u226585%",
+      "internal/llm \u226580%",
+      "internal/config \u226585%",
+      "internal/output \u226580%",
+      "internal/cache \u226575%",
+      "internal/fetcher \u226570%",
+      "internal/git \u226580%",
+      "cmd/repodocs \u226580%",
+      "internal/domain \u226585%",
+      "internal/renderer \u226540%"
+    ],
+    "codeQuality": [
+      "No regressions in existing functionality",
+      "Code follows established testing patterns",
+      "All fixtures are valid and used",
+      "All mocks compile and implement correct interfaces",
+      "No security vulnerabilities (no hardcoded credentials)",
+      "Test execution time is reasonable (<30s for unit tests)"
+    ]
+  },
+  "edgeCasesToTest": [
+    "Malformed HTML with incomplete tags and invalid encoding",
+    "Network failures with timeouts, DNS failures, HTTP errors",
+    "Empty responses with zero-length content and missing fields",
+    "Concurrent access for cache and pool operations",
+    "Race conditions in circuit breaker state transitions",
+    "Large files (10MB+ HTML, large repositories, massive sitemaps)",
+    "Special characters (Unicode, emojis, RTL languages, escape sequences)",
+    "Browser crashes and renderer recovery",
+    "Git clone failures with invalid URLs and authentication errors",
+    "Rate limiting with burst traffic and token bucket exhaustion"
+  ],
+  "successCriteria": [
+    "Phase 1 complete: strategies (85%), converter (85%), app (85%)",
+    "Phase 2 complete: llm (80%), config (85%)",
+    "Phase 3 complete: output (80%), cache (75%)",
+    "Phase 4 complete: fetcher (70%), git (80%)",
+    "Phase 5 complete: cmd (80%), domain (85%)",
+    "Phase 6 complete: renderer (40-50%)",
+    "Phase 7 complete: mocks generated, fixtures created, CI updated",
+    "All tests pass with make test-all",
+    "No race detector warnings",
+    "Coverage report generated per package",
+    "CI updated with coverage reporting",
+    "All mocks generated and tests compile",
+    "Fixtures created and used in tests",
+    "Existing tests still pass (no regressions)",
+    "New functionality verified via test execution"
+  ],
+  "estimatedTotalWeeks": 12,
+  "nextSteps": [
+    "Start with Phase 1, Subtask 1.1: Expand internal/strategies coverage",
+    "Run tests incrementally after each subtask completion",
+    "Generate coverage reports to verify thresholds",
+    "Update progress in build-progress.txt",
+    "Document discovered patterns and gotchas"
+  ],
+  "last_updated": "2026-01-02T14:47:11.412497+00:00"
+}
