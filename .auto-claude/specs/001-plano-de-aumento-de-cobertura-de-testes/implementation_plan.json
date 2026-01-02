@@ -436,7 +436,9 @@
           "id": "5.1",
           "name": "Create cmd/repodocs tests (0% \u2192 80%)",
           "description": "Create unit tests for CLI operations including initialization, checks, and main execution flow with mocked dependencies.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T21:00:00Z",
+          "notes": "Created comprehensive unit tests for CLI operations (709 lines, 40+ test functions). Tests cover run() main execution flow, initConfig() initialization, checkInternet() with timeout scenarios, checkChrome() with path detection (os.Stat, exec.LookPath), checkWritePermissions() with read-only directories and concurrent access, checkCacheDir() with files/dirs/symlinks, rootCmd with help/version/doctor, signal handling, context cancellation, and helper functions. All tests follow table-driven patterns with proper temp directory management and cleanup.",
           "files": [
             "cmd/repodocs/main_test.go"
           ],

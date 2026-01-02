@@ -14,7 +14,7 @@
 | 2 | LLM and Configuration | ✅ Completed | 2/2 subtasks |
 | 3 | Output and Cache | ✅ Completed | 2/2 subtasks |
 | 4 | Fetcher and Git | ✅ Completed | 2/2 subtasks |
-| 5 | CLI and Domain | Pending | 0/2 subtasks |
+| 5 | CLI and Domain | In Progress | 1/2 subtasks |
 | 6 | Renderer (High Complexity) | Pending | 0/1 subtasks |
 | 7 | Mock Generation and Infrastructure | Pending | 0/4 subtasks |
 
@@ -84,9 +84,10 @@
 ### Phase 5: CLI and Domain (Target: 80-85%)
 **Estimated: 1 week**
 
-- [ ] 5.1: Create cmd/repodocs tests (0% → 80%)
-  - Status: Not Started
-  - Files: cmd/repodocs/main_test.go
+- [x] 5.1: Create cmd/repodocs tests (0% → 80%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: cmd/repodocs/main_test.go (709 lines, 40+ test functions)
+  - Summary: Created comprehensive unit tests for CLI operations. Tests cover run() main execution flow, initConfig() initialization, checkInternet() with timeout scenarios, checkChrome() with path detection (os.Stat, exec.LookPath), checkWritePermissions() with read-only directories and concurrent access, checkCacheDir() with files/dirs/symlinks, rootCmd with help/version/doctor, signal handling, context cancellation, and helper functions. All tests follow table-driven patterns with proper temp directory management and cleanup.
 
 - [ ] 5.2: Create internal/domain tests (0% → 85%)
   - Status: Not Started
