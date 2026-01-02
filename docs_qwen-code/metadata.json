@@ -1,0 +1,862 @@
+{
+  "generated_at": "2026-01-02T12:26:24.912621385-03:00",
+  "source_url": "https://github.com/QwenLM/qwen-code",
+  "strategy": "git",
+  "total_documents": 53,
+  "documents": [
+    {
+      "file_path": "integration-tests.md",
+      "title": "Integration tests",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/development/integration-tests.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:49.654426431-03:00",
+      "summary": "describes the integration testing framework for Qwen Code, including setup, execution commands, sandbox configurations, and CI/CD integration.",
+      "tags": [
+        "integration-testing",
+        "e2e-testing",
+        "file-system-validation",
+        "sandboxing",
+        "ci-cd",
+        "test-runners"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "deployment.md",
+      "title": "Deployment",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/development/deployment.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:49.654426161-03:00",
+      "summary": "Explains Qwen Code's installation, execution methods (CLI, sandbox, source, GitHub), and deployment architecture including NPM packages, build processes, Docker sandbox, and automated release workflows.",
+      "tags": [
+        "qwen-code",
+        "code-execution",
+        "npm-installation",
+        "docker-sandbox",
+        "monorepo",
+        "cli-deployment",
+        "sandboxed-execution",
+        "git-github",
+        "automated-releases"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "architecture.md",
+      "title": "Architecture",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/architecture.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:49.65440464-03:00",
+      "summary": "Explains Qwen Code's architecture, including its CLI and core packages, tool integration, interaction flow, and configuration options.",
+      "tags": [
+        "cli-toolkit",
+        "architecture-overview",
+        "tool-integration",
+        "configuration-management",
+        "terminal-ui"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "issue-and-pr-automation.md",
+      "title": "Issue and pr automation",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/development/issue-and-pr-automation.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:49.654445267-03:00",
+      "summary": "Explains automated workflows for managing issues, PRs, and triage in a GitHub repository using Qwen models and CI/CD processes.",
+      "tags": [
+        "github-automation",
+        "pull-request-triage",
+        "issue-management",
+        "ci-cd",
+        "contributor-guidelines",
+        "label-sync"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "npm.md",
+      "title": "Npm",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/development/npm.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:51.068063539-03:00",
+      "summary": "Document outlines the monorepo structure, release workflow, and versioning strategy for the Qwen Code packages, including `@qwen-code/qwen-code` and `@qwen-code/qwen-code-core` with their respective roles and release types.",
+      "tags": [
+        "monorepo",
+        "package-management",
+        "release-process",
+        "versioning",
+        "cli-tools",
+        "npm-publishing",
+        "github-actions"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "telemetry.md",
+      "title": "Telemetry",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/development/telemetry.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:51.694126342-03:00",
+      "summary": "Document explains how to implement OpenTelemetry observability for Qwen Code, detailing setup, configuration, and integration with local or cloud telemetry systems like Aliyun.",
+      "tags": [
+        "opentelemetry",
+        "qwen-code",
+        "observability",
+        "telemetry-config",
+        "local-debugging",
+        "aliyun-integration",
+        "metrics-logging",
+        "api-monitoring"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "proxy-script.md",
+      "title": "Proxy script",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/examples/proxy-script.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:52.160359502-03:00",
+      "summary": "A Node.js proxy script that restricts HTTPS connections to specific domains (e.g., example.com) and rejects all others.",
+      "tags": [
+        "nodejs",
+        "proxy-server",
+        "https-restriction",
+        "domain-filtering",
+        "tcp-tunneling"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "contributing.md",
+      "title": "Contributing",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/contributing.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:49.654406333-03:00",
+      "summary": "Instructions for how to contribute to a project, including reporting issues, submitting code, and participating in discussions.",
+      "tags": [
+        "contribution",
+        "collaboration",
+        "open-source"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "extension-releasing.md",
+      "title": "Extension releasing",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/extensions/extension-releasing.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:53.289079846-03:00",
+      "summary": "Explains how to release Qwen Code extensions via Git repositories or GitHub Releases, including best practices for versioning, branching, and platform-specific builds.",
+      "tags": [
+        "git-repo-release",
+        "github-releases",
+        "extension-management",
+        "qwen-code",
+        "platform-specific-archives",
+        "version-control"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "extension.md",
+      "title": "Extension",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/extensions/extension.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:53.983412766-03:00",
+      "summary": "Document explains how to create, manage, and use Qwen Code extensions for expanding CLI functionality, including installation, uninstallation, enabling/disabling, and custom command creation.",
+      "tags": [
+        "qwen-code-extensions",
+        "cli-extensions",
+        "extension-management",
+        "custom-commands",
+        "workspace-configuration"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "sdk-typescript.md",
+      "title": "Sdk typescript",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/sdk-typescript.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:55.351226818-03:00",
+      "summary": "Provides a TypeScript SDK for interacting with the Qwen Code AI model via programmatic queries, enabling file operations and tool execution.",
+      "tags": [
+        "typescript-sdk",
+        "qwen-code",
+        "programmatic-api",
+        "ai-toolkit",
+        "nodejs-integration"
+      ],
+      "category": "api"
+    },
+    {
+      "file_path": "exit-plan-mode.md",
+      "title": "Exit plan mode",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/exit-plan-mode.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:55.967470561-03:00",
+      "summary": "Describes the `exit_plan_mode` tool for Qwen Code, designed to transition from planning to implementation mode by prompting user approval for a structured implementation plan.",
+      "tags": [
+        "qwen-code",
+        "planning-mode",
+        "implementation-transition",
+        "user-approval",
+        "code-planning-tool"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "getting-started-extensions.md",
+      "title": "Getting started extensions",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/extensions/getting-started-extensions.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:54.675177609-03:00",
+      "summary": "Overview of how to begin developing and deploying browser extensions.",
+      "tags": [
+        "extensions",
+        "development",
+        "browser",
+        "web"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "introduction.md",
+      "title": "Introduction",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/introduction.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:58.188926117-03:00",
+      "summary": "explains how Qwen Code integrates built-in tools for local environment interaction, file system operations, command execution, and web access to enhance task automation and data grounding.",
+      "tags": [
+        "qwen-code-tools",
+        "local-environment-interaction",
+        "file-system-tools",
+        "shell-commands",
+        "web-fetch",
+        "sandboxing",
+        "security-measures",
+        "api-integration"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "roadmap.md",
+      "title": "Roadmap",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/roadmap.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:55.087832184-03:00",
+      "summary": "A structured overview of steps, milestones, or phases to follow for achieving a goal or completing a project.",
+      "tags": [
+        "planning",
+        "strategy",
+        "development"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "mcp-server.md",
+      "title": "Mcp server",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/mcp-server.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:58.715902698-03:00",
+      "summary": "Explains how to configure and use MCP servers with Qwen Code for extending CLI capabilities via external tools and resources.",
+      "tags": [
+        "mcp-server",
+        "qwen-code",
+        "cli-extensions",
+        "tool-integration",
+        "configuration-guide",
+        "settings-json",
+        "mcp-protocol"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "memory.md",
+      "title": "Memory",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/memory.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:59.597502821-03:00",
+      "summary": "Explains how to use the `save_memory` tool to store and retrieve session-specific facts for Qwen Code across multiple CLI sessions.",
+      "tags": [
+        "memory-tool",
+        "cli-usage",
+        "context-management",
+        "qwen-code"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "file-system.md",
+      "title": "File system",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/file-system.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:25:56.565339529-03:00",
+      "summary": "Explanation of file system structure, organization, and key components like directories, files, and file systems (e.g., FAT, NTFS, ext4). Includes concepts like file permissions, storage hierarchy, and data management principles.",
+      "tags": [
+        "operating systems",
+        "storage",
+        "file management",
+        "hierarchy"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "multi-file.md",
+      "title": "Multi file",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/multi-file.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:00.201796585-03:00",
+      "summary": "Explains the `read_many_files` tool for Qwen Code, detailing its functionality for reading multiple files (text, images, PDFs, audio, video) via glob patterns, handling exclusions, and encoding outputs.",
+      "tags": [
+        "file-reading",
+        "glob-patterns",
+        "base64-encoding",
+        "binary-file-handling",
+        "qwen-code",
+        "multifile-processing"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "task.md",
+      "title": "Task",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/task.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:01.069514839-03:00",
+      "summary": "Explains how to use the `task` tool in Qwen Code for delegating complex, multi-step tasks to specialized subagents with real-time progress tracking and parallel execution capabilities.",
+      "tags": [
+        "multi-step-task",
+        "subagent-delegation",
+        "parallel-execution",
+        "autonomous-agent",
+        "qwen-code",
+        "task-management"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "todo-write.md",
+      "title": "Todo write",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/todo-write.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:01.420817167-03:00",
+      "summary": "Describes the `todo_write` tool for Qwen Code, which automates task management for complex coding sessions by tracking progress and organizing multi-step workflows.",
+      "tags": [
+        "task-management",
+        "ai-assistant",
+        "qwen-code",
+        "structured-todo",
+        "multi-step-workflow",
+        "coding-session"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "web-fetch.md",
+      "title": "Web fetch",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/web-fetch.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:01.811331931-03:00",
+      "summary": "Describes the `web_fetch` tool for Qwen Code, which fetches web content from URLs and processes it via AI using a prompt.",
+      "tags": [
+        "web-fetch-tool",
+        "ai-content-processing",
+        "url-fetching",
+        "qwen-code",
+        "markdown-conversion",
+        "github-url-handling"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "web-search.md",
+      "title": "Web search",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/web-search.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:02.45118589-03:00",
+      "summary": "Document explains how to configure and use the `web_search` tool for multi-provider web searches with providers like DashScope, Tavily, and Google Custom Search.",
+      "tags": [
+        "web-search-tool",
+        "multi-provider-api",
+        "configuration-guide",
+        "api-key-management",
+        "qwen-integration"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "shell.md",
+      "title": "Shell",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/developers/tools/shell.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:00.461131915-03:00",
+      "summary": "Overview of the Unix/Linux command-line shell, including basic usage, common commands, and scripting capabilities.",
+      "tags": [
+        "shell",
+        "command-line",
+        "terminal",
+        "Unix",
+        "Linux"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "index.md",
+      "title": "Index",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/index.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:03.660649478-03:00",
+      "summary": "documentation outlining how to use and develop Qwen Code, covering user setup, features, and developer contributions",
+      "tags": [
+        "qwen-code",
+        "agentic-coding",
+        "terminal-tool",
+        "user-guide",
+        "developer-docs",
+        "contribution",
+        "coding-agent"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "auth.md",
+      "title": "Auth",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/auth.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:04.574250208-03:00",
+      "summary": "Document explains how to authenticate Qwen Code using either Qwen OAuth (browser-based login) or OpenAI-compatible API keys, including setup, configuration via CLI, environment variables, and security best practices.",
+      "tags": [
+        "authentication-methods",
+        "qwen-oauth",
+        "openai-api",
+        "api-key-management",
+        "environment-variables",
+        "cli-configuration",
+        "security-best-practices"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "memory.md",
+      "title": "Memory",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/memory.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:05.139067565-03:00",
+      "summary": "document explaining metadata extraction principles and structure",
+      "tags": [
+        "json-extraction",
+        "metadata-analysis",
+        "document-structure"
+      ],
+      "category": "concept"
+    },
+    {
+      "file_path": "qwen-ignore.md",
+      "title": "Qwen ignore",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/qwen-ignore.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:05.420016577-03:00",
+      "summary": "explains how to use the `.qwenignore` file for ignoring files in Qwen Code, similar to `.gitignore`",
+      "tags": [
+        "qwen-code",
+        "file-ignore",
+        "glob-patterns",
+        "project-management",
+        "ignoring-files"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "settings.md",
+      "title": "Settings",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/settings.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:05.789524919-03:00",
+      "summary": "Explains Qwen Code's configuration methods, including environment variables, command-line arguments, and JSON settings files, with precedence rules for different configuration layers.",
+      "tags": [
+        "configuration-methods",
+        "json-settings",
+        "environment-variables",
+        "precedence-order",
+        "qwen-code"
+      ],
+      "category": "configuration"
+    },
+    {
+      "file_path": "common-workflow.md",
+      "title": "Common workflow",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/common-workflow.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:04.111001968-03:00",
+      "summary": "A structured approach outlining typical steps and processes involved in standard operational workflows.",
+      "tags": [
+        "process",
+        "workflow",
+        "operations"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "themes.md",
+      "title": "Themes",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/themes.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:07.046226172-03:00",
+      "summary": "Document explains how to customize and manage themes in Qwen Code via CLI commands and `settings.json` configuration, including pre-defined themes, custom theme creation, and persistence.",
+      "tags": [
+        "cli-themes",
+        "custom-color-schemes",
+        "settings-json",
+        "theme-configuration",
+        "user-interface-customization",
+        "dark-light-themes",
+        "color-palette"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "trusted-folders.md",
+      "title": "Trusted folders",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/trusted-folders.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:07.257453706-03:00",
+      "summary": "Explanation of how to set up and manage trusted folders for secure file storage and access control.",
+      "tags": [
+        "security",
+        "file management",
+        "privacy",
+        "permissions"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "approval-mode.md",
+      "title": "Approval mode",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/approval-mode.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:07.649600803-03:00",
+      "summary": "Explanation of the 'Approval Mode' feature, likely for managing permissions or workflows in a system.",
+      "tags": [
+        "permissions",
+        "workflow",
+        "access_control"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "checkpointing.md",
+      "title": "Checkpointing",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/checkpointing.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:08.182124546-03:00",
+      "summary": "Explanation of checkpointing in computing, including its purpose, methods, and applications in data processing and distributed systems.",
+      "tags": [
+        "checkpointing",
+        "data recovery",
+        "distributed systems",
+        "computing",
+        "saving state"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "commands.md",
+      "title": "Commands",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/commands.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:08.410443932-03:00",
+      "summary": "A collection of essential commands for common tasks, likely covering system operations, file management, and basic utilities.",
+      "tags": [
+        "commands",
+        "system",
+        "utilities"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "headless.md",
+      "title": "Headless",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/headless.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:09.233798024-03:00",
+      "summary": "Exploration of a design approach where the frontend and backend are decoupled, focusing on APIs and data-driven interfaces.",
+      "tags": [
+        "web development",
+        "frontend-backend",
+        "APIs",
+        "modern architecture"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "mcp.md",
+      "title": "Mcp",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/mcp.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:12.456184401-03:00",
+      "summary": "Explains how to integrate Qwen Code with external tools via the Model Context Protocol (MCP) for file/database/API access, workflow automation, and configuration management.",
+      "tags": [
+        "mcp-integration",
+        "qwen-code",
+        "tool-connectivity",
+        "api-configuration",
+        "settings-management",
+        "server-configuration"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "skills.md",
+      "title": "Skills",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/skills.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:13.021223036-03:00",
+      "summary": "Guide on creating, managing, and sharing experimental Agent Skills for Qwen Code to extend its capabilities via modular folders with instructions and optional scripts.",
+      "tags": [
+        "agent-skills",
+        "qwen-code",
+        "experimental-extension",
+        "skill-management",
+        "modular-capabilities",
+        "workflow-automation"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "sub-agents.md",
+      "title": "Sub agents",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/sub-agents.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:13.821349625-03:00",
+      "summary": "Explains how Qwen Code's subagents enable task-specific AI delegation with configurable agents, context isolation, and real-time monitoring.",
+      "tags": [
+        "ai-delegation",
+        "task-specialization",
+        "subagent-configuration",
+        "qwen-code",
+        "autonomous-agents"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "language.md",
+      "title": "Language",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/language.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:12.202500733-03:00",
+      "summary": "Exploration of the concept of language, including its definition, functions, and significance in human communication and cognition.",
+      "tags": [
+        "communication",
+        "cognition",
+        "linguistics"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "token-caching.md",
+      "title": "Token caching",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/token-caching.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:14.486882299-03:00",
+      "summary": "Explains how Qwen Code optimizes API costs via token caching for API key users, reducing token processing and costs automatically.",
+      "tags": [
+        "token-caching",
+        "api-cost-reduction",
+        "qwen-api",
+        "automatic-optimization",
+        "cache-monitoring"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "sandbox.md",
+      "title": "Sandbox",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/features/sandbox.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:12.770835706-03:00",
+      "summary": "A placeholder for a generic sandbox environment or testing area without specific content.",
+      "tags": [
+        "sandbox",
+        "test",
+        "development"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "integration-github-action.md",
+      "title": "Integration github action",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/integration-github-action.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:16.525526094-03:00",
+      "summary": "GitHub Action integrating Qwen Code for automated coding tasks, issue triage, and PR reviews via GitHub workflows and CLI commands.",
+      "tags": [
+        "github-actions",
+        "qwen-code",
+        "ai-assistant",
+        "code-review",
+        "github-workflows",
+        "automation",
+        "github-cli",
+        "ai-integration"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "integration-vscode.md",
+      "title": "Integration vscode",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/integration-vscode.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:16.92713331-03:00",
+      "summary": "Extension for VS Code enabling real-time Qwen integration via a native sidebar panel for code editing and conversation management.",
+      "tags": [
+        "vscode-extension",
+        "ai-integration",
+        "real-time-editing",
+        "qwen-code",
+        "ide-companion"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "ide-companion-spec.md",
+      "title": "Ide companion spec",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/ide-integration/ide-companion-spec.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:15.684865284-03:00",
+      "summary": "Comprehensive specification for an IDE (Integrated Development Environment) companion tool or plugin, detailing features, integrations, and best practices for development workflows.",
+      "tags": [
+        "development",
+        "IDE",
+        "specification",
+        "software",
+        "companion tool"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "ide-integration.md",
+      "title": "Ide integration",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/ide-integration/ide-integration.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:16.262511052-03:00",
+      "summary": "Overview of integrating an IDE (Integrated Development Environment) with other software or systems for development workflows.",
+      "tags": [
+        "development",
+        "IDE",
+        "integration",
+        "software"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "quickstart.md",
+      "title": "Quickstart",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/quickstart.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:19.490481065-03:00",
+      "summary": "A step-by-step guide to setting up and using Qwen Code for AI-powered coding assistance, including installation, authentication, and interactive session workflows.",
+      "tags": [
+        "ai-coding-assistance",
+        "quickstart-guide",
+        "qwen-code",
+        "terminal-commands",
+        "ai-pair-programming"
+      ],
+      "category": "tutorial"
+    },
+    {
+      "file_path": "keyboard-shortcuts.md",
+      "title": "Keyboard shortcuts",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/reference/keyboard-shortcuts.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:20.220091329-03:00",
+      "summary": "document outlines Qwen Code's keyboard shortcuts for input, dialog management, and IDE integration",
+      "tags": [
+        "keyboard-shortcuts",
+        "qwen-code",
+        "input-prompt",
+        "dialog-management",
+        "ide-integration"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "integration-zed.md",
+      "title": "Integration zed",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/integration-zed.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:17.148826959-03:00",
+      "summary": "A brief overview of Zed integration processes or systems.",
+      "tags": [
+        "integration",
+        "zed",
+        "systems"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "Uninstall.md",
+      "title": "Uninstall",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/support/Uninstall.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:20.479916355-03:00",
+      "summary": "Provides instructions for uninstalling a CLI tool installed via npx or npm globally, including cache cleanup methods.",
+      "tags": [
+        "cli-uninstall",
+        "npm-cache",
+        "npx-clear",
+        "global-package-removal",
+        "package-management"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "overview.md",
+      "title": "Overview",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/overview.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:19.107420951-03:00",
+      "summary": "A foundational introduction to core concepts and foundational principles for further exploration.",
+      "tags": [
+        "introduction",
+        "foundational",
+        "overview"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "tos-privacy.md",
+      "title": "Tos privacy",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/support/tos-privacy.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:21.575865933-03:00",
+      "summary": "Explains the terms of service, privacy policies, and authentication methods for Qwen Code, including how data usage and telemetry collection vary based on authentication (Qwen OAuth vs. OpenAI-compatible API).",
+      "tags": [
+        "terms-of-service",
+        "privacy-policy",
+        "authentication-methods",
+        "openai-compatible",
+        "data-collection",
+        "telemetry",
+        "ai-model-usage"
+      ],
+      "category": "guide"
+    },
+    {
+      "file_path": "troubleshooting.md",
+      "title": "Troubleshooting",
+      "url": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/support/troubleshooting.md",
+      "source": "git",
+      "fetched_at": "2026-01-02T12:26:22.030377223-03:00",
+      "summary": "Comprehensive overview of common issues and solutions for resolving technical or operational problems",
+      "tags": [
+        "troubleshooting",
+        "problem-solving",
+        "fixes"
+      ],
+      "category": "guide"
+    }
+  ]
+}

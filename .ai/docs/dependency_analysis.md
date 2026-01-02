@@ -2,80 +2,81 @@
 
 ## Internal Dependencies
 
-The application follows a layered architecture with a central `domain` package defining interfaces used for dependency injection.
+The application follows a modular architecture with a clear separation of concerns, primarily driven by a core `domain` package containing shared interfaces and models.
 
-*   **`internal/app` (Orchestration):** Coordinates the execution. It depends on `config` for settings, `strategies` for execution logic, and `utils` for logging and shared helpers.
-*   **`internal/strategies` (Strategy Pattern):** Implements different data acquisition methods (Crawler, Git, Sitemap, LLMs, Wiki). It acts as a consumer of almost all other internal services.
-*   **`internal/domain` (Core Interfaces):** Defines the contracts (`Fetcher`, `Renderer`, `Cache`, `LLMProvider`) that allow the system to remain decoupled from specific implementations.
-*   **`internal/fetcher` & `internal/renderer`:** Provide HTTP and browser-based data acquisition. Both implement interfaces from the `domain` package.
-*   **`internal/converter`:** Handles the transformation of HTML to Markdown. It is a standalone pipeline used by strategies to process raw content.
-*   **`internal/output`:** Manages file writing and metadata collection. It is the final sink for processed documents.
-*   **`internal/cache`:** Provides persistence (BadgerDB) for fetched content, used primarily by the `fetcher` and `strategies`.
-*   **`internal/llm`:** Provides AI-powered metadata enhancement, implementing `LLMProvider` for OpenAI, Anthropic, and Google.
-*   **`internal/utils`:** Shared utility functions (logging, URL parsing, file system operations, worker pools) used across the entire codebase.
+*   **`cmd`**: The entry point for the CLI, responsible for parsing flags and initializing the orchestrator.
+*   **`internal/app`**: Contains the `Orchestrator` which manages the high-level workflow. It uses the `Detector` to select an appropriate strategy for a given URL and coordinates the execution.
+*   **`internal/strategies`**: Implements various data extraction methods (Crawler, Git, Sitemap, LLMS.txt, Wiki, PkgGo). All strategies implement the `domain.Strategy` interface and depend on a shared `Dependencies` container.
+*   **`internal/domain`**: The "leaf" package containing all core interfaces (`Fetcher`, `Renderer`, `Cache`, `Converter`, `Writer`, `LLMProvider`) and data models (`Document`, `Response`). Most other packages depend on this for abstractions.
+*   **`internal/fetcher`**: Implements the `Fetcher` interface using `tls-client` for stealth HTTP requests. It integrates with `internal/cache` for persistent response caching.
+*   **`internal/renderer`**: Implements the `Renderer` interface using `go-rod` for JavaScript-heavy pages.
+*   **`internal/converter`**: Provides a pipeline for transforming HTML into Markdown, utilizing `go-readability` and `html-to-markdown`.
+*   **`internal/output`**: Handles file system persistence and metadata collection.
+*   **`internal/llm`**: Provides integration with external LLM providers (OpenAI, Anthropic, Google) for document metadata enhancement.
+*   **`internal/cache`**: Implements a Badger-based key-value store for the `Cache` interface.
+*   **`internal/utils`**: Contains cross-cutting utilities like logging, URL parsing, and file system helpers.
 
 ## External Dependencies
 
-The project leverages several high-quality Go libraries for its specialized tasks:
+The project leverages several specialized libraries to handle complex tasks:
 
-*   **Data Acquisition:**
-    *   `github.com/gocolly/colly/v2`: Primary engine for web crawling.
-    *   `github.com/go-rod/rod`: DevTools protocol driver for JavaScript rendering.
-    *   `github.com/go-git/go-git/v5`: Pure Go implementation of Git for repository cloning.
-    *   `github.com/bogdanfinn/tls-client`: Used for advanced HTTP/TLS fingerprinting to avoid bot detection.
-*   **Content Processing:**
-    *   `github.com/JohannesKaufmann/html-to-markdown/v2`: Core HTML to Markdown conversion.
-    *   `github.com/PuerkitoBio/goquery`: jQuery-like DOM manipulation for HTML extraction.
-    *   `github.com/go-shiori/go-readability`: Port of Mozilla's Readability for main content extraction.
-*   **Infrastructure & CLI:**
-    *   `github.com/spf13/cobra` & `github.com/spf13/viper`: CLI command structure and configuration management.
-    *   `github.com/dgraph-io/badger/v4`: High-performance embedded K/V store for caching.
+*   **HTTP & Stealth**:
+    *   `github.com/bogdanfinn/tls-client`: Used to bypass bot detection by mimicking browser TLS fingerprints.
+    *   `github.com/bogdanfinn/fhttp`: Required by `tls-client` for HTTP/2 support.
+    *   `github.com/go-rod/rod` & `github.com/go-rod/stealth`: Headless browser automation for rendering JavaScript.
+*   **Scraping & Extraction**:
+    *   `github.com/gocolly/colly/v2`: High-level crawling framework.
+    *   `github.com/PuerkitoBio/goquery`: jQuery-like HTML selection and manipulation.
+    *   `github.com/go-shiori/go-readability`: Port of Mozilla's readability for main content extraction.
+*   **Content Conversion**:
+    *   `github.com/JohannesKaufmann/html-to-markdown/v2`: Core engine for Markdown generation.
+*   **Git Operations**:
+    *   `github.com/go-git/go-git/v5`: Pure Go implementation for cloning and reading Git repositories without external dependencies.
+*   **Persistence**:
+    *   `github.com/dgraph-io/badger/v4`: High-performance embedded key-value store for caching.
+*   **Frameworks & Infrastructure**:
+    *   `github.com/spf13/cobra` & `github.com/spf13/viper`: Standard Go CLI and configuration management.
     *   `github.com/rs/zerolog`: Structured logging.
-*   **Utilities:**
-    *   `github.com/cenkalti/backoff/v4`: Exponential backoff for retries.
-    *   `github.com/schollz/progressbar/v3`: Terminal progress bars.
+    *   `github.com/cenkalti/backoff/v4`: Robust retry logic for network operations.
 
 ## Dependency Graph
 
 ```mermaid
 graph TD
-    CLI[main/cobra] --> Orchestrator[internal/app]
-    Orchestrator --> Config[internal/config]
-    Orchestrator --> Strategies[internal/strategies]
+    CMD[cmd] --> ORCH[internal/app]
+    ORCH --> STRAT[internal/strategies]
+    ORCH --> CONF[internal/config]
     
-    Strategies --> Domain[internal/domain - Interfaces]
-    Strategies --> Converter[internal/converter]
-    Strategies --> Output[internal/output]
+    STRAT --> DOM[internal/domain]
+    STRAT --> FETCH[internal/fetcher]
+    STRAT --> CONV[internal/converter]
+    STRAT --> OUT[internal/output]
+    STRAT --> REND[internal/renderer]
     
-    Fetcher[internal/fetcher] -.->|Implements| Domain
-    Renderer[internal/renderer] -.->|Implements| Domain
-    Cache[internal/cache] -.->|Implements| Domain
-    LLM[internal/llm] -.->|Implements| Domain
+    FETCH --> DOM
+    FETCH --> CACHE[internal/cache]
     
-    Strategies --> Fetcher
-    Strategies --> Renderer
-    Strategies --> Cache
-    Strategies --> LLM
+    CONV --> DOM
+    OUT --> DOM
+    REND --> DOM
+    CACHE --> DOM
     
-    Converter --> html-to-markdown
-    Converter --> readability
-    
-    Fetcher --> tls-client
-    Renderer --> rod
+    LLM[internal/llm] --> DOM
+    STRAT --> LLM
 ```
 
 ## Dependency Injection
 
-The project heavily utilizes **Constructor Injection** combined with **Interface-based Decoupling**:
+The project uses **Manual Dependency Injection** via a central container:
 
-1.  **Dependency Container:** The `strategies.Dependencies` struct acts as a service locator/container that is initialized once and passed to individual strategies.
-2.  **Interface Satisfaction:** Implementation packages (like `fetcher`, `renderer`, `cache`, and `llm`) are kept separate from the `domain` package. The `strategies.NewDependencies` function wires the concrete implementations (e.g., `NewBadgerCache`) to the `domain.Cache` interface.
-3.  **Strategy Factory:** The `Orchestrator` uses a `StrategyFactory` function that can be overridden in tests, allowing for the injection of mock strategies.
-4.  **Composition:** The `fetcher` is injected into the `colly` collector (via a custom transport), showing how internal dependencies are bridged to external libraries.
+1.  **Interface Abstraction**: All major components (Fetcher, Renderer, Cache, etc.) are defined as interfaces in `internal/domain`.
+2.  **The Dependencies Struct**: A `strategies.Dependencies` struct in `internal/strategies` acts as a service locator/container that holds concrete implementations of all required interfaces.
+3.  **Initialization**: The `Orchestrator` initializes these dependencies based on configuration in `NewOrchestrator` and passes the container down to the strategies.
+4.  **Mocking**: For testing, interfaces allow the injection of mocks (generated via `go.uber.org/mock`) to isolate units during execution.
 
 ## Potential Issues
 
-*   **The `Dependencies` Struct:** While convenient, the `strategies.Dependencies` struct is starting to resemble a "God Object" or "Service Locator" pattern. Almost every strategy receives the full set of dependencies even if they only need a subset (e.g., `GitStrategy` likely doesn't need the `Renderer`).
-*   **Deeply Nested Tests:** Many tests (in `tests/integration` and `tests/unit`) depend on the full `Orchestrator` or `Dependencies` setup, making them more complex to maintain and slower to run.
-*   **Tight Coupling with BadgerDB:** While the `domain.Cache` interface exists, the `NewDependencies` function is hardcoded to instantiate `cache.NewBadgerCache`, making the infrastructure choice difficult to swap without modifying the `strategies` package.
-*   **Circular Dependencies (Potential):** The relationship between `converter` and `domain` is clean (converter returns domain models), but the reliance of `strategies` on both `converter` and `output` requires careful management of package boundaries to avoid cycles if `converter` ever needs to know about `strategies`.
+*   **God Object Pattern**: The `strategies.Dependencies` struct is a large shared container. While it facilitates passing dependencies to strategies, it creates a focal point that changes whenever any sub-service initialization logic changes.
+*   **Tight Coupling in Strategies**: Strategies are directly coupled to the `Dependencies` struct rather than receiving only the specific interfaces they need. However, since strategies often need multiple services (fetcher, cache, converter), this is a pragmatic trade-off.
+*   **Version Pinning**: Some dependencies (like `go-readability`) are pinned to specific git commits rather than semantic versions, which can lead to stability issues if the upstream changes or disappears.
+*   **Resource Management**: Multiple components (Badger, Rod, LLM providers) require explicit `Close()` calls. The orchestrator manages this, but deep nesting of these components makes resource leak prevention more complex.
