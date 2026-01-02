@@ -1,0 +1,22 @@
+# Test files
+*_test.go
+
+# Test directories
+tests/
+**/tests/
+
+# Mocks
+tests/mocks/
+**/mocks/
+
+# Benchmark tests
+**/*_benchmark_test.go
+
+# Internal tests
+*_internal_test.go
+
+# Fixtures and test data
+tests/fixtures/
+**/fixtures/
+tests/testutil/
+**/testutil/
