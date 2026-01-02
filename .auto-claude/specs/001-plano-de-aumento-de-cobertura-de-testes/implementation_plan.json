@@ -82,7 +82,9 @@
           "id": "1.3",
           "name": "Create internal/app tests (0% → 85%)",
           "description": "Expand tests for app package: detector for strategy routing and orchestrator for workflow coordination.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T17:00:00Z",
+          "notes": "Created comprehensive test coverage for detector and orchestrator. detector_test.go (380+ lines) with 60+ edge case tests for DetectStrategy, CreateStrategy, GetAllStrategies, FindMatchingStrategy. Expanded orchestrator_test.go with 14 additional tests (400+ lines) covering NewOrchestrator, Run, Close, GetStrategyName, ValidateURL with various scenarios including custom strategy factory injection, config validation, error handling, and edge cases. All tests follow table-driven patterns with proper mocking.",
           "files": [
             "tests/unit/app/detector_test.go",
             "tests/unit/app/orchestrator_test.go"
