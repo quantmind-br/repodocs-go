@@ -11,7 +11,7 @@
 | Phase | Name | Status | Progress |
 |-------|------|--------|----------|
 | 1 | Business-Critical Components | ✅ Completed | 4/4 subtasks |
-| 2 | LLM and Configuration | Pending | 0/2 subtasks |
+| 2 | LLM and Configuration | ✅ Completed | 2/2 subtasks |
 | 3 | Output and Cache | Pending | 0/2 subtasks |
 | 4 | Fetcher and Git | Pending | 0/2 subtasks |
 | 5 | CLI and Domain | Pending | 0/2 subtasks |
@@ -51,9 +51,10 @@
   - Files: tests/unit/llm/provider_test.go (expanded), tests/unit/llm/circuit_breaker_test.go (existing), tests/unit/llm/retry_test.go (expanded), tests/unit/llm/ratelimit_test.go (expanded), tests/unit/llm/metadata_test.go (expanded), tests/unit/llm/anthropic_test.go (expanded), tests/unit/llm/openai_test.go (expanded), tests/unit/llm/google_test.go (expanded), tests/integration/llm/provider_integration_test.go (new)
   - Summary: Created comprehensive unit tests for LLM providers, circuit breaker, retry, rate limiter, and metadata. Added 1,500+ lines of tests with table-driven patterns, HTTP mocking, edge cases (context cancellation, rate limiting, auth errors, invalid JSON, timeout handling), and integration tests.
 
-- [ ] 2.2: Create internal/config tests (0% → 85%)
-  - Status: Not Started
-  - Files: tests/unit/config/config_test.go, loader_test.go, defaults_test.go
+- [x] 2.2: Create internal/config tests (0% → 85%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/config/config_test.go (expanded), tests/unit/config/config_loader_test.go (expanded), tests/unit/config/defaults_test.go (new)
+  - Summary: Created comprehensive unit tests for config package (1,899 total lines). Created defaults_test.go (500+ lines) testing all 26+ default constants, Default() function with all nested structures including LLM rate limiting and circuit breaker, DefaultExcludePatterns, and directory path functions. Expanded config_test.go (+400 lines) with LLM config structure tests, validation edge cases (zero/negative/boundary/large values), table-driven validation tests, and config structure validation. Expanded config_loader_test.go (+460 lines) with environment variable tests, complex config file tests, malformed YAML tests, priority order tests, directory management edge cases, config file discovery tests, validation after load, and concurrent load tests. All tests follow table-driven patterns with proper assertions and error handling.
 
 ### Phase 3: Output and Cache (Target: 75-80%)
 **Estimated: 2 weeks**
