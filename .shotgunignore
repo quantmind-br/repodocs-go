@@ -1,22 +1,50 @@
 # Test files
 *_test.go
+**/*_test.go
+
+# Internal tests
+*_internal_test.go
+**/*_internal_test.go
+
+# Benchmark tests
+*_bench.go
+**/*_bench.go
+*_benchmark_test.go
+**/*_benchmark_test.go
 
 # Test directories
 tests/
 **/tests/
+test/
+**/test/
 
 # Mocks
 tests/mocks/
 **/mocks/
-
-# Benchmark tests
-**/*_benchmark_test.go
-
-# Internal tests
-*_internal_test.go
+mocks/
+**/mocks/
 
 # Fixtures and test data
 tests/fixtures/
 **/fixtures/
 tests/testutil/
 **/testutil/
+testdata/
+**/testdata/
+
+# Worktrees (git worktrees containing tests)
+.worktrees/
+**/.worktrees/
+
+# Integration/E2E test specific
+tests/integration/
+tests/e2e/
+tests/benchmark/
+
+# Fuzz tests
+*_fuzz_test.go
+**/*_fuzz_test.go
+
+# Example tests (typically used for documentation/examples)
+*_example_test.go
+**/*_example_test.go
