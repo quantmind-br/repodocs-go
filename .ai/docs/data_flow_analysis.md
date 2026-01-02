@@ -1,56 +1,49 @@
 # Data Flow Analysis
 
 ## Data Models
-The system relies on several core data structures to manage the documentation lifecycle:
-
-*   **Page**: Represents raw content fetched from a source (HTTP or Git). Contains fields for URL, raw byte content, content type, and metadata like status code and fetch time.
-*   **Document**: The primary internal model for processed documentation. It includes original URL, title, description, content (Markdown), word/char counts, extracted links, and headers. It also holds AI-enhanced fields like summary, tags, and category.
-*   **CacheEntry**: Used for persistence in the Badger database, storing raw page content with expiration data.
-*   **Sitemap & SitemapURL**: Intermediate structures for parsing XML sitemaps to discover discovery links.
-*   **SimpleMetadata & SimpleMetadataIndex**: Simplified versions of the Document model used for final JSON output, optimized for consumption by LLMs and other tools.
-*   **Frontmatter**: A structure representing YAML frontmatter added to the top of generated Markdown files.
+The system uses several Go structures to manage documentation data throughout its lifecycle:
+- **`domain.Page`**: Captures raw fetched content, including the URL, raw bytes, content type, and HTTP status code.
+- **`domain.Document`**: The primary internal representation of processed content. It includes the Markdown content, original HTML, and rich metadata (Title, Description, ContentHash, Word/Char counts, Links, Headers).
+- **`domain.SimpleMetadata`**: A specialized, lightweight structure optimized for JSON output and LLM evaluation, excluding technical fields like hashes.
+- **`domain.CacheEntry`**: Encapsulates cached pages with expiration timestamps.
+- **`domain.Sitemap` & `domain.LLMSLink`**: Structures used for discovery and navigation during the initial phase of extraction.
 
 ## Input Sources
-Data enters the system through multiple specialized strategies based on the source type:
-
-*   **Web URLs**: Direct HTTP/HTTPS crawling of websites.
-*   **Git Repositories**: Cloning or fetching documentation directly from Git providers (GitHub, GitLab, Bitbucket).
-*   **Specialized Endpoints**: 
-    *   `llms.txt`: Discovery via specialized LLM-friendly index files.
-    *   `Sitemaps`: Discovery via `sitemap.xml` files.
-    *   `GitHub Wiki`: Specialized handling for wiki repositories.
-    *   `pkg.go.dev`: Extraction of Go documentation.
+Data enters the system through various external sources, determined by specialized strategies:
+- **HTTP/HTTPS**: Standard web scraping of documentation sites.
+- **Sitemaps**: Parsing `sitemap.xml` files for systematic URL discovery.
+- **GitHub/Git**: Cloning repositories or fetching specific paths from Git providers.
+- **llms.txt**: Parsing standardized discovery files for LLM-friendly documentation.
+- **Wiki**: Extracting content from Wiki-style structures.
+- **Local Files**: Reading existing documents during development or testing.
 
 ## Data Transformations
-Information undergoes a rigorous multi-stage pipeline as it moves through the system:
-
-1.  **Normalization**: Raw bytes are converted to UTF-8 encoding.
-2.  **Rendering**: If enabled or required (detected by DOM markers), raw HTML is processed through a headless browser (Rod) to execute JavaScript and capture dynamic content.
-3.  **Extraction**: The system identifies the "main" content of a page, stripping away boilerplate like navigation, sidebars, and footers.
-4.  **Sanitization**: HTML is cleaned by removing scripts, comments, and non-essential elements.
-5.  **Conversion**: HTML is transformed into structured Markdown using the `html-to-markdown` library.
-6.  **AI Enrichment**: If configured, the Markdown content is sent to an LLM (OpenAI, Anthropic, or Google) to generate a concise summary, categorize the document, and suggest relevant tags.
-7.  **Decoration**: YAML frontmatter is generated and prepended to the Markdown content.
+Data undergoes a multi-stage pipeline as it moves from raw input to final output:
+1. **Encoding Normalization**: Raw bytes are converted to UTF-8 using a dedicated encoding converter.
+2. **Content Extraction**: Target content is isolated from raw HTML based on CSS selectors or automatic "readability" detection.
+3. **HTML Sanitization**: Removal of navigation elements, scripts, comments, and unwanted tags.
+4. **Markdown Conversion**: Sanity-checked HTML is transformed into clean Markdown with configurable styles (fenced code blocks, atx headings).
+5. **Metadata Enhancement**:
+    - **Technical**: Automated calculation of word counts, character counts, and SHA256 content hashes.
+    - **AI-Driven**: Optional processing via LLMs (OpenAI, Anthropic, Google) to generate summaries, tags, and categories.
 
 ## Storage Mechanisms
-The system utilizes two primary storage layers:
-
-*   **Persistent Cache**: A Badger DB (key-value store) is used to cache raw fetched pages and responses, reducing redundant network requests and respecting source rate limits.
-*   **Local File System**: The final destination for processed data.
-    *   **Markdown Files**: Individual `.md` files organized in a directory structure (optionally flat).
-    *   **JSON Metadata**: A consolidated `metadata.json` file acting as an index for all processed documents.
+Information persists in two primary ways:
+- **BadgerDB Cache**: A local KV store (using BadgerDB) stores raw fetched pages (`CacheEntry`) to prevent redundant network requests and respect rate limits.
+- **Local Filesystem**: The final processed output is written to a structured directory on disk.
+- **In-Memory Collector**: During execution, the `MetadataCollector` aggregates metadata for all processed documents.
 
 ## Data Validation
-Validation occurs at several boundary points:
-
-*   **Configuration**: Input options are validated for sanity (concurrency limits, timeouts, directory paths).
-*   **Source Validation**: URLs are checked for validity and filtered based on domain or path constraints.
-*   **Content Validation**: The system verifies content types (HTML vs Markdown) before processing.
-*   **LLM Response Validation**: AI-generated metadata is validated against a strict JSON schema (summary/tags/category) with retry logic for malformed responses.
+Validation occurs at multiple boundaries:
+- **Config Validation**: Ensures workers, timeouts, and paths are valid before execution.
+- **URL Validation**: Checks URL schemes and formats before fetching.
+- **Content-Type Validation**: Verifies that fetched content can be processed (e.g., text/html).
+- **Integrity Checks**: Content hashes verify if data has changed since the last fetch.
+- **Schema Validation**: Sitemaps and LLM responses are validated against expected structural schemas.
 
 ## Output Formats
-The system produces three main types of output:
-
-*   **Markdown Files**: Clean, readable Markdown containing the documentation content and YAML metadata.
-*   **Consolidated JSON Index**: A structured `metadata.json` containing a summary of all processed files, including their paths, URLs, and AI-generated metadata.
-*   **Structured Logs**: Execution progress and metrics provided via Zerolog (JSON or pretty-printed console output).
+The system exports processed documentation in several standardized formats:
+- **Markdown (.md)**: Individual files containing the converted content.
+- **YAML Frontmatter**: Injected at the top of Markdown files, containing metadata (Title, URL, Summary, etc.).
+- **JSON Metadata Index**: A consolidated `repodocs.json` file containing the `SimpleMetadataIndex` for all extracted documents, facilitating integration with RAG pipelines or other tools.
+- **Asset Files**: Optional preservation of images and other static resources found during extraction.

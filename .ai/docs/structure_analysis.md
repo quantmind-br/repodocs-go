@@ -1,54 +1,55 @@
 # Code Structure Analysis
 
 ## Architectural Overview
-The codebase is a modular Go application designed for high-performance web crawling and documentation extraction. It employs a **Multi-Strategy Architecture** that allows it to handle various content sources (standard websites, Git repositories, Go package documentation, wikis, and LLM-specific files) through a unified interface. The system follows a **Pipeline-based processing flow**: detection, acquisition (fetching/rendering), conversion, enhancement, and persistence.
+The codebase is structured as a modular Go application designed for documentation extraction and processing. It follows a decoupled, interface-driven architecture where specialized strategies handle different source types (Web, Git, Wiki, etc.) while sharing a common infrastructure for fetching, rendering, converting, and storing content. 
 
-The architecture emphasizes **Stealth and Robustness**, utilizing advanced TLS fingerprinting to bypass anti-bot measures and headless browser rendering for JavaScript-heavy applications. Dependency Injection is used extensively via a `Dependencies` container struct, ensuring that core services are shared and easily testable.
+The system operates as a pipeline:
+1. **Detection**: Identifying the appropriate strategy for a given URL.
+2. **Execution**: Orchestrating the extraction process (crawling, cloning, or API interaction).
+3. **Processing**: Converting raw content (HTML/Git) into a standardized Markdown format with metadata.
+4. **Enhancement**: (Optional) Using LLMs to enrich document metadata.
+5. **Output**: Persisting the processed documentation to disk.
 
 ## Core Components
-*   **Orchestrator (`internal/app`)**: The central brain that coordinates the extraction lifecycle. It handles configuration validation, strategy detection, and execution flow.
-*   **Strategy Detector (`internal/app/detector.go`)**: A pattern-matching engine that analyzes input URLs to determine the most effective extraction strategy.
-*   **Extraction Strategies (`internal/strategies`)**: Specialized modules (Crawler, Git, Sitemap, LLMS, PkgGo, Wiki) that implement the logic for discovering and acquiring raw content from different sources.
-*   **Conversion Pipeline (`internal/converter`)**: A sequential processor that transforms raw HTML into clean, LLM-ready Markdown using a series of filters (encoding, extraction, sanitization, and conversion).
-*   **Metadata Enhancer (`internal/llm`)**: An optional AI-driven component that leverages Large Language Models to generate summaries, tags, and categories for processed documents.
-*   **Stealth Fetcher (`internal/fetcher`)**: A specialized HTTP client that mimics modern browser TLS fingerprints to avoid detection by security services.
-*   **Headless Renderer (`internal/renderer`)**: A browser-based rendering engine (using `rod`) that executes JavaScript to capture content from Single Page Applications (SPAs).
+*   **Orchestrator (`internal/app`)**: The central entry point that manages the lifecycle of documentation extraction. it coordinates dependency injection, strategy selection, and execution flow.
+*   **Strategy Factory**: A mechanism within the app layer that maps URLs to specific extraction implementations (e.g., `CrawlerStrategy`, `GitStrategy`, `WikiStrategy`).
+*   **Converter Pipeline (`internal/converter`)**: A multi-stage processor that handles encoding conversion, content extraction (selecting main content and removing noise), HTML sanitization, and Markdown generation.
+*   **Dependencies Container (`internal/strategies`)**: A shared structure providing strategies with access to the Fetcher, Renderer, Cache, Converter, Writer, and LLM services.
+*   **Metadata Enhancer (`internal/llm`)**: An optional component that interacts with LLM providers (OpenAI, Anthropic, Google) to generate summaries, tags, and categories for documents.
 
 ## Service Definitions
-*   **Cache Service**: A persistence layer powered by **Badger DB** that stores fetched content to reduce redundant network requests and improve performance.
-*   **LLM Service**: An abstraction layer for interacting with multiple AI providers (OpenAI, Anthropic, Google Gemini), including built-in rate limiting and circuit breaking.
-*   **Output Service**: Manages the structured writing of Markdown files to disk, including frontmatter generation and metadata indexing.
-*   **Renderer Pool Service**: Manages a pool of browser tabs to optimize resource usage during concurrent rendering tasks.
+*   **Fetcher (`internal/fetcher`)**: A high-level HTTP client providing "stealth" capabilities (User-Agent rotation, etc.) and integrated caching to minimize network load.
+*   **Renderer (`internal/renderer`)**: A headless browser service (powered by `go-rod`) used for processing Single Page Applications (SPAs) or JavaScript-heavy sites that cannot be handled by static fetching.
+*   **Cache (`internal/cache`)**: A persistence service using BadgerDB to store fetched content, reducing redundant requests during iterative runs.
+*   **Writer/Collector (`internal/output`)**: Services responsible for organizing the final file structure, handling document overwrites, and collecting metadata into a unified JSON index.
 
 ## Interface Contracts
-*   **`Strategy`**: Defines the lifecycle of an extraction method (`Name`, `CanHandle`, `Execute`).
-*   **`Fetcher`**: Abstracts HTTP operations, supporting custom headers, cookies, and stealth transport.
-*   **`Renderer`**: Interface for browser-based rendering of dynamic content.
-*   **`Converter`**: Contract for transforming HTML/raw content into structured `Document` models.
-*   **`Cache`**: Standardizes key-value storage operations (Get, Set, Has, Delete).
-*   **`LLMProvider`**: Abstraction for text completion services used in metadata enhancement.
+The application relies heavily on interfaces defined in `internal/domain` to maintain flexibility:
+*   **`Strategy`**: Defines `Name()`, `CanHandle(url)`, and `Execute(ctx, url, opts)`. This allows adding new source types without modifying the core logic.
+*   **`Fetcher`**: Abstracts HTTP operations, enabling both standard and cached/stealth implementations.
+*   **`Renderer`**: Abstracts the headless browser interactions for JavaScript rendering.
+*   **`LLMProvider`**: A contract for completion services, supporting multiple AI backends (OpenAI, Vertex AI, Anthropic).
+*   **`Converter`**: Defines the transformation from raw HTML/content into the system's `Document` model.
 
 ## Design Patterns Identified
-*   **Strategy Pattern**: Used to select different acquisition algorithms based on the source URL type.
-*   **Factory Pattern**: Employed for creating strategies and LLM providers based on configuration and detection results.
-*   **Pipe and Filter**: The conversion logic is organized as a series of independent filters (Sanitizer, Extractor, MarkdownConverter).
-*   **Decorator Pattern**: Used to wrap LLM providers with cross-cutting concerns like rate limiting, retries, and circuit breaking.
-*   **Dependency Injection**: Dependencies are injected into strategies through a centralized `Dependencies` struct.
-*   **Object Pool**: The renderer maintains a `TabPool` to reuse browser instances and tabs for efficiency.
+*   **Strategy Pattern**: Used to handle different documentation sources (Git, Web, Wiki, Pkg.go.dev) through a common interface.
+*   **Dependency Injection**: Dependencies like the fetcher, logger, and cache are injected into strategies and the orchestrator, facilitating testing and configuration.
+*   **Pipeline Pattern**: The HTML-to-Markdown conversion is implemented as a series of discrete steps (Sanitize -> Extract -> Convert -> Stats).
+*   **Factory Pattern**: Used for creating LLM providers and selecting the appropriate extraction strategy based on the input URL.
+*   **Circuit Breaker & Rate Limiter**: Implemented in the LLM service to protect against external API failures and quota limits.
+*   **Worker Pool**: Utilized in various strategies to parallelize fetching and processing tasks.
 
 ## Component Relationships
-1.  **Detection Phase**: The `Orchestrator` uses the `Detector` to map a URL to a specific `Strategy`.
-2.  **Dependency Assembly**: The `Orchestrator` initializes a `Dependencies` container with shared services (Fetcher, Cache, Converter, etc.).
-3.  **Execution Phase**: The chosen `Strategy` uses the `Fetcher` or `Renderer` to acquire content.
-4.  **Transformation Phase**: Raw content is passed through the `Converter` pipeline to produce a `Document`.
-5.  **Enhancement Phase**: If enabled, the `MetadataEnhancer` interacts with the `LLMProvider` to enrich the `Document` with AI-generated metadata.
-6.  **Persistence Phase**: The `Writer` saves the final document to the filesystem and updates the `MetadataCollector` for the final index.
+*   **Orchestrator → Strategies**: The Orchestrator selects and executes a Strategy.
+*   **Strategies → Dependencies**: Strategies use the `Dependencies` container to access cross-cutting concerns (Cache, Fetcher, Converter).
+*   **Converter → Sanitizer/Markdown**: The Converter delegates low-level HTML/Markdown transformations to specialized sub-modules.
+*   **Fetcher ↔ Cache**: The Fetcher interacts with the Cache to store and retrieve responses.
+*   **LLMProvider ↔ MetadataEnhancer**: The Enhancer uses the Provider to fulfill AI-related tasks.
 
 ## Key Methods & Functions
-*   **`Orchestrator.Run`**: The primary entry point for the extraction process.
-*   **`DetectStrategy`**: The logic that selects the acquisition method based on URL patterns.
-*   **`Pipeline.Convert`**: The core transformation logic from HTML to Markdown.
-*   **`MetadataEnhancer.Enhance`**: The method that manages prompt engineering and JSON extraction from LLM responses.
-*   **`Client.GetWithHeaders`**: Orchestrates cached fetching with stealth capabilities and retries.
-*   **`Renderer.Render`**: Handles the complexities of browser navigation, waiting for selectors, and network stability.
-*   **`Writer.Write`**: Handles path generation, frontmatter injection, and file I/O.
+*   **`orchestrator.Run()`**: The main execution loop that triggers detection and strategy execution.
+*   **`DetectStrategy(url)`**: A logic gate that inspects URLs to determine the best handling approach.
+*   **`converter.Pipeline.Convert()`**: The core transformation logic that turns raw input into a structured `domain.Document`.
+*   **`renderer.Renderer.Render()`**: Orchestrates the headless browser tab pool to fetch and render dynamic content.
+*   **`llm.MetadataEnhancer.Enhance()`**: Manages the prompt engineering and retry logic for AI-assisted metadata extraction.
+*   **`strategies.CrawlerStrategy.Execute()`**: Uses `colly` for asynchronous web crawling and link discovery.
