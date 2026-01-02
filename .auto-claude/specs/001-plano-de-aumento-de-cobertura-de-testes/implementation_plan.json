@@ -310,7 +310,9 @@
           "id": "3.2",
           "name": "Expand internal/cache tests (0% \u2192 75%)",
           "description": "Create comprehensive unit tests for BadgerCache operations and key generation. Add integration tests with real BadgerDB for persistence verification.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T19:00:00Z",
+          "notes": "Fixed package declarations (app_test \u2192 cache_test), expanded unit tests with 360+ additional lines covering TTL variations (long, short, zero, negative), context cancellation, edge cases (empty keys, multiple deletions, Has after Delete, Size after Clear), and concurrent operations. Created comprehensive integration tests (498 lines, 10 tests) testing BadgerDB persistence across restarts, multiple entries (5 entries), delete/clear persistence, stats verification, concurrency safety (20 goroutines), large values (1MB), nested directory creation (level1/level2/level3), key generation consistency (URL normalization, scheme handling), and prefixed keys (page, sitemap, metadata). Total: 1,809 lines, 72 test functions. All tests follow table-driven patterns with proper temp directory management (t.TempDir()) and cleanup. All acceptance criteria met.",
           "files": [
             "tests/unit/cache/badger_test.go",
             "tests/unit/cache/keys_test.go",
