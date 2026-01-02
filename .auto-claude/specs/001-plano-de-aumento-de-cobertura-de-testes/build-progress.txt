@@ -16,7 +16,7 @@
 | 4 | Fetcher and Git | ✅ Completed | 2/2 subtasks |
 | 5 | CLI and Domain | ✅ Completed | 2/2 subtasks |
 | 6 | Renderer (High Complexity) | ✅ Completed | 1/1 subtasks |
-| 7 | Mock Generation and Infrastructure | 🚧 In Progress | 1/4 subtasks | |
+| 7 | Mock Generation and Infrastructure | 🚧 In Progress | 3/4 subtasks |
 
 ## Detailed Progress
 
@@ -110,13 +110,15 @@
   - Files: tests/mocks/git.go (new), tests/mocks/domain.go (existing), tests/mocks/README.md (new)
   - Summary: Generated gomock-based mock for git.Client interface (tests/mocks/git.go). Verified that domain.go already contains gomock mocks for all domain interfaces (Strategy, Fetcher, Renderer, Cache, Converter, Writer, LLMProvider). Fetcher and Renderer interfaces are mocked in domain.go as they are domain interfaces. Created README.md documenting all mocks, usage patterns, and regeneration instructions. All mocks use go.uber.org/mock/gomock framework for consistency. Legacy testify/mock version (git_mock.go) retained for backward compatibility.
 
-- [ ] 7.2: Create additional fixtures
-  - Status: Not Started
+- [x] 7.2: Create additional fixtures
+  - Status: ✅ Completed (2026-01-02)
   - Files: tests/testdata/fixtures/git/*.tar.gz, sitemap/*.xml, llms/*.txt
+  - Summary: Created comprehensive test fixtures for integration and unit tests. Git archive (sample_repo.tar.gz, 18K) with README, docs/, examples/. Sitemap fixtures (3 files): sitemap.xml (15 URLs), sitemap_index.xml (7 child sitemaps), sitemap_docs.xml (5 documentation URLs). llms.txt fixtures (3 files): llms.txt (56 lines with comprehensive documentation URLs), llms_with_filters.txt (55 lines with filter directives), llms_simple.txt (5 lines for basic tests). All fixtures validated for correctness (XML well-formed, tar.gz valid format, llms.txt follows spec). Total: 7 fixture files covering Git, sitemap, and llms.txt test scenarios.
 
-- [ ] 7.3: Update CI for coverage reporting
-  - Status: Not Started
+- [x] 7.3: Update CI for coverage reporting
+  - Status: ✅ Completed (2026-01-02)
   - Files: .github/workflows/ci.yml
+  - Summary: Updated .github/workflows/ci.yml with comprehensive per-package coverage reporting. Individual package coverage reports for all 12 packages. Package-specific thresholds (strategies 85%, converter 85%, app 85%, llm 80%, config 85%, output 80%, cache 75%, fetcher 70%, git 80%, cmd 80%, domain 85%, renderer 40%). CI fails automatically if any package below threshold. Coverage reports uploaded as artifacts (HTML + per-package .out files). PR comments with automatic coverage summary showing pass/fail for each package. Using -covermode=atomic for accurate coverage data. Bash associative array with for loop processes each package, extracts coverage percentage, compares against threshold, generates summary file. All acceptance criteria met.
 
 - [ ] 7.4: Update Makefile with new test targets
   - Status: Not Started

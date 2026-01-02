@@ -131,11 +131,59 @@
         }
       ],
       "status": "completed"
+    },
+    "5.2": {
+      "attempts": [
+        {
+          "session": 13,
+          "timestamp": "2026-01-02T12:23:23.054429",
+          "approach": "Implemented: Create unit tests for domain model methods and error constructors.",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "6.1": {
+      "attempts": [
+        {
+          "session": 14,
+          "timestamp": "2026-01-02T12:28:56.563475",
+          "approach": "Implemented: Create unit tests for framework detection, pool management, and browser operations. Limited integrat",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "7.1": {
+      "attempts": [
+        {
+          "session": 15,
+          "timestamp": "2026-01-02T12:34:04.526780",
+          "approach": "Implemented: Generate mocks using go.uber.org/mock for GitClient, domain interfaces, and all external dependencie",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
+    },
+    "7.2": {
+      "attempts": [
+        {
+          "session": 16,
+          "timestamp": "2026-01-02T12:37:15.273069",
+          "approach": "Implemented: Create Git repository fixtures, sitemap fixtures, and llms.txt fixtures for test scenarios.",
+          "success": true,
+          "error": null
+        }
+      ],
+      "status": "completed"
     }
   },
   "stuck_subtasks": [],
   "metadata": {
     "created_at": "2026-01-02T11:01:28.012335",
-    "last_updated": "2026-01-02T12:18:15.081461"
+    "last_updated": "2026-01-02T12:37:15.273076"
   }
 }
