@@ -18,7 +18,7 @@
       "subtasks": [
         {
           "id": "1.1",
-          "name": "Expand internal/strategies coverage (31% → 85%)",
+          "name": "Expand internal/strategies coverage (31% \u2192 85%)",
           "description": "Create comprehensive unit tests for all strategy implementations including Git, Crawler, LLMS, PkgGo, and base strategy methods.",
           "status": "completed",
           "completedAt": "2026-01-02T15:00:00Z",
@@ -32,24 +32,37 @@
             "tests/unit/strategies/sitemap_strategy_test.go"
           ],
           "functionsToTest": [
-            "parseGitURL", "tryArchiveDownload", "downloadAndExtract", "extractTarGz",
-            "findDocumentationFiles", "processFiles", "processFile", "detectDefaultBranch",
-            "Execute (all strategies)", "isHTMLContentType", "parseLLMSLinks",
-            "filterLLMSLinks", "extractSections", "DefaultOptions", "FlushMetadata",
-            "SetStrategy", "SetSourceURL", "WriteDocument"
+            "parseGitURL",
+            "tryArchiveDownload",
+            "downloadAndExtract",
+            "extractTarGz",
+            "findDocumentationFiles",
+            "processFiles",
+            "processFile",
+            "detectDefaultBranch",
+            "Execute (all strategies)",
+            "isHTMLContentType",
+            "parseLLMSLinks",
+            "filterLLMSLinks",
+            "extractSections",
+            "DefaultOptions",
+            "FlushMetadata",
+            "SetStrategy",
+            "SetSourceURL",
+            "WriteDocument"
           ],
           "coverageTarget": 85,
           "acceptanceCriteria": [
             "All public functions have unit tests",
             "Table-driven tests for multiple scenarios",
             "Mock injection for all external dependencies",
-            "Coverage ≥85% for strategies package",
+            "Coverage \u226585% for strategies package",
             "Tests pass with make test"
           ]
         },
         {
           "id": "1.2",
-          "name": "Create internal/converter tests (0% → 85%)",
+          "name": "Create internal/converter tests (0% \u2192 85%)",
           "description": "Create comprehensive unit tests for converter pipeline components: pipeline orchestration, HTML sanitization, content extraction, Markdown conversion, and encoding normalization.",
           "status": "completed",
           "completedAt": "2026-01-02T16:00:00Z",
@@ -62,25 +75,44 @@
             "tests/unit/converter/encoding_test.go"
           ],
           "functionsToTest": [
-            "Convert", "ConvertHTML", "ConvertHTMLWithSelector", "removeExcluded",
-            "Sanitize", "normalizeURLs", "resolveURL", "normalizeSrcset", "removeEmptyElements",
-            "Extract", "extractWithSelector", "extractWithReadability", "ExtractDescription",
-            "ExtractHeaders", "ExtractLinks", "cleanMarkdown", "GenerateFrontmatter",
-            "AddFrontmatter", "StripMarkdown", "CountWords", "CountChars",
-            "DetectEncoding", "ConvertToUTF8", "IsUTF8", "GetEncoder"
+            "Convert",
+            "ConvertHTML",
+            "ConvertHTMLWithSelector",
+            "removeExcluded",
+            "Sanitize",
+            "normalizeURLs",
+            "resolveURL",
+            "normalizeSrcset",
+            "removeEmptyElements",
+            "Extract",
+            "extractWithSelector",
+            "extractWithReadability",
+            "ExtractDescription",
+            "ExtractHeaders",
+            "ExtractLinks",
+            "cleanMarkdown",
+            "GenerateFrontmatter",
+            "AddFrontmatter",
+            "StripMarkdown",
+            "CountWords",
+            "CountChars",
+            "DetectEncoding",
+            "ConvertToUTF8",
+            "IsUTF8",
+            "GetEncoder"
           ],
           "coverageTarget": 85,
           "acceptanceCriteria": [
             "All converter pipeline stages have unit tests",
             "HTML fixtures created for various scenarios",
             "Edge cases tested (malformed HTML, encoding issues)",
-            "Coverage ≥85% for converter package",
+            "Coverage \u226585% for converter package",
             "Integration test with real cache"
           ]
         },
         {
           "id": "1.3",
-          "name": "Create internal/app tests (0% → 85%)",
+          "name": "Create internal/app tests (0% \u2192 85%)",
           "description": "Expand tests for app package: detector for strategy routing and orchestrator for workflow coordination.",
           "status": "completed",
           "completedAt": "2026-01-02T17:00:00Z",
@@ -90,15 +122,22 @@
             "tests/unit/app/orchestrator_test.go"
           ],
           "functionsToTest": [
-            "DetectStrategy", "CreateStrategy", "GetAllStrategies", "FindMatchingStrategy",
-            "NewOrchestrator", "Run", "Close", "GetStrategyName", "ValidateURL"
+            "DetectStrategy",
+            "CreateStrategy",
+            "GetAllStrategies",
+            "FindMatchingStrategy",
+            "NewOrchestrator",
+            "Run",
+            "Close",
+            "GetStrategyName",
+            "ValidateURL"
           ],
           "coverageTarget": 85,
           "acceptanceCriteria": [
             "All detector methods tested with various URL patterns",
             "Orchestrator workflow tested with mocked strategies",
             "Strategy factory injection tested",
-            "Coverage ≥85% for app package",
+            "Coverage \u226585% for app package",
             "Error paths tested (invalid URLs, strategy failures)"
           ]
         },
@@ -139,9 +178,9 @@
       "subtasks": [
         {
           "id": "2.1",
-          "name": "Expand internal/llm tests (6% → 80%)",
+          "name": "Expand internal/llm tests (6% \u2192 80%)",
           "description": "Create comprehensive unit tests for LLM providers, circuit breaker state machine, retry logic with backoff, and rate limiter with token bucket.",
-          "status": "pending",
+          "status": "completed",
           "files": [
             "tests/unit/llm/provider_test.go",
             "tests/unit/llm/circuit_breaker_test.go",
@@ -151,14 +190,31 @@
             "tests/integration/llm/provider_integration_test.go"
           ],
           "functionsToTest": [
-            "NewAnthropicProvider", "NewGoogleProvider", "NewOpenAIProvider",
-            "Complete", "Close", "handleHTTPError",
-            "NewCircuitBreaker", "Allow", "RecordSuccess", "RecordFailure",
-            "State", "transitionTo",
-            "NewRetrier", "Execute", "calculateBackoff",
-            "IsRetryableError", "ShouldRetryStatusCode",
-            "NewTokenBucket", "Wait", "TryAcquire", "Available", "refill",
-            "Enhance", "EnhanceAll", "applyMetadata"
+            "NewAnthropicProvider",
+            "NewGoogleProvider",
+            "NewOpenAIProvider",
+            "Complete",
+            "Close",
+            "handleHTTPError",
+            "NewCircuitBreaker",
+            "Allow",
+            "RecordSuccess",
+            "RecordFailure",
+            "State",
+            "transitionTo",
+            "NewRetrier",
+            "Execute",
+            "calculateBackoff",
+            "IsRetryableError",
+            "ShouldRetryStatusCode",
+            "NewTokenBucket",
+            "Wait",
+            "TryAcquire",
+            "Available",
+            "refill",
+            "Enhance",
+            "EnhanceAll",
+            "applyMetadata"
           ],
           "coverageTarget": 80,
           "acceptanceCriteria": [
@@ -167,12 +223,14 @@
             "Rate limiter tested with timing control",
             "HTTP mocking for provider tests",
             "Integration tests for provider HTTP calls",
-            "Coverage ≥80% for llm package"
-          ]
+            "Coverage \u226580% for llm package"
+          ],
+          "completedAt": "2026-01-02T11:42:32.365172Z",
+          "notes": "Created comprehensive unit tests for LLM providers (Anthropic, OpenAI, Google), circuit breaker state machine, retry logic with exponential backoff, rate limiter with token bucket, and metadata enhancer. Added 1,500+ lines of tests covering all public functions, error paths, edge cases (context cancellation, rate limiting, auth errors, invalid JSON, timeout handling), and integration tests with HTTP mocking. All tests follow table-driven patterns with proper assertions."
         },
         {
           "id": "2.2",
-          "name": "Create internal/config tests (0% → 85%)",
+          "name": "Create internal/config tests (0% \u2192 85%)",
           "description": "Create unit tests for configuration validation, loading with Viper, default values, and directory management.",
           "status": "pending",
           "files": [
@@ -181,10 +239,17 @@
             "tests/unit/config/defaults_test.go"
           ],
           "functionsToTest": [
-            "Validate", "all validation methods",
-            "Load", "LoadWithViper", "setDefaults",
-            "EnsureConfigDir", "EnsureCacheDir",
-            "Default", "ConfigDir", "CacheDir", "ConfigFilePath"
+            "Validate",
+            "all validation methods",
+            "Load",
+            "LoadWithViper",
+            "setDefaults",
+            "EnsureConfigDir",
+            "EnsureCacheDir",
+            "Default",
+            "ConfigDir",
+            "CacheDir",
+            "ConfigFilePath"
           ],
           "coverageTarget": 85,
           "acceptanceCriteria": [
@@ -192,7 +257,7 @@
             "Viper loading tested with various config files",
             "Default values verified",
             "Directory creation and management tested",
-            "Coverage ≥85% for config package"
+            "Coverage \u226585% for config package"
           ]
         }
       ]
@@ -208,7 +273,7 @@
       "subtasks": [
         {
           "id": "3.1",
-          "name": "Create internal/output tests (0% → 80%)",
+          "name": "Create internal/output tests (0% \u2192 80%)",
           "description": "Create unit tests for output writer operations and metadata collector with temp directory management.",
           "status": "pending",
           "files": [
@@ -216,9 +281,17 @@
             "tests/unit/output/collector_test.go"
           ],
           "functionsToTest": [
-            "Write", "WriteMultiple", "FlushMetadata", "Exists",
-            "EnsureBaseDir", "Clean", "Stats",
-            "Add", "Flush", "buildIndex", "GetIndex"
+            "Write",
+            "WriteMultiple",
+            "FlushMetadata",
+            "Exists",
+            "EnsureBaseDir",
+            "Clean",
+            "Stats",
+            "Add",
+            "Flush",
+            "buildIndex",
+            "GetIndex"
           ],
           "coverageTarget": 80,
           "acceptanceCriteria": [
@@ -226,12 +299,12 @@
             "Metadata collection and flushing tested",
             "Directory management tested",
             "Stats and verification tested",
-            "Coverage ≥80% for output package"
+            "Coverage \u226580% for output package"
           ]
         },
         {
           "id": "3.2",
-          "name": "Expand internal/cache tests (0% → 75%)",
+          "name": "Expand internal/cache tests (0% \u2192 75%)",
           "description": "Create comprehensive unit tests for BadgerCache operations and key generation. Add integration tests with real BadgerDB for persistence verification.",
           "status": "pending",
           "files": [
@@ -240,10 +313,21 @@
             "tests/integration/cache/cache_integration_test.go"
           ],
           "functionsToTest": [
-            "NewBadgerCache", "Get", "Set", "Has", "Delete",
-            "Close", "Clear", "Size", "Stats",
-            "GenerateKey", "GenerateKeyWithPrefix", "normalizeForKey",
-            "PageKey", "SitemapKey", "MetadataKey"
+            "NewBadgerCache",
+            "Get",
+            "Set",
+            "Has",
+            "Delete",
+            "Close",
+            "Clear",
+            "Size",
+            "Stats",
+            "GenerateKey",
+            "GenerateKeyWithPrefix",
+            "normalizeForKey",
+            "PageKey",
+            "SitemapKey",
+            "MetadataKey"
           ],
           "coverageTarget": 75,
           "acceptanceCriteria": [
@@ -252,7 +336,7 @@
             "Concurrent access tested",
             "Integration test with real BadgerDB",
             "Cache persistence verified",
-            "Coverage ≥75% for cache package"
+            "Coverage \u226575% for cache package"
           ]
         }
       ]
@@ -268,7 +352,7 @@
       "subtasks": [
         {
           "id": "4.1",
-          "name": "Create internal/fetcher tests (0% → 70%)",
+          "name": "Create internal/fetcher tests (0% \u2192 70%)",
           "description": "Create unit tests for HTTP client operations, retry logic with exponential backoff, stealth headers, and custom transport. Add integration tests with real HTTP server.",
           "status": "pending",
           "files": [
@@ -278,13 +362,24 @@
             "tests/integration/fetcher/fetcher_integration_test.go"
           ],
           "functionsToTest": [
-            "NewClient", "Get", "GetWithHeaders", "doRequest",
-            "GetCookies", "Close", "cache operations",
-            "NewRetrier", "Retry", "RetryWithValue",
-            "ShouldRetryStatus", "ParseRetryAfter",
-            "RandomUserAgent", "RandomAcceptLanguage",
-            "StealthHeaders", "RandomDelay",
-            "NewStealthTransport", "RoundTrip"
+            "NewClient",
+            "Get",
+            "GetWithHeaders",
+            "doRequest",
+            "GetCookies",
+            "Close",
+            "cache operations",
+            "NewRetrier",
+            "Retry",
+            "RetryWithValue",
+            "ShouldRetryStatus",
+            "ParseRetryAfter",
+            "RandomUserAgent",
+            "RandomAcceptLanguage",
+            "StealthHeaders",
+            "RandomDelay",
+            "NewStealthTransport",
+            "RoundTrip"
           ],
           "coverageTarget": 70,
           "acceptanceCriteria": [
@@ -293,25 +388,26 @@
             "Stealth headers tested",
             "Cookie handling tested",
             "Integration test with real HTTP server",
-            "Coverage ≥70% for fetcher package"
+            "Coverage \u226570% for fetcher package"
           ]
         },
         {
           "id": "4.2",
-          "name": "Create internal/git tests (0% → 80%)",
+          "name": "Create internal/git tests (0% \u2192 80%)",
           "description": "Create unit tests for Git client wrapper with go-git mocking.",
           "status": "pending",
           "files": [
             "tests/unit/git/client_test.go"
           ],
           "functionsToTest": [
-            "NewClient", "PlainCloneContext"
+            "NewClient",
+            "PlainCloneContext"
           ],
           "coverageTarget": 80,
           "acceptanceCriteria": [
             "Git clone operations tested with mocks",
             "Error handling tested (auth failures, network errors)",
-            "Coverage ≥80% for git package"
+            "Coverage \u226580% for git package"
           ]
         }
       ]
@@ -327,27 +423,31 @@
       "subtasks": [
         {
           "id": "5.1",
-          "name": "Create cmd/repodocs tests (0% → 80%)",
+          "name": "Create cmd/repodocs tests (0% \u2192 80%)",
           "description": "Create unit tests for CLI operations including initialization, checks, and main execution flow with mocked dependencies.",
           "status": "pending",
           "files": [
             "cmd/repodocs/main_test.go"
           ],
           "functionsToTest": [
-            "run", "initConfig", "checkInternet", "checkChrome",
-            "checkWritePermissions", "checkCacheDir"
+            "run",
+            "initConfig",
+            "checkInternet",
+            "checkChrome",
+            "checkWritePermissions",
+            "checkCacheDir"
           ],
           "coverageTarget": 80,
           "acceptanceCriteria": [
             "All checks tested with various scenarios",
             "Config initialization tested",
             "Error paths tested",
-            "Coverage ≥80% for cmd/repodocs"
+            "Coverage \u226580% for cmd/repodocs"
           ]
         },
         {
           "id": "5.2",
-          "name": "Create internal/domain tests (0% → 85%)",
+          "name": "Create internal/domain tests (0% \u2192 85%)",
           "description": "Create unit tests for domain model methods and error constructors.",
           "status": "pending",
           "files": [
@@ -355,8 +455,11 @@
             "tests/unit/domain/errors_test.go"
           ],
           "functionsToTest": [
-            "ToMetadata", "ToFrontmatter", "ToDocumentMetadata",
-            "ToSimpleMetadata", "ToSimpleDocumentMetadata",
+            "ToMetadata",
+            "ToFrontmatter",
+            "ToDocumentMetadata",
+            "ToSimpleMetadata",
+            "ToSimpleDocumentMetadata",
             "all error constructors and methods"
           ],
           "coverageTarget": 85,
@@ -364,7 +467,7 @@
             "All model conversion methods tested",
             "All error constructors tested",
             "Error type methods tested",
-            "Coverage ≥85% for domain package"
+            "Coverage \u226585% for domain package"
           ]
         }
       ]
@@ -380,7 +483,7 @@
       "subtasks": [
         {
           "id": "6.1",
-          "name": "Create internal/renderer tests (0% → 45%)",
+          "name": "Create internal/renderer tests (0% \u2192 45%)",
           "description": "Create unit tests for framework detection, pool management, and browser operations. Limited integration tests with real browser for critical paths.",
           "status": "pending",
           "files": [
@@ -389,10 +492,21 @@
             "tests/integration/renderer/renderer_integration_test.go"
           ],
           "functionsToTest": [
-            "NeedsJSRendering", "DetectFramework", "HasDynamicContent",
-            "hasSPAPattern", "NewTabPool", "Acquire", "Release",
-            "Close", "Size", "MaxSize", "DefaultRendererOptions",
-            "IsAvailable", "GetBrowserPath", "DefaultStealthOptions", "StealthPage"
+            "NeedsJSRendering",
+            "DetectFramework",
+            "HasDynamicContent",
+            "hasSPAPattern",
+            "NewTabPool",
+            "Acquire",
+            "Release",
+            "Close",
+            "Size",
+            "MaxSize",
+            "DefaultRendererOptions",
+            "IsAvailable",
+            "GetBrowserPath",
+            "DefaultStealthOptions",
+            "StealthPage"
           ],
           "coverageTarget": 45,
           "acceptanceCriteria": [
@@ -400,7 +514,7 @@
             "Pool management tested (acquire, release, concurrent access)",
             "Browser availability checks tested",
             "Limited integration test with real browser",
-            "Coverage ≥40% for renderer package"
+            "Coverage \u226540% for renderer package"
           ]
         }
       ]
@@ -511,18 +625,18 @@
       "No timing-dependent flaky tests"
     ],
     "coverageVerification": [
-      "internal/strategies ≥85%",
-      "internal/converter ≥85%",
-      "internal/app ≥85%",
-      "internal/llm ≥80%",
-      "internal/config ≥85%",
-      "internal/output ≥80%",
-      "internal/cache ≥75%",
-      "internal/fetcher ≥70%",
-      "internal/git ≥80%",
-      "cmd/repodocs ≥80%",
-      "internal/domain ≥85%",
-      "internal/renderer ≥40%"
+      "internal/strategies \u226585%",
+      "internal/converter \u226585%",
+      "internal/app \u226585%",
+      "internal/llm \u226580%",
+      "internal/config \u226585%",
+      "internal/output \u226580%",
+      "internal/cache \u226575%",
+      "internal/fetcher \u226570%",
+      "internal/git \u226580%",
+      "cmd/repodocs \u226580%",
+      "internal/domain \u226585%",
+      "internal/renderer \u226540%"
     ],
     "codeQuality": [
       "No regressions in existing functionality",

@@ -46,9 +46,10 @@
 ### Phase 2: LLM and Configuration (Target: 80%)
 **Estimated: 2 weeks**
 
-- [ ] 2.1: Expand internal/llm tests (6% → 80%)
-  - Status: Not Started
-  - Files: tests/unit/llm/provider_test.go, circuit_breaker_test.go, retry_test.go, ratelimit_test.go, metadata_test.go, tests/integration/llm/provider_integration_test.go
+- [x] 2.1: Expand internal/llm tests (6% → 80%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/llm/provider_test.go (expanded), tests/unit/llm/circuit_breaker_test.go (existing), tests/unit/llm/retry_test.go (expanded), tests/unit/llm/ratelimit_test.go (expanded), tests/unit/llm/metadata_test.go (expanded), tests/unit/llm/anthropic_test.go (expanded), tests/unit/llm/openai_test.go (expanded), tests/unit/llm/google_test.go (expanded), tests/integration/llm/provider_integration_test.go (new)
+  - Summary: Created comprehensive unit tests for LLM providers, circuit breaker, retry, rate limiter, and metadata. Added 1,500+ lines of tests with table-driven patterns, HTTP mocking, edge cases (context cancellation, rate limiting, auth errors, invalid JSON, timeout handling), and integration tests.
 
 - [ ] 2.2: Create internal/config tests (0% → 85%)
   - Status: Not Started
