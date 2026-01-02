@@ -1,0 +1,137 @@
+{
+  "project_root": "/home/diogo/dev/repodocs-go",
+  "project_type": "single",
+  "services": {
+    "main": {
+      "name": "main",
+      "path": "/home/diogo/dev/repodocs-go",
+      "language": "Go",
+      "framework": null,
+      "type": "unknown",
+      "package_manager": "go mod",
+      "key_directories": {
+        "tests": {
+          "path": "tests",
+          "purpose": "Tests"
+        }
+      },
+      "test_directory": "tests",
+      "api": {
+        "routes": [
+          {
+            "path": "User-Agent",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/integration/fetcher_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Accept",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/integration/fetcher_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Content-Type",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/openai_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Authorization",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/openai_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Content-Type",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/anthropic_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "x-api-key",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/anthropic_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "anthropic-version",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/anthropic_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Content-Type",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/google_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "x-goog-api-key",
+            "methods": [
+              "GET"
+            ],
+            "file": "tests/unit/llm/google_test.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Retry-After",
+            "methods": [
+              "GET"
+            ],
+            "file": "internal/fetcher/client.go",
+            "framework": "Go",
+            "requires_auth": false
+          },
+          {
+            "path": "Content-Type",
+            "methods": [
+              "GET"
+            ],
+            "file": "internal/fetcher/client.go",
+            "framework": "Go",
+            "requires_auth": false
+          }
+        ],
+        "total_routes": 11,
+        "methods": [
+          "GET"
+        ],
+        "protected_routes": []
+      }
+    }
+  },
+  "infrastructure": {
+    "ci": "GitHub Actions",
+    "ci_workflows": [
+      "ci.yml",
+      "release.yml"
+    ]
+  },
+  "conventions": {}
+}

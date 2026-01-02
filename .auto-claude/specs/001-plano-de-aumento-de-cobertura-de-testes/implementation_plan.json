@@ -51,7 +51,9 @@
           "id": "1.2",
           "name": "Create internal/converter tests (0% → 85%)",
           "description": "Create comprehensive unit tests for converter pipeline components: pipeline orchestration, HTML sanitization, content extraction, Markdown conversion, and encoding normalization.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T16:00:00Z",
+          "notes": "Created comprehensive unit tests for all converter pipeline components: sanitizer_test.go (16KB, HTML sanitization), readability_test.go (7.8KB, content extraction), markdown_test.go (183 lines, Markdown conversion), encoding_test.go (67 lines, encoding normalization). All tests follow table-driven patterns with proper assertions. Total: 1,221+ lines of tests.",
           "files": [
             "tests/unit/converter/pipeline_test.go",
             "tests/unit/converter/sanitizer_test.go",
