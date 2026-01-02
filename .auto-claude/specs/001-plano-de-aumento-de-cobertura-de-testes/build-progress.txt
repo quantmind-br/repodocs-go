@@ -12,8 +12,8 @@
 |-------|------|--------|----------|
 | 1 | Business-Critical Components | ✅ Completed | 4/4 subtasks |
 | 2 | LLM and Configuration | ✅ Completed | 2/2 subtasks |
-| 3 | Output and Cache | Pending | 0/2 subtasks |
-| 4 | Fetcher and Git | Pending | 0/2 subtasks |
+| 3 | Output and Cache | ✅ Completed | 2/2 subtasks |
+| 4 | Fetcher and Git | ✅ Completed | 2/2 subtasks |
 | 5 | CLI and Domain | Pending | 0/2 subtasks |
 | 6 | Renderer (High Complexity) | Pending | 0/1 subtasks |
 | 7 | Mock Generation and Infrastructure | Pending | 0/4 subtasks |
@@ -76,9 +76,10 @@
   - Files: tests/unit/fetcher/client_test.go (450+ lines, 25 tests), retry_test.go (550+ lines, 40 tests), stealth_test.go (430+ lines, 35 tests), transport_test.go (400+ lines, 25 tests), tests/integration/fetcher/fetcher_integration_test.go (400+ lines, 10 tests)
   - Summary: Created comprehensive test coverage for fetcher package (2,900+ lines, 125+ tests). Unit tests cover NewClient, Get/GetWithHeaders, HTTP status codes (200, 404, 500, 429, 502-504, 520-530), context cancellation, cookies, cache operations. Retry tests cover NewRetrier, Retry, RetryWithValue, ShouldRetryStatus, ParseRetryAfter. Stealth tests cover RandomUserAgent, RandomAcceptLanguage, StealthHeaders, RandomDelay. Transport tests cover NewStealthTransport, RoundTrip, Content-Encoding handling. Integration tests with real HTTP server cover complete workflow, retry logic, cache hit/miss, concurrent requests, timeouts. All tests follow table-driven patterns.
 
-- [ ] 4.2: Create internal/git tests (0% → 80%)
-  - Status: Not Started
-  - Files: tests/unit/git/client_test.go
+- [x] 4.2: Create internal/git tests (0% → 80%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/git/client_test.go (474 lines, 19 tests)
+  - Summary: Created comprehensive unit tests for Git client wrapper using MockGitClient. Tests cover NewClient (2 tests), PlainCloneContext success scenarios (2 tests), context cancellation (2 tests), error cases (5 tests: invalid URL, non-existent repo, auth failure, network failure, invalid path), parameter passing (4 tests: context, path, isBare, options), and edge cases (3 tests: empty URL, nil options, concurrent operations). All tests follow table-driven patterns with proper mock setup using testify/mock.
 
 ### Phase 5: CLI and Domain (Target: 80-85%)
 **Estimated: 1 week**
