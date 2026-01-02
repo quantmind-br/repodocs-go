@@ -10,7 +10,7 @@
 
 | Phase | Name | Status | Progress |
 |-------|------|--------|----------|
-| 1 | Business-Critical Components | In Progress | 3/4 subtasks |
+| 1 | Business-Critical Components | ✅ Completed | 4/4 subtasks |
 | 2 | LLM and Configuration | Pending | 0/2 subtasks |
 | 3 | Output and Cache | Pending | 0/2 subtasks |
 | 4 | Fetcher and Git | Pending | 0/2 subtasks |
@@ -38,9 +38,10 @@
   - Files: tests/unit/app/detector_test.go, orchestrator_test.go
   - Summary: Created comprehensive test coverage for detector and orchestrator. detector_test.go (380+ lines) with 60+ edge case tests for DetectStrategy, CreateStrategy, GetAllStrategies, FindMatchingStrategy. Expanded orchestrator_test.go with 14 additional tests (400+ lines) covering NewOrchestrator, Run, Close, GetStrategyName, ValidateURL with various scenarios including custom strategy factory injection, config validation, error handling, and edge cases.
 
-- [ ] 1.4: Create HTML fixtures and expand test utilities
-  - Status: Not Started
+- [x] 1.4: Create HTML fixtures and expand test utilities
+  - Status: ✅ Completed (2026-01-02)
   - Files: tests/testdata/fixtures/html/*.html (7 files)
+  - Summary: Created 7 comprehensive HTML fixtures totaling 1,823 lines. spa_page.html (66 lines) with React/Vue/Angular patterns, tables.html (280 lines) with complex tables, code_blocks.html (373 lines) with 10+ languages, navigation.html (241 lines) with navigation patterns, malformed.html (327 lines) with 20+ edge cases, encoding_utf8.html (239 lines) with 15+ languages, encoding_latin1.html (297 lines) with Western European characters. All fixtures support converter pipeline testing.
 
 ### Phase 2: LLM and Configuration (Target: 80%)
 **Estimated: 2 weeks**

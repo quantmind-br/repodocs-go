@@ -106,7 +106,9 @@
           "id": "1.4",
           "name": "Create HTML fixtures and expand test utilities",
           "description": "Create comprehensive HTML fixtures for converter tests: SPA pages, tables, code blocks, forms, navigation, malformed HTML, encoding variations.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T18:00:00Z",
+          "notes": "Created 7 comprehensive HTML fixtures totaling 1,823 lines. spa_page.html (66 lines) with React/Vue/Angular patterns, tables.html (280 lines) with complex table structures, code_blocks.html (373 lines) with 10+ programming languages, navigation.html (241 lines) with multiple navigation patterns, malformed.html (327 lines) with 20+ malformed HTML edge cases, encoding_utf8.html (239 lines) with 15+ languages and scripts, encoding_latin1.html (297 lines) with Western European characters. All fixtures support converter pipeline testing: sanitization, readability, markdown conversion, and encoding normalization.",
           "files": [
             "tests/testdata/fixtures/html/spa_page.html",
             "tests/testdata/fixtures/html/tables.html",
