@@ -360,11 +360,14 @@
           "id": "4.1",
           "name": "Create internal/fetcher tests (0% \u2192 70%)",
           "description": "Create unit tests for HTTP client operations, retry logic with exponential backoff, stealth headers, and custom transport. Add integration tests with real HTTP server.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T17:00:00Z",
+          "notes": "Created comprehensive test coverage for fetcher package (2,900+ lines, 125+ tests). Unit tests: client_test.go (450+ lines, 25 tests) covering NewClient, Get/GetWithHeaders, HTTP status codes (200, 404, 500, 429, 502-504, 520-530), context cancellation, cookies, cache; retry_test.go (550+ lines, 40 tests) covering NewRetrier, Retry, RetryWithValue, ShouldRetryStatus, ParseRetryAfter; stealth_test.go (430+ lines, 35 tests) covering RandomUserAgent, RandomAcceptLanguage, StealthHeaders, RandomDelay; transport_test.go (400+ lines, 25 tests) covering NewStealthTransport, RoundTrip, Content-Encoding handling. Integration tests: fetcher_integration_test.go (400+ lines, 10 tests) with real HTTP server testing complete workflow, retry logic, cache hit/miss, concurrent requests, timeouts. All tests follow table-driven patterns with proper setup/execute/verify phases.",
           "files": [
             "tests/unit/fetcher/client_test.go",
             "tests/unit/fetcher/retry_test.go",
             "tests/unit/fetcher/stealth_test.go",
+            "tests/unit/fetcher/transport_test.go",
             "tests/integration/fetcher/fetcher_integration_test.go"
           ],
           "functionsToTest": [
