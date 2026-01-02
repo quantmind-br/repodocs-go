@@ -15,7 +15,7 @@
 | 3 | Output and Cache | ✅ Completed | 2/2 subtasks |
 | 4 | Fetcher and Git | ✅ Completed | 2/2 subtasks |
 | 5 | CLI and Domain | ✅ Completed | 2/2 subtasks |
-| 6 | Renderer (High Complexity) | Pending | 0/1 subtasks |
+| 6 | Renderer (High Complexity) | ✅ Completed | 1/1 subtasks |
 | 7 | Mock Generation and Infrastructure | Pending | 0/4 subtasks |
 
 ## Detailed Progress
@@ -97,9 +97,10 @@
 ### Phase 6: Renderer (Target: 40-50%)
 **Estimated: 2 weeks**
 
-- [ ] 6.1: Create internal/renderer tests (0% → 45%)
-  - Status: Not Started
-  - Files: tests/unit/renderer/detector_test.go, pool_test.go, tests/integration/renderer/renderer_integration_test.go
+- [x] 6.1: Create internal/renderer tests (0% → 45%)
+  - Status: ✅ Completed (2026-01-02)
+  - Files: tests/unit/renderer/detector_test.go (551 lines), pool_test.go, rod_test.go, render_test.go, tests/integration/renderer/renderer_integration_test.go (450+ lines)
+  - Summary: Created comprehensive unit tests for renderer package (1,167 lines total). detector_test.go with 50+ table-driven test cases covering NeedsJSRendering, DetectFramework, HasDynamicContent for all SPA frameworks (React, Vue, Next.js, Nuxt, Angular, Svelte), content length thresholds, edge cases. Fixed package declarations in existing tests (pool_test.go, rod_test.go, render_test.go). Created integration tests with real browser for framework detection, basic rendering, cookies, tab pool concurrency (5 concurrent requests), timeout handling, scroll to end, wait for selector, and close operations. All tests follow table-driven patterns with proper browser availability checks.
 
 ### Phase 7: Mock Generation and Infrastructure
 **Estimated: 1 week**

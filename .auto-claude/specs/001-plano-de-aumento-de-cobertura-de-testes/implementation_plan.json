@@ -500,10 +500,14 @@
           "id": "6.1",
           "name": "Create internal/renderer tests (0% \u2192 45%)",
           "description": "Create unit tests for framework detection, pool management, and browser operations. Limited integration tests with real browser for critical paths.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-02T23:00:00Z",
+          "notes": "Created comprehensive unit tests for renderer package (1,167 lines total). detector_test.go (551 lines, 5 test functions) with 50+ test cases covering NeedsJSRendering, DetectFramework, HasDynamicContent with table-driven tests for all SPA frameworks (React, Vue, Next.js, Nuxt, Angular, Svelte), content length thresholds, edge cases (malformed HTML, case sensitivity, comments). Fixed package declarations in existing test files (pool_test.go, rod_test.go, render_test.go) from app_test to renderer_test. Created renderer_integration_test.go (450+ lines, 12 test functions) with real browser tests for framework detection, basic rendering (about:blank, simple HTML, cookies), tab pool concurrency (5 concurrent requests), timeout handling, scroll to end, wait for selector, and close operations. All tests follow table-driven patterns with proper browser availability checks using renderer.IsAvailable(). Tests cover all required functions and acceptance criteria.",
           "files": [
             "tests/unit/renderer/detector_test.go",
             "tests/unit/renderer/pool_test.go",
+            "tests/unit/renderer/rod_test.go",
+            "tests/unit/renderer/render_test.go",
             "tests/integration/renderer/renderer_integration_test.go"
           ],
           "functionsToTest": [
