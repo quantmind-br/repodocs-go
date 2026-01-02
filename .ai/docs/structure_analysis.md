@@ -1,54 +1,47 @@
 # Code Structure Analysis
 
 ## Architectural Overview
-The codebase follows a **Strategy-driven Orchestration** architecture. A central orchestrator coordinates the execution flow, but the specific logic for content discovery and extraction is delegated to specialized strategies. The system is designed to handle various documentation sources (websites, Git repositories, sitemaps, Go packages) by decoupling URL detection from the extraction process.
-
-The architecture is highly modular, utilizing a **Service Container** pattern via a `Dependencies` structure that provides shared services like fetching, rendering, caching, and conversion to all strategy implementations. This ensures consistent behavior (e.g., stealth mode, retry logic) across different extraction methods.
+The codebase follows a modular, interface-driven architecture in Go, designed for high extensibility and testability. It is structured around an **Orchestrator** pattern that coordinates specialized **Strategies** (e.g., web crawling, Git repository extraction) using a shared set of **Dependencies**. The system employs a "Hexagonal-lite" approach where the core business logic in `internal/domain` defines interfaces that are implemented by various providers in `internal/fetcher`, `internal/cache`, `internal/llm`, etc.
 
 ## Core Components
-*   **Orchestrator (`internal/app`):** The main entry point that manages the lifecycle of the extraction process. it detects the source type, initializes the appropriate strategy, and executes the pipeline.
-*   **Strategy Factory (`internal/app/detector.go`):** Identifies the correct extraction strategy based on URL patterns and keywords.
-*   **Extraction Strategies (`internal/strategies`):** Specialized modules (Crawler, Git, Sitemap, LLMS, PkgGo) that implement the discovery and processing logic for different documentation formats.
-*   **Conversion Pipeline (`internal/converter`):** A multi-stage processor that transforms raw HTML into clean, structured Markdown, handling encoding, sanitization, and metadata extraction.
-*   **Stealth Fetcher (`internal/fetcher`):** A sophisticated HTTP client that uses TLS fingerprinting and browser-like headers to avoid bot detection.
-*   **JavaScript Renderer (`internal/renderer`):** A headless browser integration (using Rod) that executes JavaScript on pages where content is dynamically loaded.
+- **Orchestrator (`internal/app/orchestrator.go`)**: The central engine that detects the appropriate strategy for a given URL and manages the end-to-end execution flow.
+- **Strategy System (`internal/strategies/`)**: A collection of specialized extraction logic. Key strategies include `CrawlerStrategy` for website crawling, `GitStrategy` for repository cloning, and others like `SitemapStrategy` and `WikiStrategy`.
+- **Dependency Container (`internal/strategies/strategy.go`)**: A unified structure that bundles services like the Fetcher, Renderer, Cache, and Converter, ensuring consistent resource management across different strategies.
+- **Conversion Pipeline (`internal/converter/pipeline.go`)**: A multi-stage processor that transforms raw HTML into structured Markdown, handling encoding, content extraction, sanitization, and metadata generation.
+- **Output Engine (`internal/output/`)**: Manages the persistence of documents and metadata to the filesystem, supporting both flat and hierarchical directory structures.
 
 ## Service Definitions
-*   **`Fetcher`**: Responsible for raw content retrieval. It implements retry logic, status code handling, and integrates directly with the cache.
-*   **`Renderer`**: Provides DOM rendering capabilities. It manages a pool of browser tabs to allow concurrent rendering while minimizing resource overhead.
-*   **`Cache`**: A persistent storage layer (backed by BadgerDB) that stores fetched responses to prevent redundant network requests and improve performance.
-*   **`Converter`**: Handles the transformation of HTML to Markdown. It includes specialized filters for readability and sanitization.
-*   **`Writer`**: Manages the persistence of processed documents to the local filesystem, organizing them into a structured directory or a flat layout.
+- **Fetcher (`internal/fetcher/`)**: An HTTP client service with "stealth" capabilities (custom User-Agents, retry logic) to retrieve raw content.
+- **Renderer (`internal/renderer/`)**: A headless browser service (using Rod) that executes JavaScript on pages where content is dynamically loaded.
+- **Cache (`internal/cache/`)**: A persistent storage service (using BadgerDB) that caches HTTP responses to improve performance and reduce network load.
+- **LLM Service (`internal/llm/`)**: Provides AI-powered metadata enhancement, supporting multiple providers (OpenAI, Anthropic, Google) with built-in rate limiting and circuit breaking.
 
 ## Interface Contracts
-*   **`Strategy`**: Defines `CanHandle(url)` to check compatibility and `Execute(ctx, url, opts)` to perform the work.
-*   **`Fetcher`**: Defines standard HTTP methods (`Get`, `GetWithHeaders`) with a specialized `Response` model.
-*   **`Renderer`**: Provides a `Render` method that takes `RenderOptions` (wait selectors, scrolling, timeouts).
-*   **`Cache`**: A standard Key-Value contract (`Get`, `Set`, `Has`, `Delete`).
-*   **`Converter`**: Transforms HTML strings into the `domain.Document` model.
-*   **`Writer`**: Handles the physical writing of `domain.Document` to disk.
+The application relies on several critical interfaces defined in `internal/domain/interfaces.go`:
+- **`Strategy`**: Defines `Name()`, `CanHandle(url)`, and `Execute(ctx, url, opts)`.
+- **`Fetcher`**: Abstracts HTTP operations with `Get()` and `GetWithHeaders()`.
+- **`Renderer`**: Abstracts browser-based rendering via `Render(ctx, url, opts)`.
+- **`Converter`**: Defines the transformation from HTML string to `domain.Document`.
+- **`LLMProvider`**: Abstracts interactions with AI models via `Complete(ctx, req)`.
 
 ## Design Patterns Identified
-*   **Strategy Pattern:** Used for discovery and extraction logic, allowing the system to extend support for new sources easily.
-*   **Dependency Injection:** Shared services are bundled into a `Dependencies` struct and injected into strategies during initialization.
-*   **Pipes and Filters:** The `Converter` pipeline processes HTML through a series of filters (Sanitizer -> Readability -> Markdown -> Statistics).
-*   **Object Pool:** The `TabPool` in the renderer manages browser tabs to optimize resource usage during concurrent processing.
-*   **Retry Pattern:** A generic `Retrier` component is used in the fetcher to handle transient network errors and rate limiting.
-*   **Factory Pattern:** The `CreateStrategy` function acts as a factory for strategy instances based on detected types.
+- **Strategy Pattern**: Dynamically selects the extraction method based on the input URL (e.g., switching from `GitStrategy` for GitHub links to `CrawlerStrategy` for standard sites).
+- **Dependency Injection**: Services are injected into the `Dependencies` struct, which is then passed to strategies, facilitating easier mocking in tests.
+- **Middleware/Wrappers**: Used in the LLM service to add rate-limiting and circuit-breaking functionality around standard providers.
+- **Pipeline Pattern**: Used in the converter to process HTML through a sequence of discrete steps (UTF-8 conversion -> Extraction -> Sanitization -> MD Conversion).
+- **Factory Pattern**: The `Orchestrator` uses a factory function to instantiate strategies based on detected types.
 
 ## Component Relationships
-1.  **Orchestrator** calls **Detector** to determine the **StrategyType**.
-2.  **Orchestrator** uses **StrategyFactory** to instantiate a **Strategy** with a shared **Dependencies** container.
-3.  **Strategy** uses the **Fetcher** or **Renderer** to retrieve content.
-4.  **Fetcher** checks the **Cache** before performing network requests.
-5.  **Strategy** passes retrieved HTML to the **Converter Pipeline**.
-6.  **Converter** returns a structured **Document** model.
-7.  **Strategy** passes the **Document** to the **Writer** for filesystem persistence.
+1. The **CLI/User** interacts with the **Orchestrator**.
+2. The **Orchestrator** uses a detector to identify the URL type and selects a **Strategy**.
+3. The **Strategy** utilizes the **Dependency** container to access the **Fetcher** or **Renderer**.
+4. Raw content is passed to the **Converter Pipeline**, which produces a `domain.Document`.
+5. If enabled, the **LLM MetadataEnhancer** processes the document to add AI-generated tags and summaries.
+6. The final document is handed to the **Writer** for disk persistence.
 
 ## Key Methods & Functions
-*   `app.DetectStrategy(url)`: Pattern matches URLs to determine the best extraction approach.
-*   `converter.Pipeline.Convert(...)`: Orchestrates the full HTML-to-Markdown transformation.
-*   `fetcher.Client.GetWithHeaders(...)`: Performs stealthy HTTP requests with integrated caching and retries.
-*   `renderer.Renderer.Render(...)`: Manages headless browser navigation, JS execution, and DOM extraction.
-*   `strategies.CrawlerStrategy.Execute(...)`: Implements asynchronous web crawling with depth control and domain filtering.
-*   `output.Writer.Write(...)`: Handles directory creation, frontmatter injection, and metadata serialization.
+- `Orchestrator.Run()`: The primary entry point for the documentation extraction process.
+- `Pipeline.Convert()`: The core transformation function that turns raw web content into Markdown documents.
+- `MetadataEnhancer.Enhance()`: Orchestrates the LLM prompt-response flow to enrich document metadata.
+- `DetectStrategy()`: Logic that analyzes a URL to decide which strategy to deploy.
+- `NewDependencies()`: Bootstraps the entire service layer, including caching and browser rendering.

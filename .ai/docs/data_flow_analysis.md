@@ -2,63 +2,63 @@
 
 ## Data Models
 
-The system architecture is built around several key data structures that represent information at different stages of its lifecycle:
+The system centers around several key data structures that represent information at different stages of the lifecycle:
 
-*   **Page**: Represents a raw, unprocessed HTTP response. It contains the URL, binary content (body), content type, status code, and metadata such as fetch timestamp and rendering flags.
-*   **Document**: The central domain model. It holds the processed documentation, including:
-    *   **Content**: Final Markdown representation.
-    *   **HTMLContent**: Original sanitized HTML.
-    *   **Metadata**: Title, Description, Word/Character counts, and Content Hash (SHA256).
-    *   **Structure**: Link arrays, Header mappings (h1-h6), and Source Strategy used.
-*   **CacheEntry**: A persistence-optimized structure used for storing fetched content in the local cache, including expiration logic.
-*   **Sitemap / LLMSLink**: Intermediate models used for discovery and URL extraction from standard documentation indices.
-*   **Metadata / Frontmatter**: Specialized structures used for formatting output as JSON metadata or YAML headers in Markdown files.
+*   **`Response`**: Represents raw fetched data from a source (HTML, Markdown, or binary). Includes status code, body, headers, and content type.
+*   **`Page`**: An internal representation of a fetched page before conversion.
+*   **`Document`**: The primary data structure containing processed information.
+    *   **Core**: URL, Title, Content (Markdown), HTMLContent.
+    *   **Metrics**: WordCount, CharCount, ContentHash.
+    *   **Structure**: Headers (h1-h6 mapping), Links.
+    *   **AI Metadata**: Summary, Tags, Category.
+*   **`Metadata`**: A JSON-serializable version of `Document` used for the final output index.
+*   **`MetadataIndex`**: A global structure consolidating all processed documents, including aggregate stats like `TotalWordCount` and `GeneratedAt`.
+*   **`CacheEntry`**: Data structure for persistent storage of fetched content in the Badger database.
 
 ## Input Sources
 
-Data enters the system through several distinct acquisition channels:
+Data enters the system through multiple entry points depending on the detected strategy:
 
-*   **HTTP/HTTPS URLs**: Standard web pages fetched using a stealth-capable HTTP client (`tls-client`) to bypass bot detection.
-*   **Headless Browser (Rod)**: Pages requiring JavaScript execution are rendered via a browser pool before processing.
-*   **Git Repositories**: Cloned via SSH or HTTPS. Data is extracted directly from the repository's file system (Markdown, text, and code files).
-*   **Sitemaps (XML)**: Used as a discovery source to batch-import documentation URLs.
-*   **llms.txt**: A specialized discovery format for LLM-friendly documentation.
-*   **Pkg.go.dev**: Specialized input for Go package documentation.
+*   **Web URLs**: Crawled via `CrawlerStrategy` or targeted via `SitemapStrategy`.
+*   **Git Repositories**: Cloned or downloaded as archives via `GitStrategy`.
+*   **Standard Documentation Files**: Discovered in repos (e.g., `.md`, `.txt`, `.rst`).
+*   **Sitemaps & Wiki Pages**: Parsed for URL discovery.
+*   **LLMS.txt**: Specialized discovery format for LLM-friendly documentation.
+*   **User Configuration**: YAML/Environment variables defining crawl depth, selectors, and LLM settings.
 
 ## Data Transformations
 
-The transformation pipeline converts raw input into structured, clean Markdown through a series of sequential steps:
+Data undergoes a multi-stage transformation pipeline:
 
-1.  **Encoding Normalization**: Raw bytes are detected and converted to UTF-8.
-2.  **Content Extraction**: The system identifies the "main" content of a page, stripping away boilerplate using readability algorithms or CSS selectors.
+1.  **Encoding Normalization**: Raw bytes are converted to UTF-8.
+2.  **HTML Extraction**: Uses a combination of CSS selectors and Readability-like logic to extract the "main" content and title while discarding noise.
 3.  **Sanitization**:
-    *   **Tag Removal**: Scripts, styles, forms, and navigation elements are stripped.
-    *   **Attribute Cleaning**: Unsafe or unnecessary HTML attributes are removed.
-    *   **URL Normalization**: Relative links and image sources are resolved to absolute URLs.
-4.  **Markdown Conversion**: Sanitized HTML is transformed into GitHub Flavored Markdown (GFM).
-5.  **Metadata Enrichment**: Headers are indexed, links are extracted, and descriptive metadata (title/description) is harvested from meta tags.
-6.  **Statistical Analysis**: Word counts and character counts are calculated, and a unique hash is generated for version tracking.
+    *   Removes non-content tags (`<script>`, `<style>`, `<form>`, etc.).
+    *   Strips UI elements by ID/Class (`sidebar`, `nav`, `footer`).
+    *   Removes hidden elements and empty containers.
+4.  **URL Normalization**: Converts relative links and image sources to absolute URLs based on the source origin.
+5.  **Markdown Conversion**: HTML is transformed into clean Markdown using `html-to-markdown`.
+6.  **AI Enhancement**: (Optional) The Markdown content is sent to an LLM provider (Anthropic, OpenAI, or Google) to generate a summary, tags, and category.
+7.  **Statistics Generation**: Markdown is stripped of formatting to calculate accurate word and character counts.
 
 ## Storage Mechanisms
 
-*   **BadgerDB (v4)**: A high-performance, embedded key-value store used to cache raw responses. It uses URL-based keys (hashed) and supports TTL-based expiration to prevent redundant network requests.
-*   **Local Filesystem**: The primary persistence layer for the final output. Documents are stored in a structured directory hierarchy that mirrors the source URL path or a flattened structure.
-*   **In-Memory Cache**: Used during active crawls to track visited URLs and prevent circular references.
+*   **BadgerDB**: A persistent key-value store used to cache HTTP responses to avoid redundant network calls and improve performance on subsequent runs.
+*   **Local File System**:
+    *   **Markdown Files**: Persisted as `.md` files in a structured or flat directory.
+    *   **JSON Metadata**: Global `metadata.json` stores the consolidated index of all processed documents.
+*   **Memory**: `MetadataCollector` maintains an in-memory registry of all processed documents during the execution lifecycle.
 
 ## Data Validation
 
-Validation occurs at multiple boundaries to ensure data integrity:
-
-*   **Strategy Detection**: URLs are validated against regex patterns to determine the appropriate processing strategy (Git vs. Crawler vs. Sitemap).
-*   **Content-Type Filtering**: The system validates headers to ensure only processable formats (HTML, text, Markdown) are ingested.
-*   **Duplicate Detection**: Before writing to disk or fetching, the system checks the output directory and cache to avoid redundant processing.
-*   **Schema Validation**: Configuration files (YAML) are validated upon loading against default schemas.
-*   **Integrity Checks**: SHA256 hashes are used to detect content changes across different runs.
+*   **Configuration Validation**: Checks for valid concurrency limits, timeouts, and directory paths.
+*   **URL Filter Validation**: Ensures only URLs within the allowed domain or path prefix are processed.
+*   **Content-Type Validation**: Filters out non-document content (images, PDFs, binary files) unless explicitly allowed.
+*   **Sanitization Rules**: Strictly removes executable scripts and irrelevant UI components to ensure data purity for LLM consumption.
 
 ## Output Formats
 
-The system produces three primary output artifacts:
+The final data leaves the system in two primary formats:
 
-*   **Markdown (.md)**: Cleaned documentation content, enriched with YAML frontmatter containing source metadata (URL, Title, Date).
-*   **JSON Metadata**: Optional sidecar files containing the full `Metadata` model for integration with search engines or LLM ingestors.
-*   **Console/Logs**: Real-time progress reporting via structured JSON logs or "pretty" human-readable output, including performance statistics.
+*   **Markdown (.md)**: Files containing the processed documentation content, prefixed with **YAML Frontmatter** (containing Title, Source URL, Summary, etc.).
+*   **JSON (.json)**: A consolidated `metadata.json` file providing a manifest of all documents, their relative file paths, and extracted metadata.
