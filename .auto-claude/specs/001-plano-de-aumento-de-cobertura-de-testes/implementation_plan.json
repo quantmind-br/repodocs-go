@@ -617,7 +617,9 @@
           "id": "7.4",
           "name": "Update Makefile with new test targets",
           "description": "Update Makefile to include targets for running new tests and generating coverage reports.",
-          "status": "pending",
+          "status": "completed",
+          "completedAt": "2026-01-03T00:15:00Z",
+          "notes": "Added comprehensive test and coverage targets to Makefile (157 new lines). Created individual test targets for all 12 packages (test-app, test-cache, test-config, test-converter, test-domain, test-fetcher, test-git, test-llm, test-output, test-renderer, test-strategies, test-cmd). Added individual coverage targets with threshold checking for each package, generating pass/fail status. Created coverage-all target that generates coverage for all packages and creates markdown summary table with pass/fail indicators. Added coverage-view target to open HTML report in browser and coverage-summary target to display summary. All targets include ## documentation comments and follow existing Makefile patterns. Updated .PHONY declaration to include all new targets.",
           "files": [
             "Makefile"
           ],
