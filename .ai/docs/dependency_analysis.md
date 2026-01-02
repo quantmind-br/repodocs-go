@@ -2,78 +2,80 @@
 
 ## Internal Dependencies
 
-The application follows a hierarchical dependency structure where the orchestrator layer coordinates specialized service layers.
+The application follows a layered architecture with a central `domain` package defining interfaces used for dependency injection.
 
-*   **`internal/app`**: The top-level entry point. It depends on `internal/strategies` for documentation extraction logic, `internal/config` for application settings, and `internal/utils` for logging and common helpers.
-*   **`internal/strategies`**: Contains the core business logic. It depends on all service modules: `internal/fetcher`, `internal/renderer`, `internal/converter`, `internal/cache`, `internal/output`, and `internal/domain`. All strategy implementations (`crawler`, `git`, `llms`, `pkggo`, `sitemap`) reside here.
-*   **`internal/fetcher`**: Specialized HTTP client layer. Depends on `internal/domain` for request/response models and `internal/utils`.
-*   **`internal/renderer`**: Headless browser automation layer. Depends on `internal/domain` for interfaces and `internal/utils`.
-*   **`internal/converter`**: Transformation layer (HTML to Markdown). Depends on `internal/domain` and `internal/utils`.
-*   **`internal/output`**: Filesystem operations layer. Depends on `internal/converter` (for frontmatter processing), `internal/domain`, and `internal/utils`.
-*   **`internal/cache`**: Storage layer. Depends on `internal/domain` for interfaces.
-*   **`internal/domain`**: The "leaf" node containing core interfaces and data models (`Document`, `Response`). It has no internal dependencies.
-*   **`internal/utils`**: Cross-cutting utilities (logging, URL parsing, FS helpers). It has no internal dependencies.
+*   **`internal/app` (Orchestration):** Coordinates the execution. It depends on `config` for settings, `strategies` for execution logic, and `utils` for logging and shared helpers.
+*   **`internal/strategies` (Strategy Pattern):** Implements different data acquisition methods (Crawler, Git, Sitemap, LLMs, Wiki). It acts as a consumer of almost all other internal services.
+*   **`internal/domain` (Core Interfaces):** Defines the contracts (`Fetcher`, `Renderer`, `Cache`, `LLMProvider`) that allow the system to remain decoupled from specific implementations.
+*   **`internal/fetcher` & `internal/renderer`:** Provide HTTP and browser-based data acquisition. Both implement interfaces from the `domain` package.
+*   **`internal/converter`:** Handles the transformation of HTML to Markdown. It is a standalone pipeline used by strategies to process raw content.
+*   **`internal/output`:** Manages file writing and metadata collection. It is the final sink for processed documents.
+*   **`internal/cache`:** Provides persistence (BadgerDB) for fetched content, used primarily by the `fetcher` and `strategies`.
+*   **`internal/llm`:** Provides AI-powered metadata enhancement, implementing `LLMProvider` for OpenAI, Anthropic, and Google.
+*   **`internal/utils`:** Shared utility functions (logging, URL parsing, file system operations, worker pools) used across the entire codebase.
 
 ## External Dependencies
 
-The project relies on several specialized libraries for its core functionality:
+The project leverages several high-quality Go libraries for its specialized tasks:
 
-*   **Stealth Networking**: `github.com/bogdanfinn/tls-client` and `fhttp` are used to bypass bot detection during fetching.
-*   **Web Scraping & Rendering**: `github.com/gocolly/colly/v2` for web crawling and `github.com/go-rod/rod` with `stealth` for JavaScript rendering.
-*   **Content Extraction**: `github.com/go-shiori/go-readability` for identifying main content and `github.com/JohannesKaufmann/html-to-markdown/v2` for conversion.
-*   **Storage**: `github.com/dgraph-io/badger/v4` provides the persistent KV store for caching.
-*   **SCM**: `github.com/go-git/go-git/v5` manages Git repository operations.
-*   **CLI & Configuration**: `github.com/spf13/cobra` handles the command-line interface, while `github.com/spf13/viper` manages configuration.
-*   **Logging**: `github.com/rs/zerolog` provides structured logging.
+*   **Data Acquisition:**
+    *   `github.com/gocolly/colly/v2`: Primary engine for web crawling.
+    *   `github.com/go-rod/rod`: DevTools protocol driver for JavaScript rendering.
+    *   `github.com/go-git/go-git/v5`: Pure Go implementation of Git for repository cloning.
+    *   `github.com/bogdanfinn/tls-client`: Used for advanced HTTP/TLS fingerprinting to avoid bot detection.
+*   **Content Processing:**
+    *   `github.com/JohannesKaufmann/html-to-markdown/v2`: Core HTML to Markdown conversion.
+    *   `github.com/PuerkitoBio/goquery`: jQuery-like DOM manipulation for HTML extraction.
+    *   `github.com/go-shiori/go-readability`: Port of Mozilla's Readability for main content extraction.
+*   **Infrastructure & CLI:**
+    *   `github.com/spf13/cobra` & `github.com/spf13/viper`: CLI command structure and configuration management.
+    *   `github.com/dgraph-io/badger/v4`: High-performance embedded K/V store for caching.
+    *   `github.com/rs/zerolog`: Structured logging.
+*   **Utilities:**
+    *   `github.com/cenkalti/backoff/v4`: Exponential backoff for retries.
+    *   `github.com/schollz/progressbar/v3`: Terminal progress bars.
 
 ## Dependency Graph
 
 ```mermaid
 graph TD
-    subgraph Core
-        domain[internal/domain]
-        utils[internal/utils]
-    end
-
-    subgraph Services
-        fetcher[internal/fetcher] --> domain
-        fetcher --> utils
-        renderer[internal/renderer] --> domain
-        renderer --> utils
-        cache[internal/cache] --> domain
-        converter[internal/converter] --> domain
-        converter --> utils
-        output[internal/output] --> domain
-        output --> converter
-        output --> utils
-    end
-
-    subgraph Strategies
-        strategies[internal/strategies] --> fetcher
-        strategies --> renderer
-        strategies --> converter
-        strategies --> output
-        strategies --> cache
-    end
-
-    subgraph App
-        app[internal/app] --> strategies
-        app --> config[internal/config]
-        config --> utils
-    end
+    CLI[main/cobra] --> Orchestrator[internal/app]
+    Orchestrator --> Config[internal/config]
+    Orchestrator --> Strategies[internal/strategies]
+    
+    Strategies --> Domain[internal/domain - Interfaces]
+    Strategies --> Converter[internal/converter]
+    Strategies --> Output[internal/output]
+    
+    Fetcher[internal/fetcher] -.->|Implements| Domain
+    Renderer[internal/renderer] -.->|Implements| Domain
+    Cache[internal/cache] -.->|Implements| Domain
+    LLM[internal/llm] -.->|Implements| Domain
+    
+    Strategies --> Fetcher
+    Strategies --> Renderer
+    Strategies --> Cache
+    Strategies --> LLM
+    
+    Converter --> html-to-markdown
+    Converter --> readability
+    
+    Fetcher --> tls-client
+    Renderer --> rod
 ```
 
 ## Dependency Injection
 
-The project uses manual Dependency Injection (DI) to manage its components:
+The project heavily utilizes **Constructor Injection** combined with **Interface-based Decoupling**:
 
-*   **Dependency Container**: The `strategies.Dependencies` struct acts as a service container, holding instances of `Fetcher`, `Renderer`, `Cache`, `Converter`, and `Writer`.
-*   **Constructor Injection**: Strategies are initialized via constructors (e.g., `NewCrawlerStrategy(deps *Dependencies)`) that receive the shared dependencies.
-*   **Interface-based Decoupling**: Core components like the `Cache` and `Renderer` are referenced via interfaces defined in `internal/domain`, allowing implementations (like Badger or Rod) to be swapped or mocked.
-*   **Factory Pattern**: The `app` package uses a `StrategyFactory` pattern to create the appropriate strategy for a given URL, allowing the `Orchestrator` to remain agnostic of specific strategy implementation details during testing.
+1.  **Dependency Container:** The `strategies.Dependencies` struct acts as a service locator/container that is initialized once and passed to individual strategies.
+2.  **Interface Satisfaction:** Implementation packages (like `fetcher`, `renderer`, `cache`, and `llm`) are kept separate from the `domain` package. The `strategies.NewDependencies` function wires the concrete implementations (e.g., `NewBadgerCache`) to the `domain.Cache` interface.
+3.  **Strategy Factory:** The `Orchestrator` uses a `StrategyFactory` function that can be overridden in tests, allowing for the injection of mock strategies.
+4.  **Composition:** The `fetcher` is injected into the `colly` collector (via a custom transport), showing how internal dependencies are bridged to external libraries.
 
 ## Potential Issues
 
-*   **Strategy Factory Coupling**: The `internal/app` package is tightly coupled to every strategy implementation because it explicitly imports them to instantiate them in its factory methods.
-*   **Inconsistent Interface Usage**: While `Renderer` and `Cache` are used as interfaces, `fetcher.Client`, `converter.Pipeline`, and `output.Writer` are often used as concrete types in the `Dependencies` struct, which may complicate mocking in certain test scenarios.
-*   **Circular Dependency Risk**: The `internal/output` package depends on `internal/converter` to add frontmatter to documents. If the converter ever needs to reference the output writer (e.g., for asset management), a circular dependency would occur. Currently, the relationship is strictly one-way.
+*   **The `Dependencies` Struct:** While convenient, the `strategies.Dependencies` struct is starting to resemble a "God Object" or "Service Locator" pattern. Almost every strategy receives the full set of dependencies even if they only need a subset (e.g., `GitStrategy` likely doesn't need the `Renderer`).
+*   **Deeply Nested Tests:** Many tests (in `tests/integration` and `tests/unit`) depend on the full `Orchestrator` or `Dependencies` setup, making them more complex to maintain and slower to run.
+*   **Tight Coupling with BadgerDB:** While the `domain.Cache` interface exists, the `NewDependencies` function is hardcoded to instantiate `cache.NewBadgerCache`, making the infrastructure choice difficult to swap without modifying the `strategies` package.
+*   **Circular Dependencies (Potential):** The relationship between `converter` and `domain` is clean (converter returns domain models), but the reliance of `strategies` on both `converter` and `output` requires careful management of package boundaries to avoid cycles if `converter` ever needs to know about `strategies`.

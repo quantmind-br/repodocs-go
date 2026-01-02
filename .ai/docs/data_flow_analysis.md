@@ -2,63 +2,59 @@
 
 ## Data Models
 
-The system centers around several key data structures that represent information at different stages of the lifecycle:
+The system centers around several key Go structures that represent information at different stages of the pipeline:
 
-*   **`Response`**: Represents raw fetched data from a source (HTML, Markdown, or binary). Includes status code, body, headers, and content type.
-*   **`Page`**: An internal representation of a fetched page before conversion.
-*   **`Document`**: The primary data structure containing processed information.
-    *   **Core**: URL, Title, Content (Markdown), HTMLContent.
-    *   **Metrics**: WordCount, CharCount, ContentHash.
-    *   **Structure**: Headers (h1-h6 mapping), Links.
-    *   **AI Metadata**: Summary, Tags, Category.
-*   **`Metadata`**: A JSON-serializable version of `Document` used for the final output index.
-*   **`MetadataIndex`**: A global structure consolidating all processed documents, including aggregate stats like `TotalWordCount` and `GeneratedAt`.
-*   **`CacheEntry`**: Data structure for persistent storage of fetched content in the Badger database.
+*   **`domain.Page`**: The raw stage of data. It holds the raw bytes from a fetch, status codes, and basic metadata (URL, Content-Type, fetch timestamp).
+*   **`domain.Document`**: The primary data structure for processed documentation. It includes the Markdown content, original HTML, word/character counts, links, headers, and enhanced metadata fields (Summary, Tags, Category).
+*   **`domain.CacheEntry`**: Represents a persisted version of a fetched page, including expiration logic.
+*   **`domain.SimpleMetadataIndex` / `domain.SimpleMetadata`**: Structures optimized for LLM consumption and final indexing, stripping away technical metadata like content hashes.
+*   **`domain.Frontmatter`**: Data structure specifically for YAML frontmatter generation in output Markdown files.
 
 ## Input Sources
 
-Data enters the system through multiple entry points depending on the detected strategy:
+Data enters the system via several "Strategies" that dictate how content is discovered and retrieved:
 
-*   **Web URLs**: Crawled via `CrawlerStrategy` or targeted via `SitemapStrategy`.
-*   **Git Repositories**: Cloned or downloaded as archives via `GitStrategy`.
-*   **Standard Documentation Files**: Discovered in repos (e.g., `.md`, `.txt`, `.rst`).
-*   **Sitemaps & Wiki Pages**: Parsed for URL discovery.
-*   **LLMS.txt**: Specialized discovery format for LLM-friendly documentation.
-*   **User Configuration**: YAML/Environment variables defining crawl depth, selectors, and LLM settings.
+*   **Web Crawling**: Standard HTTP/HTTPS requests to websites via the `CrawlerStrategy` using `colly`.
+*   **Sitemaps**: Parsing `sitemap.xml` or sitemap index files to identify target URLs.
+*   **LLMS.txt**: Specialized parsing for `llms.txt` files (a standard for LLM-friendly documentation).
+*   **Git Repositories**: Data enters by cloning or archiving Git repositories, processing files from the local filesystem.
+*   **CLI Inputs**: User-provided configurations, URLs, and local file paths through the orchestrator.
 
 ## Data Transformations
 
-Data undergoes a multi-stage transformation pipeline:
+The transformation pipeline is highly structured within the `converter.Pipeline`:
 
-1.  **Encoding Normalization**: Raw bytes are converted to UTF-8.
-2.  **HTML Extraction**: Uses a combination of CSS selectors and Readability-like logic to extract the "main" content and title while discarding noise.
-3.  **Sanitization**:
-    *   Removes non-content tags (`<script>`, `<style>`, `<form>`, etc.).
-    *   Strips UI elements by ID/Class (`sidebar`, `nav`, `footer`).
-    *   Removes hidden elements and empty containers.
-4.  **URL Normalization**: Converts relative links and image sources to absolute URLs based on the source origin.
-5.  **Markdown Conversion**: HTML is transformed into clean Markdown using `html-to-markdown`.
-6.  **AI Enhancement**: (Optional) The Markdown content is sent to an LLM provider (Anthropic, OpenAI, or Google) to generate a summary, tags, and category.
-7.  **Statistics Generation**: Markdown is stripped of formatting to calculate accurate word and character counts.
+1.  **Encoding Conversion**: Raw bytes are converted to UTF-8.
+2.  **Extraction**: The `ExtractContent` component uses CSS selectors (provided by user or defaults) to isolate relevant documentation from boilerplates.
+3.  **Sanitization**: A `Sanitizer` removes navigation, comments, and scripts, while rewriting URLs to be relative or absolute based on configuration.
+4.  **HTML-to-Markdown**: The `mdConverter` transforms the sanitized HTML into GitHub Flavored Markdown (GFM).
+5.  **Metadata Enrichment**:
+    *   **Heuristic**: Extraction of titles, descriptions, and headers via `goquery`.
+    *   **LLM-based**: Markdown content is sent to LLM providers (OpenAI, Anthropic, or Google) to generate summaries, tags, and categories.
+6.  **Stats Calculation**: Generation of word counts, character counts, and SHA256 content hashes.
 
 ## Storage Mechanisms
 
-*   **BadgerDB**: A persistent key-value store used to cache HTTP responses to avoid redundant network calls and improve performance on subsequent runs.
-*   **Local File System**:
-    *   **Markdown Files**: Persisted as `.md` files in a structured or flat directory.
-    *   **JSON Metadata**: Global `metadata.json` stores the consolidated index of all processed documents.
-*   **Memory**: `MetadataCollector` maintains an in-memory registry of all processed documents during the execution lifecycle.
+*   **BadgerDB**: A key-value store used for persistent caching of fetched pages. This prevents redundant network requests and respects TTLs.
+*   **Local Filesystem**: The final destination for processed data.
+    *   **Markdown Files**: Structured hierarchically based on the source URL or Git path.
+    *   **JSON Index**: A consolidated `metadata.json` (or similar) containing a registry of all processed documents.
+*   **Memory**: Temporary storage in worker pools and `sync.Map` during crawling for deduplication.
 
 ## Data Validation
 
-*   **Configuration Validation**: Checks for valid concurrency limits, timeouts, and directory paths.
-*   **URL Filter Validation**: Ensures only URLs within the allowed domain or path prefix are processed.
-*   **Content-Type Validation**: Filters out non-document content (images, PDFs, binary files) unless explicitly allowed.
-*   **Sanitization Rules**: Strictly removes executable scripts and irrelevant UI components to ensure data purity for LLM consumption.
+Validation occurs at multiple boundaries:
+
+*   **Input Validation**: `Orchestrator` validates URLs and configuration parameters.
+*   **Content Type Validation**: `fetcher` and `strategies` check `Content-Type` headers to ensure only HTML or Markdown is processed.
+*   **LLM Output Validation**: The `MetadataEnhancer` performs strict validation of LLM responses, ensuring they are valid JSON and contain the required `summary`, `tags`, and `category` fields before applying them to the `Document`.
+*   **JSON Schema**: Validation of the produced metadata index during the flush process.
 
 ## Output Formats
 
-The final data leaves the system in two primary formats:
+Data leaves the system in three primary formats:
 
-*   **Markdown (.md)**: Files containing the processed documentation content, prefixed with **YAML Frontmatter** (containing Title, Source URL, Summary, etc.).
-*   **JSON (.json)**: A consolidated `metadata.json` file providing a manifest of all documents, their relative file paths, and extracted metadata.
+1.  **Markdown Files**: Each documentation page is saved as a `.md` file with YAML frontmatter containing metadata.
+2.  **Structured JSON**: A central `index.json` or simplified metadata file providing a programmatic map of all documents for LLM applications.
+3.  **Console Output**: Logs and progress bars (via `zerolog` and `progressbar`) provide real-time status to the user.
+4.  **Asset Files**: If configured, static assets (images, etc.) are preserved in their original or relative directory structure.
