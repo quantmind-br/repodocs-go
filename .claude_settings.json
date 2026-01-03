@@ -4,31 +4,6 @@
     "autoAllowBashIfSandboxed": true
   },
   "permissions": {
-    "defaultMode": "acceptEdits",
-    "allow": [
-      "Read(./**)",
-      "Write(./**)",
-      "Edit(./**)",
-      "Glob(./**)",
-      "Grep(./**)",
-      "Read(/home/diogo/dev/repodocs-go/**)",
-      "Write(/home/diogo/dev/repodocs-go/**)",
-      "Edit(/home/diogo/dev/repodocs-go/**)",
-      "Glob(/home/diogo/dev/repodocs-go/**)",
-      "Grep(/home/diogo/dev/repodocs-go/**)",
-      "Read(/home/diogo/dev/repodocs-go/.auto-claude/specs/003-implemente-a-feature-a-seguir/**)",
-      "Write(/home/diogo/dev/repodocs-go/.auto-claude/specs/003-implemente-a-feature-a-seguir/**)",
-      "Edit(/home/diogo/dev/repodocs-go/.auto-claude/specs/003-implemente-a-feature-a-seguir/**)",
-      "Bash(*)",
-      "WebFetch(*)",
-      "WebSearch(*)",
-      "mcp__context7__resolve-library-id(*)",
-      "mcp__context7__get-library-docs(*)",
-      "mcp__graphiti-memory__search_nodes(*)",
-      "mcp__graphiti-memory__search_facts(*)",
-      "mcp__graphiti-memory__add_episode(*)",
-      "mcp__graphiti-memory__get_episodes(*)",
-      "mcp__graphiti-memory__get_entity_edge(*)"
-    ]
+    "defaultMode": "dontAsk",
   }
 }
