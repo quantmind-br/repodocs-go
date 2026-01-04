@@ -4,6 +4,31 @@
     "autoAllowBashIfSandboxed": true
   },
   "permissions": {
-    "defaultMode": "dontAsk",
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read(./**)",
+      "Write(./**)",
+      "Edit(./**)",
+      "Glob(./**)",
+      "Grep(./**)",
+      "Read(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Write(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Edit(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Glob(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Grep(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Read(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/.auto-claude/specs/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Write(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/.auto-claude/specs/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Edit(/home/diogo/dev/repodocs-go/.worktrees/001-consistent-progress-bar-styling-across-strategies/.auto-claude/specs/001-consistent-progress-bar-styling-across-strategies/**)",
+      "Bash(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__context7__resolve-library-id(*)",
+      "mcp__context7__get-library-docs(*)",
+      "mcp__graphiti-memory__search_nodes(*)",
+      "mcp__graphiti-memory__search_facts(*)",
+      "mcp__graphiti-memory__add_episode(*)",
+      "mcp__graphiti-memory__get_episodes(*)",
+      "mcp__graphiti-memory__get_entity_edge(*)"
+    ]
   }
 }
