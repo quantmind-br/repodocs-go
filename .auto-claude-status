@@ -1,0 +1,25 @@
+{
+  "active": true,
+  "spec": "004-pre-compile-regex-patterns-in-stripmarkdown-functi",
+  "state": "building",
+  "subtasks": {
+    "completed": 3,
+    "total": 6,
+    "in_progress": 1,
+    "failed": 0
+  },
+  "phase": {
+    "current": "Verification",
+    "id": null,
+    "total": 3
+  },
+  "workers": {
+    "active": 0,
+    "max": 1
+  },
+  "session": {
+    "number": 5,
+    "started_at": "2026-01-04T14:44:21.375815"
+  },
+  "last_update": "2026-01-04T14:57:52.046629"
+}
