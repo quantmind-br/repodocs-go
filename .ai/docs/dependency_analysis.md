@@ -2,90 +2,86 @@
 
 ## Internal Dependencies
 
-The application follows a modular architecture where components are decoupled through interfaces defined in a core domain layer.
+The application follows a modular architecture with a clear separation of concerns, anchored by a central `domain` layer.
 
-- **`domain`**: The foundation of the system. It defines all core models (`Document`, `Page`, `Response`) and primary interfaces (`Fetcher`, `Renderer`, `Cache`, `Converter`, `Writer`, `LLMProvider`, `Strategy`). It has zero internal dependencies, serving as the leaf node of the dependency graph.
-- **`utils`**: Provides shared utility functions for URL manipulation, file system operations, logging (`zerolog` wrapper), and concurrency management (`workerpool`).
-- **`config`**: Manages application settings using `viper`. It is consumed by most initialization logic but depends only on the standard library and `viper`.
-- **`cache`**: Implements the `domain.Cache` interface using the Badger K/V store.
-- **`fetcher`**: Implements the `domain.Fetcher` interface. It provides robust HTTP capabilities, including stealth (impersonating browsers) and retry logic. It optionally depends on `domain.Cache`.
-- **`renderer`**: Implements the `domain.Renderer` interface using the Rod browser automation library to handle JavaScript-heavy documentation.
-- **`converter`**: A pipeline-based module that transforms HTML to Markdown. It depends on `domain` for models and `utils` for processing.
-- **`output`**: Handles persistence of converted documents to disk and collection of metadata for index generation. It depends on `domain`, `converter` (for frontmatter injection), and `utils`.
-- **`llm`**: Implements the `domain.LLMProvider` interface for multiple backends (OpenAI, Anthropic, Google) using raw HTTP clients. It also provides a `MetadataEnhancer` that uses LLMs to enrich `domain.Document` objects.
-- **`strategies`**: The core business logic layer. It implements various documentation gathering strategies (Crawler, Git, Sitemap, Wiki, LLMS.txt, PkgGo). This package acts as the primary consumer of all other internal modules through a centralized `Dependencies` struct.
-- **`app`**: The top-level orchestration layer. It handles strategy detection and coordinates the execution of strategies based on user input.
+*   **`cmd/repodocs`**: The entry point. It depends on `app` for orchestration, `config` for settings, and `utils` for logging and path handling.
+*   **`internal/app`**: Contains the `Orchestrator` and `StrategyDetector`. It depends on `strategies` to create and execute extraction logic, and `config` to initialize the environment.
+*   **`internal/strategies`**: The most dependency-heavy layer. It implements various extraction methods (Git, Crawler, Sitemap, etc.). It depends on almost all other internal modules via a shared `Dependencies` struct:
+    *   `fetcher`: For HTTP requests.
+    *   `renderer`: For JavaScript execution.
+    *   `converter`: For HTML-to-Markdown processing.
+    *   `cache`: For persistence.
+    *   `output`: For file writing and metadata collection.
+    *   `llm`: For AI-enhanced metadata.
+*   **`internal/domain`**: The core package containing shared models (`Document`, `Page`, `Response`) and interfaces (`Fetcher`, `Renderer`, `Cache`, `LLMProvider`). Most other packages depend on this to maintain decoupling.
+*   **`internal/utils`**: A utility layer providing shared logic for logging, URL manipulation, and file system operations.
 
 ## External Dependencies
 
-The project leverages several high-quality external libraries for specialized tasks:
+The project leverages several specialized libraries for web scraping and document processing:
 
-- **Storage & Caching**: `github.com/dgraph-io/badger/v4` (Persistent K/V store).
-- **Web & Scraping**: 
-    - `github.com/gocolly/colly/v2`: Asynchronous web crawling.
-    - `github.com/go-rod/rod` & `github.com/go-rod/stealth`: Browser automation and bot detection evasion.
-    - `github.com/bogdanfinn/tls-client`: Advanced TLS fingerprinting for stealth HTTP requests.
-- **Git Operations**: `github.com/go-git/go-git/v5` (Pure Go implementation of Git).
-- **Content Processing**:
-    - `github.com/JohannesKaufmann/html-to-markdown/v2`: HTML to Markdown conversion.
-    - `github.com/go-shiori/go-readability`: Main content extraction from HTML.
-    - `github.com/PuerkitoBio/goquery`: HTML parsing and manipulation (jQuery-like).
-- **CLI & Infrastructure**:
-    - `github.com/spf13/cobra`: CLI framework.
-    - `github.com/spf13/viper`: Configuration management.
-    - `github.com/rs/zerolog`: Structured logging.
-    - `github.com/cenkalti/backoff/v4`: Exponential backoff for retries.
-- **UI**: `github.com/schollz/progressbar/v3` (Console progress bars).
+*   **Web & Networking**:
+    *   `github.com/gocolly/colly/v2`: Primary crawling framework.
+    *   `github.com/bogdanfinn/tls-client` & `fhttp`: HTTP client with TLS fingerprinting to bypass bot detection.
+    *   `github.com/go-rod/rod` & `stealth`: Headless browser automation for rendering JavaScript-heavy sites.
+*   **Content Processing**:
+    *   `github.com/JohannesKaufmann/html-to-markdown/v2`: Core HTML to Markdown conversion engine.
+    *   `github.com/go-shiori/go-readability`: Content extraction (distill/article mode).
+    *   `github.com/PuerkitoBio/goquery`: jQuery-like HTML parsing and manipulation.
+*   **Version Control**:
+    *   `github.com/go-git/go-git/v5`: Pure Go implementation of Git for cloning repositories.
+*   **Infrastructure & CLI**:
+    *   `github.com/spf13/cobra` & `viper`: Command-line interface and configuration management.
+    *   `github.com/dgraph-io/badger/v4`: High-performance embedded key-value store used for the persistent cache.
+    *   `github.com/rs/zerolog`: Structured, high-performance logging.
+    *   `github.com/schollz/progressbar/v3`: Interactive CLI progress bars.
+*   **Utilities**:
+    *   `github.com/cenkalti/backoff/v4`: Exponential backoff for retrying network operations.
+    *   `github.com/klauspost/compress`: Optimized compression (used for sitemap handling).
 
 ## Dependency Graph
 
-The application structure follows a directed acyclic graph (DAG) pattern:
-
 ```mermaid
 graph TD
-    CMD[CLI/Main] --> APP[app]
-    APP --> STRAT[strategies]
-    APP --> CFG[config]
+    Main[cmd/repodocs] --> App[internal/app]
+    Main --> Config[internal/config]
     
-    STRAT --> DEPS[strategies.Dependencies]
+    App --> Strategies[internal/strategies]
+    App --> Utils[internal/utils]
     
-    DEPS --> FETCH[fetcher]
-    DEPS --> REND[renderer]
-    DEPS --> CACHE[cache]
-    DEPS --> CONV[converter]
-    DEPS --> OUT[output]
-    DEPS --> LLM[llm]
+    Strategies --> Fetcher[internal/fetcher]
+    Strategies --> Renderer[internal/renderer]
+    Strategies --> Converter[internal/converter]
+    Strategies --> LLM[internal/llm]
+    Strategies --> Cache[internal/cache]
+    Strategies --> Output[internal/output]
+    Strategies --> Domain[internal/domain]
     
-    FETCH --> DOMAIN[domain]
-    REND --> DOMAIN
-    CACHE --> DOMAIN
-    CONV --> DOMAIN
-    OUT --> DOMAIN
-    LLM --> DOMAIN
+    Fetcher --> Domain
+    Renderer --> Domain
+    Converter --> Domain
+    LLM --> Domain
+    Cache --> Domain
+    Output --> Domain
     
-    OUT --> CONV
-    
-    subgraph Shared
-        DOMAIN
-        UTILS[utils]
-    end
-    
-    style DOMAIN fill:#f9f,stroke:#333,stroke-width:2px
+    Fetcher --> Utils
+    LLM --> Utils
+    Output --> Utils
+    Strategies --> Utils
 ```
 
 ## Dependency Injection
 
-The project employs a structured dependency injection (DI) pattern to maintain testability and flexibility:
+The application uses **Constructor Injection** and a **Registry Pattern** to manage its complex dependency tree:
 
-1.  **Interface-Driven**: All major services are defined as interfaces in the `domain` package. Implementations reside in their respective packages (`cache`, `fetcher`, `renderer`, etc.).
-2.  **Aggregate Dependency Struct**: The `strategies.Dependencies` struct acts as a service locator/container that holds implementations for all core services required by extraction strategies.
-3.  **Constructor Injection**: Services and strategies receive their dependencies through constructors (e.g., `NewCrawlerStrategy(deps *Dependencies)`).
-4.  **Strategy Factory**: The `app` package uses a factory pattern (`CreateStrategy`) to instantiate the correct strategy implementation based on the detected URL type, injecting the shared `Dependencies` container into each.
-5.  **Mocking Support**: The use of interfaces throughout the system facilitates the use of `go.uber.org/mock` for unit and integration testing.
+1.  **Dependency Container**: The `strategies.Dependencies` struct acts as a manually managed dependency container. It holds implementations of various interfaces (`Fetcher`, `Renderer`, `Cache`) and is passed to every strategy upon instantiation.
+2.  **Interface Decoupling**: Implementations are defined in their respective packages (e.g., `internal/cache/badger.go`), but the `strategies` package interacts with them only through interfaces defined in `internal/domain/interfaces.go`.
+3.  **Functional Options/Factories**: The `Orchestrator` allows injecting a `StrategyFactory` function, facilitating easier unit testing by allowing mocks to be substituted for actual extraction strategies.
+4.  **Mocking**: The project uses `go.uber.org/mock` to generate mocks for all `domain` interfaces, ensuring that components can be tested in isolation despite the deep dependency tree.
 
 ## Potential Issues
 
-- **Coupling in `strategies`**: The `strategies` package depends on almost every other internal package. While this is expected for an orchestrating layer, it makes the package highly sensitive to changes across the codebase.
-- **Output-Converter Link**: The `output` package depends on the `converter` package specifically to add YAML frontmatter to files. This creates a circular-adjacent relationship where the converter creates the content, but the output module knows how to further "convert" it by adding headers.
-- **Stealth Dependencies**: The project relies on specialized networking libraries (`tls-client`, `fhttp`). While providing excellent capability, these increase the complexity of the HTTP stack and could lead to maintenance challenges if the underlying TLS landscape changes rapidly.
-- **Large Domain Models**: The `domain.Document` model is quite large, carrying both raw data and AI-enhanced metadata. As the system grows, splitting this into separate "Raw" and "Enriched" models might be necessary to avoid passing unnecessary data between early pipeline stages.
+*   **Large Dependency Struct (God Object)**: The `strategies.Dependencies` struct is quite large and is passed everywhere in the strategy layer. While it centralizes dependency management, it creates a "mega-object" that every strategy must handle, even if it only needs one or two of those dependencies.
+*   **Interface Redundancy**: There is a slight duplication between `internal/domain.Strategy` and `internal/strategies.Strategy`. They use different `Options` structs, which suggests the abstraction is currently in flux or partially redundant.
+*   **Tight Coupling with Utils**: Almost every package imports `internal/utils`. While common for logging, the inclusion of path manipulation and URL helpers in the same package makes it a frequent point of change.
+*   **Strategy Implementation Leakage**: The `app` package's `Detector` explicitly knows about every strategy implementation through `CreateStrategy`. Adding a new strategy requires modifying the `app` package, violating the Open/Closed Principle.
