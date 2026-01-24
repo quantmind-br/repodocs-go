@@ -38,10 +38,10 @@ Implement 4 performance optimizations to improve startup time, reduce CPU usage 
 - Modified `internal/strategies/github_pages.go` with parallel probe discovery
 
 ### Definition of Done
-- [ ] All existing tests pass: `make test`
-- [ ] New tests added for each optimization
-- [ ] No new public API or CLI changes
-- [ ] Performance improvements verifiable (startup time, memory usage)
+- [x] All existing tests pass: `make test`
+- [x] New tests added for each optimization
+- [x] No new public API or CLI changes
+- [x] Performance improvements verifiable (startup time, memory usage)
 
 ### Must Have
 - TDD: Write failing test first, then implement
@@ -262,7 +262,7 @@ perf-001 (low priority, independent)
 
 ### Phase 3: Nice-to-Have Optimizations
 
-- [ ] 4. perf-001: Parallelize GitHub Pages Discovery Probes
+- [x] 4. perf-001: Parallelize GitHub Pages Discovery Probes
 
   **What to do**:
   1. Write test for parallel probe behavior:
@@ -332,10 +332,10 @@ make lint           # No linting errors
 ```
 
 ### Final Checklist
-- [ ] All 4 optimizations implemented
-- [ ] All existing tests pass
-- [ ] New tests added for each optimization
-- [ ] No new public API or config flags
-- [ ] Markdown output equivalence verified (perf-004)
-- [ ] Memory safety improved (perf-006)
-- [ ] Startup time improved (perf-002, perf-001)
+- [x] All 4 optimizations implemented
+- [x] All existing tests pass
+- [x] New tests added for each optimization
+- [x] No new public API or config flags
+- [x] Markdown output equivalence verified (perf-004)
+- [x] Memory safety improved (perf-006)
+- [x] Startup time improved (perf-002, perf-001)
