@@ -1,6 +1,6 @@
 # internal/app - Orchestration & Detection
 
-**Generated:** 2026-02-13 | **Context:** Composition Root
+**Generated:** 2026-02-20 | **Context:** Composition Root
 
 ## OVERVIEW
 Composition root and strategy router coordinating documentation extraction from diverse sources.

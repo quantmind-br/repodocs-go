@@ -1,5 +1,7 @@
 # AGENTS.md - internal/strategies
 
+**Generated:** 2026-02-20 | **Package:** internal/strategies
+
 Documentation extraction strategies implementing the Strategy interface.
 
 ## Strategies

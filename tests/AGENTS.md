@@ -1,5 +1,7 @@
 # AGENTS.md - tests/
 
+**Generated:** 2026-02-20 | **External test suite**
+
 External test suite using `package_test` pattern for black-box testing of internal packages.
 
 ## Structure

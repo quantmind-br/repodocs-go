@@ -1,5 +1,7 @@
 # AGENTS.md - internal/llm
 
+**Generated:** 2026-02-20 | **Package:** internal/llm
+
 Multi-provider LLM abstraction with circuit breaker resilience and rate limiting.
 
 ## Providers

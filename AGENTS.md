@@ -1,6 +1,6 @@
 # AGENTS.md - repodocs-go
 
-**Generated:** 2026-02-13 | **Commit:** 4448082 | **Branch:** main
+**Generated:** 2026-02-20 | **Commit:** 55ef1a3 | **Branch:** main
 
 ## Overview
 

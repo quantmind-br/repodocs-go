@@ -1,5 +1,7 @@
 # AGENTS.md - converter
 
+**Generated:** 2026-02-20 | **Package:** internal/converter
+
 HTML → Markdown conversion pipeline with encoding detection, content extraction, sanitization, and markdown generation.
 
 ## Pipeline Stages

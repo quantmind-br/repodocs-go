@@ -1,6 +1,6 @@
 # AGENTS.md - renderer
 
-**Generated:** 2026-02-13 | **Package:** `internal/renderer`
+**Generated:** 2026-02-20 | **Package:** `internal/renderer`
 
 ## Overview
 Headless browser pool (Rod/Chromium) for rendering JavaScript-heavy documentation sites and SPAs.

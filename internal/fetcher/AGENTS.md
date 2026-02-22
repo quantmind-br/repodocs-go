@@ -1,6 +1,6 @@
 # AGENTS.md - internal/fetcher
 
-**Package:** `internal/fetcher`
+**Generated:** 2026-02-20 | **Package:** `internal/fetcher`
 **Purpose:** Stealth HTTP client with caching, bot avoidance, and retry logic.
 
 ## OVERVIEW
