@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"go test -short ./tests/unit/... -run \\\"TestSanitizer_PreservesCodeInAside\\\" -v 2>&1\",\"description\":\"Debug aside test failure\"}",
+  "error": "Exit code 1\n=== RUN   TestSanitizer_PreservesCodeInAside\n    code_blocks_test.go:286: \n        \tError Trace:\t/Users/diogo/dev/repodocs-go/tests/unit/code_blocks_test.go:286\n        \tError:      \t\"<html><head></head><body><div>\\n\\t\\t<h1>Title</h1>\\n\\t\\t<div class=\\\"repodocs-preserved-code\\\"><pre><code class=\\\"language-python\\\">print(&#34;example&#34;)</code></pre></div>\\n\\t\\t<p>Main content</p>\\n\\t</div></body></html>\" does not contain \"print(\\\"example\\\")\"\n        \tTest:       \tTestSanitizer_Pres...",
+  "timestamp": "2026-03-03T04:00:45.677Z",
+  "retry_count": 2
+}
