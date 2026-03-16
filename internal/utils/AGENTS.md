@@ -1,3 +1,6 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/utils
 
 Shared utilities: URL normalization, filesystem helpers, logging, worker pool, progress tracking.
@@ -36,3 +39,6 @@ pool.Submit(task)
 ## Complexity Notes
 
 - **url.go (423 lines)**: Complex URL normalization - handles schemes, ports, fragments, query params, path cleaning. All caching relies on normalized URLs - bugs here cause cache misses.
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

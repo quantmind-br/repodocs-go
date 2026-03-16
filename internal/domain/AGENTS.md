@@ -1,3 +1,6 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/domain
 
 Core interfaces, models, and sentinel errors. All other packages depend on this.
@@ -52,3 +55,6 @@ Sentinel errors in `errors.go`:
 
 - **NO domain logic** - This is pure interfaces + data types
 - **NO implementation** - Implementations go in packages
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

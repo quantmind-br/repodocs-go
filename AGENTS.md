@@ -1,6 +1,8 @@
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - repodocs-go
 
-**Generated:** 2026-02-20 | **Commit:** 55ef1a3 | **Branch:** main
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Commit:** 55ef1a3 | **Branch:** main
 
 ## Overview
 
@@ -219,3 +221,6 @@ Work is NOT complete until `git push` succeeds:
 ```bash
 git pull --rebase && git push
 ```
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

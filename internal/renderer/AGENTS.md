@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - renderer
 
-**Generated:** 2026-02-20 | **Package:** `internal/renderer`
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** `internal/renderer`
 
 ## Overview
 Headless browser pool (Rod/Chromium) for rendering JavaScript-heavy documentation sites and SPAs.
@@ -41,3 +44,6 @@ internal/renderer/
 - **Hardcoded Selectors**: Avoid hardcoded "wait for" selectors; pass via `RenderOptions`.
 - **Resource Leaks**: Never return from `Acquire` without a corresponding `Release`.
 - **UI Interaction**: This renderer is for extraction, not form filling or complex interaction.
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

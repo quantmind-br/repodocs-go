@@ -1,3 +1,6 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/cache
 
 BadgerDB-based persistent caching layer.
@@ -41,3 +44,6 @@ type Options struct {
 
 - **NO direct Badger calls** - Use `Cache` interface
 - **NO global cache instances** - Inject via Dependencies
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

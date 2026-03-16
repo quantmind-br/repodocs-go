@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - tests/
 
-**Generated:** 2026-02-20 | **External test suite**
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **External test suite**
 
 External test suite using `package_test` pattern for black-box testing of internal packages.
 
@@ -65,3 +68,6 @@ package fetcher_test  // NOT package fetcher
 
 import "github.com/quantmind-br/repodocs-go/internal/fetcher"
 ```
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

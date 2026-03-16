@@ -1,3 +1,6 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/tui
 
 Interactive terminal UI for configuration using Bubble Tea + Huh forms.
@@ -41,3 +44,6 @@ type ConfigForm struct { /* Huh form definition */ }
 
 - **forms.go (409 lines)**: Complex state machine for config flow
 - Accessible mode via `ACCESSIBLE=1` env var
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

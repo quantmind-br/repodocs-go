@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/llm
 
-**Generated:** 2026-02-20 | **Package:** internal/llm
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** internal/llm
 
 Multi-provider LLM abstraction with circuit breaker resilience and rate limiting.
 
@@ -56,3 +59,6 @@ type ProviderConfig struct {
 type RateLimitedProvider struct { /* wraps any LLMProvider with resilience */ }
 type MetadataEnhancer struct { /* uses LLMProvider for summaries/tags */ }
 ```
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # internal/app - Orchestration & Detection
 
-**Generated:** 2026-02-20 | **Context:** Composition Root
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Context:** Composition Root
 
 ## OVERVIEW
 Composition root and strategy router coordinating documentation extraction from diverse sources.
@@ -39,3 +42,6 @@ internal/app/
 - **Direct Instantiation**: Avoid instantiating strategies directly; use the `StrategyFactory` injection point.
 - **Side Effects in Detection**: `DetectStrategy` must be a pure function of the URL.
 - See root `AGENTS.md` for general project constraints.
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

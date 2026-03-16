@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/fetcher
 
-**Generated:** 2026-02-20 | **Package:** `internal/fetcher`
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** `internal/fetcher`
 **Purpose:** Stealth HTTP client with caching, bot avoidance, and retry logic.
 
 ## OVERVIEW
@@ -37,3 +40,6 @@ High-level HTTP client wrapping `tls-client` to bypass bot detection with integr
 - **NO Manual Decompression**: `tls-client` handles this; `StealthTransport` strips `Content-Encoding` to prevent double-decompression errors in callers.
 - **Avoid Static Headers**: Use `StealthHeaders()` to ensure randomized, consistent header sets.
 - **No Hardcoded Delays**: Use `RandomDelay()` from `stealth.go` for human-like pacing.
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - converter
 
-**Generated:** 2026-02-20 | **Package:** internal/converter
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** internal/converter
 
 HTML → Markdown conversion pipeline with encoding detection, content extraction, sanitization, and markdown generation.
 
@@ -55,3 +58,6 @@ PlainTextReader    // Plain text file parser
 - Sanitizer uses configurable blocklists: `TagsToRemove`, `ClassesToRemove`, `IDsToRemove`
 - Pipeline accepts `ContentSelector` and `ExcludeSelector` for targeted extraction
 - `GenerateFrontmatter()` and `AddFrontmatter()` in markdown.go for YAML metadata
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

@@ -1,6 +1,9 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+
 # AGENTS.md - internal/strategies
 
-**Generated:** 2026-02-20 | **Package:** internal/strategies
+**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** internal/strategies
 
 Documentation extraction strategies implementing the Strategy interface.
 
@@ -64,3 +67,6 @@ func (s *XStrategy) SetFetcher(f domain.Fetcher)  // Testing injection
 - **DocsRS**: Own type system (`docsrs_types.go`), JSON parser (`docsrs_json.go`), and Markdown renderer (`docsrs_renderer.go`). Handles Rust generics, lifetimes, trait bounds.
 - **GitHub Pages**: Multi-phase discovery (HTTP probes → browser render → link extraction). SPA shell detection in `looksLikeSPAShell()`.
 - **Git**: Subpackage with clone/archive/processor separation. Supports both full clone and archive fetch.
+
+
+<!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->
