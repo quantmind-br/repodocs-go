@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772509649034,
-  "projectRoot": "/Users/diogo/dev/repodocs-go",
+  "lastScanned": 1774286038042,
+  "projectRoot": "C:\\Users\\diogo\\dev\\repodocs-go",
   "techStack": {
     "languages": [
       {
@@ -53,27 +53,18 @@
   },
   "customNotes": [],
   "directoryMap": {
-    "build": {
-      "path": "build",
-      "purpose": "Build output",
-      "fileCount": 1,
-      "lastAccessed": 1772509649012,
-      "keyFiles": [
-        "repodocs"
-      ]
-    },
     "cmd": {
       "path": "cmd",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1772509649013,
+      "lastAccessed": 1774286038031,
       "keyFiles": []
     },
     "configs": {
       "path": "configs",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1772509649014,
+      "lastAccessed": 1774286038031,
       "keyFiles": [
         "config.yaml.template"
       ]
@@ -82,29 +73,32 @@
       "path": "examples",
       "purpose": "Example code",
       "fileCount": 0,
-      "lastAccessed": 1772509649020,
+      "lastAccessed": 1774286038031,
       "keyFiles": []
     },
     "internal": {
       "path": "internal",
       "purpose": null,
-      "fileCount": 0,
-      "lastAccessed": 1772509649021,
-      "keyFiles": []
+      "fileCount": 1,
+      "lastAccessed": 1774286038032,
+      "keyFiles": [
+        "AGENTS.md"
+      ]
     },
     "pkg": {
       "path": "pkg",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1772509649021,
+      "lastAccessed": 1774286038032,
       "keyFiles": []
     },
     "scripts": {
       "path": "scripts",
       "purpose": "Build/utility scripts",
-      "fileCount": 1,
-      "lastAccessed": 1772509649023,
+      "fileCount": 2,
+      "lastAccessed": 1774286038032,
       "keyFiles": [
+        "AGENTS.md",
         "release.sh"
       ]
     },
@@ -112,183 +106,63 @@
       "path": "tests",
       "purpose": "Test files",
       "fileCount": 1,
-      "lastAccessed": 1772509649024,
+      "lastAccessed": 1774286038032,
       "keyFiles": [
         "AGENTS.md"
       ]
     },
-    "internal/app": {
-      "path": "internal/app",
+    "internal\\app": {
+      "path": "internal\\app",
       "purpose": "Application code",
       "fileCount": 5,
-      "lastAccessed": 1772509649026,
+      "lastAccessed": 1774286038033,
       "keyFiles": [
         "AGENTS.md",
         "detector.go",
         "detector_test.go"
       ]
     },
-    "internal/config": {
-      "path": "internal/config",
+    "internal\\config": {
+      "path": "internal\\config",
       "purpose": "Configuration files",
-      "fileCount": 4,
-      "lastAccessed": 1772509649026,
+      "fileCount": 5,
+      "lastAccessed": 1774286038033,
       "keyFiles": [
+        "AGENTS.md",
         "config.go",
-        "config_test.go",
-        "defaults.go"
+        "config_test.go"
       ]
     },
-    "tests/fixtures": {
-      "path": "tests/fixtures",
+    "tests\\fixtures": {
+      "path": "tests\\fixtures",
       "purpose": "Test fixtures",
       "fileCount": 0,
-      "lastAccessed": 1772509649027,
+      "lastAccessed": 1774286038034,
       "keyFiles": []
     },
-    "tests/helpers": {
-      "path": "tests/helpers",
+    "tests\\helpers": {
+      "path": "tests\\helpers",
       "purpose": "Helper functions",
-      "fileCount": 2,
-      "lastAccessed": 1772509649027,
+      "fileCount": 3,
+      "lastAccessed": 1774286038034,
       "keyFiles": [
+        "AGENTS.md",
         "fixtures.go",
         "http.go"
       ]
     },
-    "tests/mocks": {
-      "path": "tests/mocks",
+    "tests\\mocks": {
+      "path": "tests\\mocks",
       "purpose": "Mock data",
-      "fileCount": 4,
-      "lastAccessed": 1772509649027,
+      "fileCount": 5,
+      "lastAccessed": 1774286038035,
       "keyFiles": [
-        "README.md",
+        "AGENTS.md",
         "domain.go",
         "git.go"
       ]
     }
   },
-  "hotPaths": [
-    {
-      "path": "",
-      "accessCount": 8,
-      "lastAccessed": 1772510166021,
-      "type": "directory"
-    },
-    {
-      "path": "internal/converter/markdown.go",
-      "accessCount": 7,
-      "lastAccessed": 1772510334831,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/pipeline.go",
-      "accessCount": 5,
-      "lastAccessed": 1772510289710,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/sanitizer.go",
-      "accessCount": 5,
-      "lastAccessed": 1772510440448,
-      "type": "file"
-    },
-    {
-      "path": "tests/unit/code_blocks_test.go",
-      "accessCount": 4,
-      "lastAccessed": 1772510684223,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/code_blocks.go",
-      "accessCount": 3,
-      "lastAccessed": 1772510245048,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/readability.go",
-      "accessCount": 2,
-      "lastAccessed": 1772510153260,
-      "type": "file"
-    },
-    {
-      "path": "tests/unit/pipeline_test.go",
-      "accessCount": 2,
-      "lastAccessed": 1772510171304,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/encoding.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509871386,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/markdown_reader.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509871881,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/content_type.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509872117,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/plaintext_reader.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509872529,
-      "type": "file"
-    },
-    {
-      "path": "internal/renderer/rod.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509879084,
-      "type": "file"
-    },
-    {
-      "path": "internal/renderer/detector.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509879543,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/sanitizer_test.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509879979,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/markdown_test.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509880390,
-      "type": "file"
-    },
-    {
-      "path": "internal/converter/pipeline_test.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509880530,
-      "type": "file"
-    },
-    {
-      "path": "internal",
-      "accessCount": 1,
-      "lastAccessed": 1772509888134,
-      "type": "directory"
-    },
-    {
-      "path": "tests/unit/converter/sanitizer_test.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509898105,
-      "type": "file"
-    },
-    {
-      "path": "internal/strategies/crawler.go",
-      "accessCount": 1,
-      "lastAccessed": 1772509904653,
-      "type": "file"
-    }
-  ],
+  "hotPaths": [],
   "userDirectives": []
 }
