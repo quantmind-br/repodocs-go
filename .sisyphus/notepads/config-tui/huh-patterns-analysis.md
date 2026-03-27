@@ -1,7 +1,7 @@
 # charmbracelet/huh Usage Patterns - Comprehensive Analysis
 
 ## Project Context
-- **Project**: repodocs-go (Go CLI tool for documentation extraction)
+- **Project**: repodocs (Go CLI tool for documentation extraction)
 - **huh Version**: v0.8.0
 - **TUI Package**: `internal/tui/`
 - **Status**: Active implementation with 7 form categories

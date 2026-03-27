@@ -1,0 +1,191 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774646441445,
+  "projectRoot": "/home/diogo/dev/repodocs",
+  "techStack": {
+    "languages": [
+      {
+        "name": "Go",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "go.mod"
+        ]
+      },
+      {
+        "name": "C/C++",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "Makefile"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "go",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "make build",
+    "testCommand": "make test",
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "examples",
+      "scripts",
+      "tests"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "build": {
+      "path": "build",
+      "purpose": "Build output",
+      "fileCount": 1,
+      "lastAccessed": 1774646441443,
+      "keyFiles": [
+        "repodocs"
+      ]
+    },
+    "cmd": {
+      "path": "cmd",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1774646441443,
+      "keyFiles": []
+    },
+    "configs": {
+      "path": "configs",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1774646441444,
+      "keyFiles": [
+        "config.yaml.template"
+      ]
+    },
+    "examples": {
+      "path": "examples",
+      "purpose": "Example code",
+      "fileCount": 0,
+      "lastAccessed": 1774646441444,
+      "keyFiles": []
+    },
+    "internal": {
+      "path": "internal",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1774646441444,
+      "keyFiles": [
+        "AGENTS.md"
+      ]
+    },
+    "pkg": {
+      "path": "pkg",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1774646441444,
+      "keyFiles": []
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 3,
+      "lastAccessed": 1774646441444,
+      "keyFiles": [
+        "AGENTS.md",
+        "build.ps1",
+        "release.sh"
+      ]
+    },
+    "tests": {
+      "path": "tests",
+      "purpose": "Test files",
+      "fileCount": 1,
+      "lastAccessed": 1774646441444,
+      "keyFiles": [
+        "AGENTS.md"
+      ]
+    },
+    "internal/app": {
+      "path": "internal/app",
+      "purpose": "Application code",
+      "fileCount": 5,
+      "lastAccessed": 1774646441445,
+      "keyFiles": [
+        "AGENTS.md",
+        "detector.go",
+        "detector_test.go"
+      ]
+    },
+    "internal/config": {
+      "path": "internal/config",
+      "purpose": "Configuration files",
+      "fileCount": 5,
+      "lastAccessed": 1774646441445,
+      "keyFiles": [
+        "AGENTS.md",
+        "config.go",
+        "config_test.go"
+      ]
+    },
+    "tests/fixtures": {
+      "path": "tests/fixtures",
+      "purpose": "Test fixtures",
+      "fileCount": 0,
+      "lastAccessed": 1774646441445,
+      "keyFiles": []
+    },
+    "tests/helpers": {
+      "path": "tests/helpers",
+      "purpose": "Helper functions",
+      "fileCount": 3,
+      "lastAccessed": 1774646441445,
+      "keyFiles": [
+        "AGENTS.md",
+        "fixtures.go",
+        "http.go"
+      ]
+    },
+    "tests/mocks": {
+      "path": "tests/mocks",
+      "purpose": "Mock data",
+      "fileCount": 5,
+      "lastAccessed": 1774646441445,
+      "keyFiles": [
+        "AGENTS.md",
+        "README.md",
+        "domain.go"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "Makefile",
+      "accessCount": 3,
+      "lastAccessed": 1774646613355,
+      "type": "directory"
+    },
+    {
+      "path": ".beads/sync_base.jsonl",
+      "accessCount": 1,
+      "lastAccessed": 1774646592221,
+      "type": "directory"
+    }
+  ],
+  "userDirectives": []
+}

@@ -1,6 +1,6 @@
 <!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
 
-# AGENTS.md - repodocs-go
+# AGENTS.md - repodocs
 
 **Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Commit:** 55ef1a3 | **Branch:** main
 
@@ -11,7 +11,7 @@ CLI tool extracting documentation from websites, Git repos, sitemaps, pkg.go.dev
 ## Structure
 
 ```
-repodocs-go/
+repodocs/
 ├── cmd/repodocs/      # Single entry point (Cobra CLI, all commands in main.go)
 ├── internal/
 │   ├── app/           # Orchestrator + Detector (strategy routing)
@@ -75,7 +75,7 @@ import (
 
     "github.com/stretchr/testify/assert"         // 2. external
 
-    "github.com/quantmind-br/repodocs-go/internal/domain"  // 3. internal
+    "github.com/quantmind-br/repodocs/internal/domain"  // 3. internal
 )
 ```
 

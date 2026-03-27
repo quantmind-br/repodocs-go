@@ -39,7 +39,7 @@ func Full() string  // Returns formatted string: "repodocs x.y.z (commit: ..., b
 
 ## For AI Agents
 
-- Import: `github.com/quantmind-br/repodocs-go/pkg/version`
+- Import: `github.com/quantmind-br/repodocs/pkg/version`
 - Build command includes ldflags for version injection
 - Used by CLI root command for `--version` flag
 

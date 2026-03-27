@@ -40,6 +40,6 @@ The script:
 
 - Run locally to create releases
 - Tags trigger CI/CD pipeline
-- Monitor: https://github.com/quantmind-br/repodocs-go/actions
+- Monitor: https://github.com/quantmind-br/repodocs/actions
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

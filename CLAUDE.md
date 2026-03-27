@@ -14,7 +14,7 @@ make vet                # Run go vet
 
 ## Architecture
 
-**repodocs-go** extracts documentation from websites, Git repos, sitemaps, pkg.go.dev, llms.txt and converts to Markdown.
+**repodocs** extracts documentation from websites, Git repos, sitemaps, pkg.go.dev, llms.txt and converts to Markdown.
 
 **Flow**: URL → Detector → Strategy → Fetcher/Renderer → Converter → Writer
 

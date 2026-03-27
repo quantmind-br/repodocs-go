@@ -1,4 +1,4 @@
-# Quick Reference: huh Patterns in repodocs-go
+# Quick Reference: huh Patterns in repodocs
 
 ## Numeric Input Pattern (COPY THIS)
 

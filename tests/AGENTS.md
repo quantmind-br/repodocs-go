@@ -66,7 +66,7 @@ Tests use `package_test` naming (e.g., `fetcher_test`) to test only exported API
 ```go
 package fetcher_test  // NOT package fetcher
 
-import "github.com/quantmind-br/repodocs-go/internal/fetcher"
+import "github.com/quantmind-br/repodocs/internal/fetcher"
 ```
 
 

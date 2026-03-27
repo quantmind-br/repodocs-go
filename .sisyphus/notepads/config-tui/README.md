@@ -1,6 +1,6 @@
 # Config TUI - charmbracelet/huh Patterns Documentation
 
-This directory contains comprehensive documentation of charmbracelet/huh usage patterns discovered in the repodocs-go TUI implementation.
+This directory contains comprehensive documentation of charmbracelet/huh usage patterns discovered in the repodocs TUI implementation.
 
 ## Files in This Directory
 
@@ -192,5 +192,5 @@ The pattern is optimal for this use case and should be maintained as-is.
 
 - **huh version:** v0.8.0
 - **Analysis date:** 2025-01-13
-- **Project:** repodocs-go
+- **Project:** repodocs
 - **TUI package:** internal/tui/

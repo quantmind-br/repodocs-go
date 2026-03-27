@@ -32,7 +32,7 @@ Maintains synchronization state to enable incremental updates. Uses content hash
 ## Dependencies
 
 - **External**: None
-- **Internal**: github.com/quantmind-br/repodocs-go/internal/utils
+- **Internal**: github.com/quantmind-br/repodocs/internal/utils
 
 ## For AI Agents
 

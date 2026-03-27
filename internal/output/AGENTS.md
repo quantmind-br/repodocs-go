@@ -36,7 +36,7 @@ Handles saving documents to the filesystem with YAML frontmatter. Supports flat 
 ## Dependencies
 
 - **External**: None
-- **Internal**: github.com/quantmind-br/repodocs-go/internal/converter, github.com/quantmind-br/repodocs-go/internal/domain, github.com/quantmind-br/repodocs-go/internal/utils
+- **Internal**: github.com/quantmind-br/repodocs/internal/converter, github.com/quantmind-br/repodocs/internal/domain, github.com/quantmind-br/repodocs/internal/utils
 
 ## For AI Agents
 
