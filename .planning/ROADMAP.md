@@ -24,8 +24,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — LMStudioProvider struct and factory registration (provider.go + lmstudio.go)
-- [ ] 01-02-PLAN.md — TUI validation and provider dropdown (validation.go + forms.go)
+- [x] 01-01-PLAN.md — LMStudioProvider struct and factory registration (provider.go + lmstudio.go)
+- [x] 01-02-PLAN.md — TUI validation and provider dropdown (validation.go + forms.go)
 
 **Success Criteria** (what must be TRUE):
   1. User can set `provider: lmstudio` in YAML config and repodocs loads it without error
