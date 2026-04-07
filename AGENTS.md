@@ -125,13 +125,18 @@ go test ./tests/benchmark/... -bench=.
 
 ## Known Bugs
 
-6 documented issues in `bugs.md` affecting rate limiting and circuit breaker:
-1. **Rate limit token consumed before circuit breaker check** (`provider_wrapper.go:107-118`) — High
-2. **JitterFactor always 0.0 in production** (`config.go`, `strategy.go`) — Medium
-3. **Half-open allows unlimited requests** (`circuit_breaker.go:96-97`) — Medium
-4. **Retry-After header parsed but never respected** (`client.go:164`, `retry.go:73-90`) — Medium
-5. **Retries don't consume rate limit tokens** (`provider_wrapper.go:100-125`) — Low
-6. **Validate() doesn't validate rate limit config** (`config.go:105-129`) — Low
+All 6 documented issues in `bugs.md` have been **resolved** as of 2026-04-07. Regression tests added:
+
+| # | Bug | Regression Test |
+|---|-----|-----------------|
+| 1 | Rate limit token consumed before CB check | `TestRateLimitedProvider_CircuitOpenPreservesTokens` |
+| 2 | JitterFactor always 0.0 | `TestRetrier_JitterFactorFromConfig`, `TestCalculateBackoff_UsesConfigJitter` |
+| 3 | Half-open allows unlimited requests | `TestCircuitBreaker_HalfOpenLimitsRequests` |
+| 4 | Retry-After header parsed but never respected | `TestRetrier_RespectsRetryAfterHeader` |
+| 5 | Retries don't consume rate limit tokens | `TestRateLimitedProvider_RetriesConsumeTokens` |
+| 6 | Validate() doesn't validate rate limit config | `TestConfig_Validate_RateLimitFields` |
+
+Additional fix: exported `CalculateBackoff` in `internal/llm/retry.go` now uses `cfg.JitterFactor` instead of hardcoded `0.1`.
 
 ## Complexity Hotspots
 

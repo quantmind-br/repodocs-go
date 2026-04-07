@@ -123,3 +123,18 @@ Embora `NewTokenBucket()` (`internal/llm/ratelimit.go:27-32`) e `NewCircuitBreak
 | 4 | **Media** | `Retry-After` parseado mas nunca respeitado | `client.go:164`, `retry.go:73-90` |
 | 5 | **Baixa** | Retries nao consomem tokens de rate limit | `provider_wrapper.go:100-125` |
 | 6 | **Baixa** | Sem validacao de config de rate limit/circuit breaker | `config.go:105-129` |
+
+---
+
+## Estado de Resolução (Atualizado: 2026-04-07)
+
+| # | Status | Teste de Regressão |
+|---|--------|--------------------|
+| 1 | ✅ Resolvido | `TestRateLimitedProvider_CircuitOpenPreservesTokens` em `internal/llm/provider_wrapper_test.go` |
+| 2 | ✅ Resolvido | `TestRetrier_JitterFactorFromConfig` + `TestCalculateBackoff_UsesConfigJitter` em `internal/llm/retry_test.go` |
+| 3 | ✅ Resolvido | `TestCircuitBreaker_HalfOpenLimitsRequests` em `internal/llm/circuit_breaker_test.go` |
+| 4 | ✅ Resolvido | `TestRetrier_RespectsRetryAfterHeader` em `tests/unit/fetcher/retry_test.go` |
+| 5 | ✅ Resolvido | `TestRateLimitedProvider_RetriesConsumeTokens` em `internal/llm/provider_wrapper_test.go` |
+| 6 | ✅ Resolvido | `TestConfig_Validate_RateLimitFields` em `tests/unit/config/config_test.go` |
+
+**Nota:** O resíduo na função exportada `CalculateBackoff` (hardcoded jitter 0.1) foi corrigido para usar `cfg.JitterFactor`, alinhando com a função unexported `calculateBackoff`.
