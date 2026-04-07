@@ -1,0 +1,79 @@
+# Requirements: LM Studio Provider
+
+**Defined:** 2026-04-07
+**Core Value:** Users can run repodocs metadata enhancement with local LLM models via LM Studio, with zero-config defaults
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Provider Core
+
+- [ ] **PROV-01**: User can configure `provider: lmstudio` and have it recognized by the provider factory
+- [ ] **PROV-02**: LM Studio provider sends OpenAI-compatible chat completions requests to the configured endpoint
+- [ ] **PROV-03**: LM Studio provider defaults to `http://localhost:1234/v1` when no base_url is specified
+- [ ] **PROV-04**: LM Studio provider works without an API key (no authentication required by default)
+- [ ] **PROV-05**: LM Studio provider sends Bearer token when an API key is configured
+- [ ] **PROV-06**: LM Studio provider uses 300s default timeout to accommodate local model cold-start
+
+### Configuration
+
+- [ ] **CONF-01**: User can set `provider: lmstudio` in YAML config file and have it validated
+- [ ] **CONF-02**: TUI config editor shows LM Studio as a provider option in the dropdown
+- [ ] **CONF-03**: Config validation accepts `lmstudio` as a valid provider name
+- [ ] **CONF-04**: User sees a helpful error message when LM Studio server is not running (connection refused)
+
+### Testing
+
+- [ ] **TEST-01**: Unit tests verify LM Studio provider sends correct request format via httptest mock
+- [ ] **TEST-02**: Unit tests verify conditional auth header behavior (present with key, absent without)
+- [ ] **TEST-03**: Provider factory test confirms `lmstudio` case returns valid provider
+- [ ] **TEST-04**: Integration test verifies end-to-end metadata enhancement with LM Studio (when available)
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Enhanced Local Provider Experience
+
+- **ELPE-01**: User can list available models from LM Studio via `GET /v1/models`
+- **ELPE-02**: TUI shows placeholder text with LM Studio model name format examples
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Streaming responses | Pipeline doesn't use streaming; no benefit |
+| LM Studio process management | Users install and manage LM Studio separately |
+| Model auto-detection | Users specify model name explicitly; auto-detect adds complexity |
+| Fixing existing Ollama TUI validation bug | Adjacent scope; risk expanding test surface |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| PROV-01 | Pending | Pending |
+| PROV-02 | Pending | Pending |
+| PROV-03 | Pending | Pending |
+| PROV-04 | Pending | Pending |
+| PROV-05 | Pending | Pending |
+| PROV-06 | Pending | Pending |
+| CONF-01 | Pending | Pending |
+| CONF-02 | Pending | Pending |
+| CONF-03 | Pending | Pending |
+| CONF-04 | Pending | Pending |
+| TEST-01 | Pending | Pending |
+| TEST-02 | Pending | Pending |
+| TEST-03 | Pending | Pending |
+| TEST-04 | Pending | Pending |
+
+**Coverage:**
+- v1 requirements: 14 total
+- Mapped to phases: 0
+- Unmapped: 14
+
+---
+*Requirements defined: 2026-04-07*
+*Last updated: 2026-04-07 after initial definition*
