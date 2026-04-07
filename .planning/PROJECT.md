@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Adding first-class LM Studio support to repodocs as a dedicated LLM provider. LM Studio runs local models and exposes an OpenAI-compatible API. This gives users a local, free alternative for metadata enhancement without needing cloud API keys.
+First-class LM Studio support in repodocs as a dedicated LLM provider. LM Studio runs local models and exposes an OpenAI-compatible API. Users get a local, free alternative for metadata enhancement without needing cloud API keys. Shipped in v1.0 with zero-config defaults, full test coverage, and TUI integration.
 
 ## Core Value
 
@@ -19,22 +19,20 @@ Users can run repodocs metadata enhancement with local LLM models via LM Studio,
 - ✓ Metadata enhancement pipeline using LLM providers — existing
 - ✓ TUI config editor with provider categories — existing
 - ✓ Config validation and defaults system — existing
+- ✓ Dedicated `lmstudio` provider recognized by the provider factory — v1.0
+- ✓ Default base URL `http://localhost:1234/v1` for LM Studio — v1.0
+- ✓ API key is optional (like Ollama) — works without authentication — v1.0
+- ✓ Optional API key support for secured LM Studio setups — v1.0
+- ✓ LM Studio provider uses OpenAI-compatible request/response format — v1.0
+- ✓ Config file support: `provider: lmstudio` in YAML config — v1.0
+- ✓ TUI config editor includes LM Studio as a provider option — v1.0
+- ✓ Config validation accepts `lmstudio` as valid provider — v1.0
+- ✓ Unit tests for LM Studio provider (14 unit + 4 factory tests) — v1.0
+- ✓ Integration test for LM Studio provider (httptest mock server) — v1.0
 
 ### Active
 
-- [ ] Unit tests for LM Studio provider
-- [ ] Integration test for LM Studio provider (when available)
-
-### Validated in Phase 1: Provider Core
-
-- [x] Dedicated `lmstudio` provider recognized by the provider factory
-- [x] Default base URL `http://localhost:1234/v1` for LM Studio
-- [x] API key is optional (like Ollama) — works without authentication
-- [x] Optional API key support for secured LM Studio setups
-- [x] LM Studio provider uses OpenAI-compatible request/response format
-- [x] Config file support: `provider: lmstudio` in YAML config
-- [x] TUI config editor includes LM Studio as a provider option
-- [x] Config validation accepts `lmstudio` as valid provider
+(None — next milestone requirements TBD)
 
 ### Out of Scope
 
@@ -45,9 +43,11 @@ Users can run repodocs metadata enhancement with local LLM models via LM Studio,
 
 ## Context
 
-repodocs already has a well-structured LLM provider system (`internal/llm/`) with OpenAI, Anthropic, Google, and Ollama implementations. The provider factory in `provider.go` uses a switch statement to instantiate providers by name. LM Studio exposes an OpenAI-compatible API at `localhost:1234/v1`, so the implementation can reuse the OpenAI request/response types while having its own provider entry with appropriate defaults (no required API key, local base URL).
-
-The Ollama provider already establishes the pattern for local providers: no API key required, localhost default URL. LM Studio follows the same pattern but uses the OpenAI API format rather than Ollama's native API.
+Shipped v1.0 with 1,039 lines of Go added across 9 files.
+Tech stack: Go 1.24.1, Cobra, Viper, Charmbracelet TUI, httptest.
+Provider system: `internal/llm/` now has 5 providers — OpenAI, Anthropic, Google, Ollama, and LM Studio.
+LM Studio reuses OpenAI wire format types with its own provider entry, zero-config defaults (localhost:1234/v1, no API key), and 300s timeout for cold-start tolerance.
+Test coverage: 14 unit tests + 4 factory tests + 1 integration test for LM Studio provider.
 
 ## Constraints
 
@@ -60,9 +60,12 @@ The Ollama provider already establishes the pattern for local providers: no API 
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Dedicated provider vs reuse OpenAI | First-class UX with sensible defaults (no key, local URL) is better than documenting workarounds | Dedicated — Phase 1 |
-| Reuse OpenAI request/response types | LM Studio is OpenAI-compatible; avoids code duplication | Confirmed — Phase 1 |
-| Optional API key (like Ollama) | LM Studio runs locally, auth is optional | Confirmed — Phase 1 |
+| Dedicated provider vs reuse OpenAI | First-class UX with sensible defaults (no key, local URL) is better than documenting workarounds | ✓ Good — shipped v1.0 |
+| Reuse OpenAI request/response types | LM Studio is OpenAI-compatible; avoids code duplication | ✓ Good — zero duplication |
+| Optional API key (like Ollama) | LM Studio runs locally, auth is optional | ✓ Good — conditional auth works |
+| 300s default timeout | Local models have cold-start loading time | ✓ Good — accommodates slow first inference |
+| LM Studio-specific 503 error handling | LM Studio returns plain-text 503 when no model loaded | ✓ Good — clear UX error message |
+| Skip ollama TUI validation fix | Pre-existing gap, out of scope for this milestone | — Deferred to future milestone |
 
 ## Evolution
 
@@ -82,4 +85,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 after Phase 1 completion — Provider Core implemented*
+*Last updated: 2026-04-07 after v1.0 milestone*
