@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-04-01 | Updated: 2026-04-01 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-07 -->
 
 # internal/llm
 
@@ -13,6 +13,7 @@ Provider factory + resilience wrappers + metadata enrichment. This package owns 
 | Anthropic | `anthropic.go` | Uses `DefaultAnthropicBaseURL` |
 | Google | `google.go` | Uses `DefaultGoogleBaseURL` |
 | Ollama | `ollama.go` | Local provider; API key not required |
+| LMStudio | `lmstudio.go` | Local provider; OpenAI-compatible API; zero-config defaults (localhost) |
 
 Factory entrypoints: `NewProviderFromConfig()` and `NewProvider()` in `provider.go`.
 
@@ -55,7 +56,8 @@ base provider
 
 ## Project-Specific Notes
 
-- `ollama` is the only provider allowed without an API key.
+- `ollama` and `lmstudio` are the only providers allowed without an API key.
+- `lmstudio` uses OpenAI-compatible chat completions format; zero-config defaults to localhost.
 - `internal/config.LLMConfig.MaxRetries` is deprecated; prefer `RateLimit.MaxRetries`.
 - Metadata prompt is intentionally strict: valid JSON only, exactly `summary`, `tags`, `category`.
 - `NewDependencies()` in `internal/strategies/strategy.go` decides whether providers/wrappers are enabled.

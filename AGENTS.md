@@ -1,8 +1,8 @@
-<!-- Generated: 2026-04-01 | Updated: 2026-04-01 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-07 -->
 
 # AGENTS.md - repodocs
 
-**Generated:** 2026-04-01 | **Updated:** 2026-04-01 | **Commit:** 16907ad | **Branch:** main
+**Generated:** 2026-04-01 | **Updated:** 2026-04-07 | **Commit:** 34edb75 | **Branch:** main
 
 ## Overview
 
@@ -108,6 +108,30 @@ go test ./tests/benchmark/... -bench=.
 - CI (`.github/workflows/ci.yml`): Linux + Windows, overall coverage plus per-package thresholds.
 - Release (`.github/workflows/release.yml`): tag push `v*` → GoReleaser.
 - Browser dependency: Chrome/Chromium optional unless JS rendering is used.
+
+## CI Coverage Thresholds
+
+| Package | Threshold | Package | Threshold |
+|---------|-----------|---------|-----------|
+| `internal/domain` | 85% | `internal/strategies` | 34% |
+| `internal/converter` | 85% | `internal/app` | 48% |
+| `internal/output` | 80% | `cmd/repodocs` | 48% |
+| `internal/git` | 80% | `internal/config` | 62% |
+| `internal/state` | 95%* | `internal/cache` | 75% |
+| `internal/llm` | 70%* | `internal/fetcher` | 70% |
+| `internal/renderer` | 28% | `internal/utils` | 90%* |
+
+*Updated since CI thresholds were set; actual coverage may differ. Edit thresholds in `.github/workflows/ci.yml`.
+
+## Known Bugs
+
+6 documented issues in `bugs.md` affecting rate limiting and circuit breaker:
+1. **Rate limit token consumed before circuit breaker check** (`provider_wrapper.go:107-118`) — High
+2. **JitterFactor always 0.0 in production** (`config.go`, `strategy.go`) — Medium
+3. **Half-open allows unlimited requests** (`circuit_breaker.go:96-97`) — Medium
+4. **Retry-After header parsed but never respected** (`client.go:164`, `retry.go:73-90`) — Medium
+5. **Retries don't consume rate limit tokens** (`provider_wrapper.go:100-125`) — Low
+6. **Validate() doesn't validate rate limit config** (`config.go:105-129`) — Low
 
 ## Complexity Hotspots
 
