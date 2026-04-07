@@ -1,64 +1,70 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-01 -->
 
-# AGENTS.md - internal/llm
+# internal/llm
 
-**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** internal/llm
-
-Multi-provider LLM abstraction with circuit breaker resilience and rate limiting.
+Provider factory + resilience wrappers + metadata enrichment. This package owns all LLM-specific runtime behavior.
 
 ## Providers
 
-| Provider | File | Model Default | Notes |
-|----------|------|---------------|-------|
-| OpenAI | `openai.go` | gpt-4o-mini | Chat completions API |
-| Anthropic | `anthropic.go` | claude-3-haiku | Messages API |
-| Google | `google.go` | gemini-1.5-flash | Generative Language API |
+| Provider | Files | Notes |
+|----------|-------|-------|
+| OpenAI | `openai.go` | Uses `DefaultOpenAIBaseURL` |
+| Anthropic | `anthropic.go` | Uses `DefaultAnthropicBaseURL` |
+| Google | `google.go` | Uses `DefaultGoogleBaseURL` |
+| Ollama | `ollama.go` | Local provider; API key not required |
 
-All implement `domain.LLMProvider`: `Name()`, `Complete(ctx, prompt)`, `Close()`.
+Factory entrypoints: `NewProviderFromConfig()` and `NewProvider()` in `provider.go`.
 
-## Resilience Layer
+## Contract
 
+All providers implement `domain.LLMProvider`:
+
+```go
+Name() string
+Complete(ctx context.Context, req *domain.LLMRequest) (*domain.LLMResponse, error)
+Close() error
 ```
-LLMProvider → RateLimitedProvider → CircuitBreaker → RateLimiter → Retrier
+
+## Runtime Layers
+
+```text
+base provider
+  → optional RateLimitedProvider
+  → retry / rate limit / circuit breaker behavior
+  → MetadataEnhancer
 ```
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| Circuit Breaker | `circuit_breaker.go` | Fail-fast on repeated errors (Closed→Open→HalfOpen) |
-| Rate Limiter | `ratelimit.go` | Token bucket, requests/minute + burst |
-| Retrier | `retry.go` | Exponential backoff with jitter |
-| Wrapper | `provider_wrapper.go` | Composes all into `RateLimitedProvider` |
+| Provider factory | `provider.go` | Base URLs, provider selection, config validation |
+| Retry | `retry.go` | Backoff with jitter |
+| Rate limit | `ratelimit.go` | Request pacing / token-bucket behavior |
+| Circuit breaker | `circuit_breaker.go` | Open/half-open/closed guardrail |
+| Wrapper | `provider_wrapper.go` | Compose resilience around any provider |
+| Metadata | `metadata.go` | Strict JSON extraction prompt + enhancer |
 
 ## Where to Look
 
 | Task | File |
 |------|------|
-| Add new LLM provider | Create `<provider>.go`, update `provider.go` factory |
-| Change retry/backoff | `retry.go` |
-| Tune circuit breaker | `circuit_breaker.go` (`DefaultCircuitBreakerConfig`) |
-| Modify metadata prompts | `metadata.go` (`metadataSystemPrompt`) |
-| Wrap provider with resilience | `provider_wrapper.go` (`NewRateLimitedProvider`) |
+| Add provider | `<provider>.go` + `provider.go` switch + `DefaultBaseURL()` |
+| Change base URL defaults | `provider.go` constants |
+| Tune retry/rate-limit/circuit breaker | `retry.go`, `ratelimit.go`, `circuit_breaker.go` |
+| Change summary/tag/category extraction | `metadata.go` |
 
-## Adding a Provider
+## Project-Specific Notes
 
-1. Create `<provider>.go` implementing `domain.LLMProvider`
-2. Implement `Name()`, `Complete(ctx, prompt)`, `Close()`
-3. Add constructor `New<Provider>Provider(cfg ProviderConfig)`
-4. Register in `provider.go` switch (`NewProviderFromConfig`)
-5. Add default base URL in `DefaultBaseURL()`
+- `ollama` is the only provider allowed without an API key.
+- `internal/config.LLMConfig.MaxRetries` is deprecated; prefer `RateLimit.MaxRetries`.
+- Metadata prompt is intentionally strict: valid JSON only, exactly `summary`, `tags`, `category`.
+- `NewDependencies()` in `internal/strategies/strategy.go` decides whether providers/wrappers are enabled.
 
-## Key Types
+## Anti-Patterns
 
-```go
-type ProviderConfig struct {
-    Provider, APIKey, BaseURL, Model string
-    MaxTokens int; Temperature float64
-}
-
-type RateLimitedProvider struct { /* wraps any LLMProvider with resilience */ }
-type MetadataEnhancer struct { /* uses LLMProvider for summaries/tags */ }
-```
+- Do not hardcode provider selection outside `provider.go`.
+- Do not bypass wrappers if the caller expects configured rate limiting / circuit breaking.
+- Do not change metadata JSON shape without updating downstream consumers/tests.
 
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

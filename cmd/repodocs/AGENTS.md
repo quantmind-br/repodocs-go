@@ -1,41 +1,57 @@
 <!-- Parent: ../../AGENTS.md -->
-<!-- Generated: 2026-03-15 | Updated: 2026-03-15 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-01 -->
 
-# cmd/repodocs/ - CLI Entry Point
+# cmd/repodocs/
 
-Single CLI entry point using Cobra framework.
+Single Cobra entrypoint. All CLI behavior is in `main.go`; there is no separate `run` or `manifest` subcommand.
 
-## Purpose
+## Files
 
-Main CLI application. Contains all commands and flags in main.go. Handles configuration loading via Viper, runs the extraction pipeline through the internal app orchestrator, and manages interactive TUI for config initialization.
+| File | Purpose |
+|------|---------|
+| `main.go` | Root command, all persistent flags, `doctor`, `version`, `config *`, `--manifest` execution path |
+| `main_test.go` | CLI/flag/command coverage |
 
-## Key Files
+## Actual Commands
 
-| File | Description |
-|------|-------------|
-| main.go | 539 lines - Root command, init subcommands (config, manifest, run), all CLI flags, Viper config binding |
-| main_test.go | CLI command tests |
+- `repodocs [url]` — single-source extraction.
+- `repodocs doctor` — internet/browser/write/cache checks.
+- `repodocs version` — print build/version info.
+- `repodocs config` — opens interactive config editor.
+- `repodocs config edit|show|init|path` — explicit config subcommands.
+- `repodocs --manifest path/to/file.yaml` — batch mode; still uses root command.
 
-## Key Commands
+## Important Behaviors
 
-- **root**: Extract documentation from a URL (`repodocs [url]`)
-- **init config**: Interactive TUI config wizard
-- **init manifest**: Generate manifest template
-- **run**: Execute extraction from manifest file
+- If `--manifest` is set, URL args are rejected and execution switches to `runManifest()`.
+- Output directory is auto-generated from the URL unless the user explicitly passed `--output`.
+- Graceful shutdown handled via `os.Interrupt`/`SIGTERM` cancellation.
+- `config` command runs the edit TUI by default.
+- Accessible TUI mode: `--accessible` or `ACCESSIBLE=1`.
 
-## Flags
+## Flag Groups
 
-Global flags: `--config`, `--output`, `--concurrency`, `--limit`, `--max-depth`, `--exclude`, `--filter`, `--nofolders`, `--force`, `--verbose`, `--no-cache`, `--cache-ttl`, `--refresh-cache`, `--render-js`, `--timeout`
+- General: `--config`, `--output`, `--concurrency`, `--limit`, `--max-depth`, `--exclude`, `--filter`, `--nofolders`, `--force`, `--verbose`
+- Cache: `--no-cache`, `--cache-ttl`, `--refresh-cache`
+- Rendering: `--render-js`, `--timeout`
+- Output/meta: `--json-meta`, `--dry-run`, `--split`, `--include-assets`
+- Selectors: `--content-selector`, `--exclude-selector`, `--user-agent`
+- Manifest/sync: `--manifest`, `--sync`, `--full-sync`, `--prune`
 
-## Dependencies
+## Where to Look
 
-- **Internal**: `internal/app`, `internal/config`, `internal/domain`, `internal/manifest`, `internal/tui`, `internal/utils`, `pkg/version`
-- **External**: spf13/cobra, spf13/viper, gopkg.in/yaml.v3
+| Task | Location |
+|------|----------|
+| Add/change flags | `init()` near root command |
+| Change single-URL flow | `run()` |
+| Change manifest flow | `runManifest()` |
+| Change dependency checks | `doctorCmd`, `checkInternet`, `checkChrome`, `checkWritePermissions`, `checkCacheDir` |
+| Change config UX | `configCmd` + `runConfigEdit/Show/Init` |
 
-## For AI Agents
+## Anti-Patterns
 
-- Entry point for running extraction: `go run cmd/repodocs/main.go [url]`
-- All flags must be registered in `init()` function
-- Config file defaults to `~/.repodocs/config.yaml`
+- Do not document nonexistent subcommands; manifest mode is a flag on the root command.
+- Do not duplicate business logic here if it belongs in `internal/app` or lower layers.
+- Keep flag registration centralized in `main.go` to match existing style.
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

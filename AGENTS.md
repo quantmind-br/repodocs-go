@@ -1,226 +1,124 @@
-<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-01 -->
 
 # AGENTS.md - repodocs
 
-**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Commit:** 55ef1a3 | **Branch:** main
+**Generated:** 2026-04-01 | **Updated:** 2026-04-01 | **Commit:** 16907ad | **Branch:** main
 
 ## Overview
 
-CLI tool extracting documentation from websites, Git repos, sitemaps, pkg.go.dev, docs.rs, llms.txt into clean Markdown. Interface-driven architecture with Strategy pattern.
+Go CLI/library that extracts documentation from websites, Git repos, sitemaps, pkg.go.dev, docs.rs, wikis, and `llms.txt` into Markdown. Core architecture: detector → strategy → fetch/render → convert → write, with optional LLM metadata enrichment and sync-state tracking.
 
 ## Structure
 
-```
+```text
 repodocs/
-├── cmd/repodocs/      # Single entry point (Cobra CLI, all commands in main.go)
+├── cmd/repodocs/        # Cobra CLI entrypoint; all commands and flags in main.go
+├── configs/             # Config template copied on install
+├── examples/manifests/  # Sample multi-source manifests
 ├── internal/
-│   ├── app/           # Orchestrator + Detector (strategy routing)
-│   ├── strategies/    # 8 extraction strategies (crawler, git, sitemap, llms, wiki, pkggo, docsrs, github_pages)
-│   ├── converter/     # HTML→Markdown pipeline (readability, sanitizer, encoding)
-│   ├── fetcher/       # Stealth HTTP client (tls-client, bot avoidance)
-│   ├── renderer/      # Headless browser pool (Rod/Chromium)
-│   ├── cache/         # BadgerDB persistence
-│   ├── llm/           # Multi-provider AI (OpenAI, Anthropic, Google) + circuit breakers
-│   ├── output/        # Markdown writer with YAML frontmatter
-│   ├── domain/        # Interfaces, models, sentinel errors
-│   ├── tui/           # Interactive config (Bubble Tea/Huh)
-│   └── config/        # YAML config handling
-├── tests/             # External test suite (unit/, integration/, e2e/)
-└── pkg/version/       # Public version info
+│   ├── app/             # URL detection + orchestrator
+│   ├── cache/           # Badger-backed cache
+│   ├── config/          # YAML/env/CLI config model + validation
+│   ├── converter/       # HTML/Markdown/plaintext conversion pipeline
+│   ├── domain/          # Interfaces, models, sentinel errors
+│   ├── fetcher/         # Stealth HTTP client + retry + transport
+│   ├── git/             # Thin go-git wrapper for DI/testability
+│   ├── llm/             # Provider factory + resilience wrappers + metadata
+│   ├── manifest/        # YAML/JSON manifest loading
+│   ├── output/          # Markdown writer + metadata collector
+│   ├── renderer/        # Rod/Chromium renderer + tab pool
+│   ├── state/           # Incremental sync state manager
+│   ├── strategies/      # Extraction strategies + shared Dependencies
+│   ├── tui/             # Bubble Tea/Huh config editor
+│   └── utils/           # URL/fs/logger/worker pool helpers
+├── pkg/version/         # Build-time version info
+├── scripts/             # Release automation
+└── tests/               # External unit/integration/e2e/benchmark suites
 ```
 
 ## Flow
 
-```
-URL → Detector → Strategy → Fetcher/Renderer → Converter → Writer
-                    ↓
-              (Optional) MetadataEnhancer (LLM)
+```text
+URL or manifest
+  → internal/app.DetectStrategy / RunManifest
+  → internal/strategies/*
+  → fetcher and/or renderer
+  → converter pipeline
+  → output writer
+  → optional metadata collector / LLM enhancer / sync state
 ```
 
-Detection order: LLMS → PkgGo → DocsRS → Sitemap → Git → GitHub Pages → Wiki → Crawler
+Detection order: `LLMS → PkgGo → DocsRS → Sitemap → Wiki → GitHubPages → Git → Crawler`
 
-## Build & Test
+## Commands
 
 ```bash
-make build              # Binary → ./build/repodocs (CGO_ENABLED=0)
-make test               # Unit tests (-short, -race)
-make test-integration   # Network-dependent tests
-make test-e2e           # Full CLI workflow tests
-make lint               # golangci-lint v2 (govet + misspell)
-make fmt                # gofmt + goimports
-make coverage           # HTML report → ./coverage/
+make build        # CGO_ENABLED=0 build → ./build/repodocs
+make test         # go test -v -race -short ./...
+make test-all     # full go test -v -race ./...
+make coverage     # coverage.out + ./coverage/coverage.html
+make lint         # gofmt -s -w . + golangci-lint run ./...
+make deps         # go mod download && go mod tidy
+make install      # install binary + default config template
+make release-dry  # goreleaser snapshot build
+./scripts/release.sh
 
-# Single test
-go test -v -run TestName ./internal/converter/...
+go test ./tests/unit/...
+go test ./tests/integration/...
+go test ./tests/e2e/...
+go test ./tests/benchmark/... -bench=.
 ```
 
 ## Where to Look
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add new source type | `internal/strategies/` + `internal/app/detector.go` | Implement Strategy interface, add to detection order |
-| Modify HTML→MD conversion | `internal/converter/` | Pipeline: encoding → readability → sanitizer → markdown |
-| Add CLI flag | `cmd/repodocs/main.go` | All Cobra commands in single file |
-| Add LLM provider | `internal/llm/` | Implement LLMProvider interface |
-| Change caching behavior | `internal/cache/` | BadgerDB wrapper |
-| JS rendering issues | `internal/renderer/` | Rod pool management |
-| Config TUI changes | `internal/tui/` | Bubble Tea + Huh forms |
+| Add new source type | `internal/strategies/` + `internal/app/detector.go` | Implement strategy, register constructor, preserve detection order |
+| Change composition/DI | `internal/app/orchestrator.go` + `internal/strategies/strategy.go` | Orchestrator builds options; `NewDependencies` wires shared services |
+| Modify CLI behavior | `cmd/repodocs/main.go` | Root command, `doctor`, `version`, `config *`, `--manifest` path |
+| Change config model/defaults | `internal/config/` | `config.go`, `defaults.go`, `loader.go` |
+| HTML → Markdown issues | `internal/converter/` | Encoding → readability → sanitizer → markdown |
+| JS rendering issues | `internal/renderer/` | Rod launcher, tab pool, stealth, SPA detection |
+| Caching / sync | `internal/cache/`, `internal/state/` | Badger cache and incremental state are separate concerns |
+| LLM provider or metadata changes | `internal/llm/` | Provider factory, wrappers, metadata prompt |
+| Test helpers / mocks | `tests/testutil/`, `tests/mocks/` | Shared factories vs generated mocks |
 
-## Code Style
+## Conventions
 
-### Imports (3 groups, blank-line separated)
-```go
-import (
-    "context"                                    // 1. stdlib
+- Imports: stdlib / external / internal, blank-line separated.
+- Interfaces live in `internal/domain`; implementations live elsewhere.
+- Public APIs: `context.Context` first, `error` last.
+- Errors: wrap with context; sentinel errors in `internal/domain/errors.go`.
+- Constructors: `NewX(...)`; option structs common (`ClientOptions`, `ProviderConfig`, `OrchestratorOptions`).
+- Logging: `zerolog` via `internal/utils/logger.go`.
+- CLI output dir: auto-derived from URL unless `-o/--output` was explicitly set.
 
-    "github.com/stretchr/testify/assert"         // 2. external
+## Project-Specific Rules
 
-    "github.com/quantmind-br/repodocs/internal/domain"  // 3. internal
-)
-```
+- `cmd/` is the only entrypoint; do not import from `cmd/` inside `internal/`.
+- Strategy-specific behavior belongs in `internal/strategies/*`, not in `internal/app/orchestrator.go`.
+- Avoid direct `rod` usage outside `internal/renderer`.
+- New `nolint` directives are discouraged; existing documented exception is `internal/converter/encoding.go`.
+- Deprecated config/model fields still exist; avoid using `LLMConfig.MaxRetries`, `Metadata`, `MetadataIndex`, `DocumentMetadata` in new code.
+- `_ = err` appears in some tests as “no panic” assertions; avoid it in production paths.
 
-### Naming
-- Interfaces: `Fetcher`, `Renderer`, `Cache` (verb-er)
-- Structs: `CrawlerStrategy`, `ClientOptions` (PascalCase)
-- Constructors: `NewClient()`, `NewOrchestrator()`
-- Tests: `TestGet_NotFound` (Method_Scenario)
+## Tooling Notes
 
-### Error Handling
-```go
-// Sentinel errors in internal/domain/errors.go
-var ErrCacheMiss = errors.New("cache miss")
-
-// Always wrap with context
-return fmt.Errorf("failed to fetch %s: %w", url, err)
-
-// Check errors
-if errors.Is(err, domain.ErrCacheMiss) { ... }
-var fetchErr *domain.FetchError
-if errors.As(err, &fetchErr) { ... }
-```
-
-### Interfaces
-```go
-type Cache interface {
-    Get(ctx context.Context, key string) ([]byte, error)  // context first
-    Set(ctx context.Context, key string, value []byte, ttl time.Duration) error  // error last
-}
-```
-
-### Options Pattern
-```go
-type ClientOptions struct { Timeout time.Duration; MaxRetries int }
-func DefaultClientOptions() ClientOptions {
-    return ClientOptions{Timeout: 30 * time.Second, MaxRetries: 3}
-}
-```
-
-## Testing
-
-```go
-require.NoError(t, err)       // Fails immediately
-assert.Equal(t, expected, actual)  // Continues
-
-// Table-driven (standard)
-tests := []struct {
-    name    string
-    input   string
-    wantErr bool
-}{
-    {name: "valid", input: "test", wantErr: false},
-}
-for _, tt := range tests {
-    t.Run(tt.name, func(t *testing.T) { ... })
-}
-
-// Use t.TempDir() for temp files (auto-cleanup)
-```
-
-Test locations:
-- `tests/unit/<pkg>/` mirrors `internal/<pkg>/` (external package tests)
-- `internal/<pkg>/*_test.go` for internal logic tests
-- `tests/mocks/` for gomock-generated mocks
-- `tests/testutil/` for shared helpers (NewBadgerCache, NewTestServer)
-- `tests/fixtures/` for test HTML/XML data
-
-## Logging
-
-```go
-s.logger.Info().Str("url", url).Msg("Starting extraction")
-s.logger.Warn().Err(err).Str("url", url).Msg("Failed")
-```
-
-## Concurrency
-
-- Always accept `context.Context` for cancellation
-- Check context in loops: `select { case <-ctx.Done(): return ctx.Err() default: }`
-- Use `sync.Map` for concurrent maps, `sync.Mutex` for simple state
-
-## DO NOT
-
-- Suppress errors silently (`_ = err`)
-- Use `panic` for recoverable errors
-- Import from `cmd/` in `internal/`
-- Create circular dependencies
-- Type assertions without error checking (`value, ok := x.(Type)`)
-- Add `nolint` directives (only exception: `internal/converter/encoding.go`)
-- Refactor while fixing bugs (minimal, targeted fixes only)
-
-## Deprecated (avoid in new code)
-
-| Item | Location | Replacement |
-|------|----------|-------------|
-| `MaxRetries` | `internal/config/` | Use `RateLimit.MaxRetries` |
-| `Metadata` struct | `internal/domain/models.go` | Use `SimpleMetadata` |
-| `MetadataIndex` | `internal/domain/models.go` | Use `SimpleMetadataIndex` |
-| `DocumentMetadata` | `internal/domain/models.go` | Use `SimpleDocumentMetadata` |
-
-## Dependency Injection
-
-```go
-// Composition root: internal/strategies/strategy.go
-type Dependencies struct {
-    Fetcher          *fetcher.Client
-    Renderer         domain.Renderer
-    Cache            domain.Cache
-    Converter        *converter.Pipeline
-    Writer           *output.Writer
-    Logger           *utils.Logger
-    LLMProvider      domain.LLMProvider
-    MetadataEnhancer *llm.MetadataEnhancer
-}
-
-// Orchestrator creates Dependencies, passes to strategies
-```
-
-## Key Interfaces
-
-| Interface | Location | Purpose |
-|-----------|----------|---------|
-| `Strategy` | `internal/domain` | Extraction strategy (Name, CanHandle, Execute) |
-| `Fetcher` | `internal/domain` | HTTP client with caching |
-| `Renderer` | `internal/domain` | Headless browser rendering |
-| `Cache` | `internal/domain` | Persistent cache operations |
-| `Converter` | `internal/domain` | HTML→Markdown conversion |
-| `LLMProvider` | `internal/domain` | AI completion interface |
+- `.golangci.yml`: only `govet` and `misspell`; tests skipped; explicit exclude for `internal/converter/encoding.go` ineffectual assignment.
+- CI (`.github/workflows/ci.yml`): Linux + Windows, overall coverage plus per-package thresholds.
+- Release (`.github/workflows/release.yml`): tag push `v*` → GoReleaser.
+- Browser dependency: Chrome/Chromium optional unless JS rendering is used.
 
 ## Complexity Hotspots
 
-| File | Lines | Notes |
-|------|-------|-------|
-| `strategies/docsrs_renderer.go` | 628 | Rustdoc JSON→Markdown, complex signatures |
-| `strategies/github_pages.go` | 600 | Multi-phase discovery, deduplication |
-| `strategies/docsrs_types.go` | 591 | Rustdoc JSON schema structures |
-| `utils/url.go` | 423 | URL normalization (critical for caching) |
-| `tui/forms.go` | 409 | Interactive config state machine |
-| `app/orchestrator.go` | 370 | Main coordination logic |
-
-## Session Completion
-
-Work is NOT complete until `git push` succeeds:
-```bash
-git pull --rebase && git push
-```
+| File | Why it matters |
+|------|----------------|
+| `internal/strategies/docsrs_renderer.go` | Rustdoc JSON → Markdown renderer; large signature/type formatting logic |
+| `internal/strategies/github_pages.go` | Discovery + SPA fallback + deduplication |
+| `internal/strategies/docsrs_types.go` | Large Rustdoc schema model |
+| `internal/utils/url.go` | Cache-key-critical URL normalization |
+| `internal/tui/forms.go` | Dense config UI state/field definitions |
+| `internal/app/orchestrator.go` | Main execution path for single URL + manifest runs |
 
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

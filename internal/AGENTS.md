@@ -1,44 +1,48 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-03-15 | Updated: 2026-03-15 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-01 -->
 
-# internal/ - Core Packages
+# internal/
 
-Container directory for all internal packages implementing the documentation extraction engine.
-
-## Purpose
-
-Provides all core functionality: strategy routing, HTTP fetching, HTML-to-Markdown conversion, caching, AI integration, and output generation. Packages are interface-driven with the Strategy pattern for extensibility.
+Core implementation packages. Public surface for most work starts in `app/`, shared contracts live in `domain/`, and shared runtime wiring lives in `strategies/strategy.go`.
 
 ## Subdirectories
 
 | Directory | Purpose |
 |-----------|---------|
-| [app/](app/AGENTS.md) | Orchestrator + Detector (strategy routing) |
-| [strategies/](strategies/AGENTS.md) | 8 extraction strategies (crawler, git, sitemap, llms, wiki, pkggo, docsrs, github_pages) |
-| [converter/](converter/AGENTS.md) | HTML to Markdown pipeline (readability, sanitizer, encoding) |
-| [fetcher/](fetcher/AGENTS.md) | Stealth HTTP client (tls-client, bot avoidance) |
-| [renderer/](renderer/AGENTS.md) | Headless browser pool (Rod/Chromium) |
-| [cache/](cache/AGENTS.md) | BadgerDB persistence |
-| [llm/](llm/AGENTS.md) | Multi-provider AI (OpenAI, Anthropic, Google) + circuit breakers |
-| [output/](output/AGENTS.md) | Markdown writer with YAML frontmatter |
-| [domain/](domain/AGENTS.md) | Interfaces, models, sentinel errors |
-| [tui/](tui/AGENTS.md) | Interactive config (Bubble Tea/Huh) |
-| [config/](config/AGENTS.md) | YAML config handling |
-| [git/](git/AGENTS.md) | Git client wrapper |
-| [manifest/](manifest/AGENTS.md) | Multi-source manifest loading |
-| [state/](state/AGENTS.md) | Sync state management |
-| [utils/](utils/AGENTS.md) | Shared utilities |
+| [app/](app/AGENTS.md) | URL detection + top-level orchestration |
+| [cache/](cache/AGENTS.md) | Badger persistence for fetched content |
+| [config/](config/AGENTS.md) | Config structs, defaults, loader, validation |
+| [converter/](converter/AGENTS.md) | HTML/Markdown/plaintext conversion pipeline |
+| [domain/](domain/AGENTS.md) | Shared interfaces, models, sentinel errors |
+| [fetcher/](fetcher/AGENTS.md) | Stealth HTTP client, retry, transport adapter |
+| [git/](git/AGENTS.md) | Thin go-git wrapper for DI/tests |
+| [llm/](llm/AGENTS.md) | Provider factory, wrappers, metadata enrichment |
+| [manifest/](manifest/AGENTS.md) | YAML/JSON multi-source manifests |
+| [output/](output/AGENTS.md) | Writer + metadata collector |
+| [renderer/](renderer/AGENTS.md) | Rod renderer + page pool + SPA heuristics |
+| [state/](state/AGENTS.md) | Incremental sync state |
+| [strategies/](strategies/AGENTS.md) | Extraction strategies + shared `Dependencies` |
+| [tui/](tui/AGENTS.md) | Interactive config editor |
+| [utils/](utils/AGENTS.md) | URL/fs/logger/worker utilities |
 
-## Dependencies
+## Boundaries
 
-- **Internal**: All packages depend on `domain/` for interfaces and models
-- **External**: tls-client, rod, badgerdb, openaianthropic google-go-ai, cobra, viper
+- `domain/`: contracts only; no implementation logic.
+- `app/`: selection + orchestration; no source-specific extraction details.
+- `strategies/`: source-specific logic plus shared runtime wiring (`NewDependencies`, lazy renderer, state save/prune helpers).
+- `utils/`: shared leaf helpers; safe to depend on broadly.
 
-## For AI Agents
+## Shared Patterns
 
-- All public APIs defined in `domain/` interfaces
-- Strategy pattern in `strategies/` for adding new extraction sources
-- Use `app/` orchestrator to run extraction pipelines
-- Cache layer in `cache/` uses BadgerDB key-value store
+- Most packages consume `domain` interfaces or `strategies.Dependencies`.
+- `app.NewOrchestrator(...)` converts CLI/config state into `strategies.DependencyOptions`.
+- Rendering is lazy unless explicitly enabled.
+- Metadata collection and sync state are optional features, not always-on core paths.
+
+## Anti-Patterns
+
+- Do not duplicate interfaces outside `domain/`.
+- Do not instantiate browser/fetch/cache logic ad hoc inside strategies when `Dependencies` already provides it.
+- Do not move source detection logic out of `app/detector.go`.
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->
