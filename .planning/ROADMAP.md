@@ -43,7 +43,11 @@ Plans:
   2. User sees a clear error message when LM Studio server is not running (connection refused)
   3. Unit tests pass verifying correct request format and conditional auth header behavior
   4. Provider factory test confirms `lmstudio` case returns a valid provider instance
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — LM Studio unit tests and factory test additions
+- [ ] 02-02-PLAN.md — LM Studio integration test
 
 ## Progress
 
@@ -53,4 +57,4 @@ Phases execute in numeric order: 1 → 2
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Provider Core | 0/2 | Planning complete | - |
-| 2. TUI, UX & Tests | 0/? | Not started | - |
+| 2. TUI, UX & Tests | 0/2 | Planning complete | - |
