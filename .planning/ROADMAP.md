@@ -46,8 +46,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — LM Studio unit tests and factory test additions
-- [ ] 02-02-PLAN.md — LM Studio integration test
+- [x] 02-01-PLAN.md — LM Studio unit tests and factory test additions
+- [x] 02-02-PLAN.md — LM Studio integration test
 
 ## Progress
 
