@@ -21,13 +21,18 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Goal**: Users can configure `provider: lmstudio` in their config and have repodocs make correct OpenAI-compatible requests to a local LM Studio server
 **Depends on**: Nothing (first phase)
 **Requirements**: PROV-01, PROV-02, PROV-03, PROV-04, PROV-05, PROV-06, CONF-01, CONF-03
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — LMStudioProvider struct and factory registration (provider.go + lmstudio.go)
+- [ ] 01-02-PLAN.md — TUI validation and provider dropdown (validation.go + forms.go)
+
 **Success Criteria** (what must be TRUE):
   1. User can set `provider: lmstudio` in YAML config and repodocs loads it without error
   2. Metadata enhancement runs against `http://localhost:1234/v1` when no base_url is set
   3. Provider works with no API key configured (no Authorization header sent)
   4. Provider sends `Authorization: Bearer <key>` when an API key is configured
   5. Requests use OpenAI chat completions format and respect 300s timeout
-**Plans**: TBD
 
 ### Phase 2: TUI, UX & Tests
 **Goal**: LM Studio is selectable from the TUI config editor, connection failures show a helpful message, and the provider is fully covered by unit and integration tests
@@ -47,5 +52,5 @@ Phases execute in numeric order: 1 → 2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Provider Core | 0/? | Not started | - |
+| 1. Provider Core | 0/2 | Planning complete | - |
 | 2. TUI, UX & Tests | 0/? | Not started | - |
