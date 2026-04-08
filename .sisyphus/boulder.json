@@ -1,1 +1,33 @@
-{}
+{
+  "active_plan": "/home/diogo/dev/repodocs/.sisyphus/plans/verify-fix-known-bugs.md",
+  "started_at": "2026-04-07T19:47:42.770Z",
+  "session_ids": [
+    "ses_2969723a2ffeEnia06tuys5QvL",
+    "ses_2969723a2ffeEnia06tuys5QvL",
+    "ses_29634f4f6ffeVFywV6REqZDX72",
+    "ses_29634f4f3ffch8YBhFBeX72VNB",
+    "ses_29634f4f1ffcBKcaMYyyjXw5v3",
+    "ses_29634f4f0ffc24kBwyEcuMLWpL"
+  ],
+  "plan_name": "verify-fix-known-bugs",
+  "worktree_path": null,
+  "session_origins": {
+    "ses_2969723a2ffeEnia06tuys5QvL": "direct",
+    "ses_29634f4f6ffeVFywV6REqZDX72": "appended",
+    "ses_29634f4f3ffch8YBhFBeX72VNB": "appended",
+    "ses_29634f4f1ffcBKcaMYyyjXw5v3": "appended",
+    "ses_29634f4f0ffc24kBwyEcuMLWpL": "appended"
+  },
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "Regression tests for Bugs 1 + 5 (provider_wrapper — token ordering + retry token consumption)",
+      "session_id": "ses_29634f4f0ffc24kBwyEcuMLWpL",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-low",
+      "updated_at": "2026-04-07T21:15:58.729Z"
+    }
+  },
+  "agent": "atlas"
+}
