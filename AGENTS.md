@@ -1,8 +1,8 @@
-<!-- Generated: 2026-04-01 | Updated: 2026-04-07 -->
+<!-- Generated: 2026-04-01 | Updated: 2026-04-29 -->
 
 # AGENTS.md - repodocs
 
-**Generated:** 2026-04-01 | **Updated:** 2026-04-07 | **Commit:** 34edb75 | **Branch:** main
+**Generated:** 2026-04-01 | **Updated:** 2026-04-29 | **Commit:** fba79cf | **Branch:** main
 
 ## Overview
 
