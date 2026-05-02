@@ -1,8 +1,8 @@
-<!-- Generated: 2026-04-01 | Updated: 2026-04-29 -->
+<!-- Generated: 2026-05-01 | Updated: 2026-05-01 -->
 
 # AGENTS.md - repodocs
 
-**Generated:** 2026-04-01 | **Updated:** 2026-04-29 | **Commit:** fba79cf | **Branch:** main
+**Generated:** 2026-05-01 | **Updated:** 2026-05-01 | **Commit:** 69f8eaa | **Branch:** main
 
 ## Overview
 
@@ -148,6 +148,15 @@ Additional fix: exported `CalculateBackoff` in `internal/llm/retry.go` now uses 
 | `internal/utils/url.go` | Cache-key-critical URL normalization |
 | `internal/tui/forms.go` | Dense config UI state/field definitions |
 | `internal/app/orchestrator.go` | Main execution path for single URL + manifest runs |
+| `internal/strategies/git/strategy_test.go` | ~1900 lines; tests 5 components (Strategy, Archive, Clone, Processor, Parser) |
+| `internal/strategies/git_strategy_test.go` | 1530 lines; duplicates git/strategy_test.go coverage |
+| `internal/renderer/renderer_test.go` | 1133 lines; browser-dependent tests with heavy setup |
+
+## Project Scale
+
+- 276 Go files (~100k lines), 174 test files
+- 14 internal packages, 10 extraction strategies
+- Externalized tests: `tests/unit/`, `tests/integration/`, `tests/e2e/`
 
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

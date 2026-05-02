@@ -1,26 +1,40 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-04-01 | Updated: 2026-04-29 -->
+<!-- Generated: 2026-05-01 | Updated: 2026-05-01 -->
 
 # tests/
 
-External test tree. Heavy use of black-box `package *_test` suites plus shared mocks/fixtures/utilities.
+Externalized test suites: unit, integration, e2e, benchmark. Black-box `package X_test` pattern. 174 test files total.
 
 ## Structure
 
 ```text
 tests/
-├── unit/              # largest subtree; mirrors internal packages and shared app-level black-box tests
-├── integration/       # cross-component runs; mostly package `integration`
-├── e2e/               # CLI workflow tests (`package e2e`)
-├── benchmark/         # performance comparisons (currently git clone vs archive)
-├── mocks/             # generated gomock + one legacy testify mock
-├── testutil/          # preferred shared helpers for new tests
-├── helpers/           # legacy helpers; keep for compatibility
-├── fixtures/          # static binary/text fixtures
-└── testdata/          # configs, golden files, additional fixtures
+├── unit/              # Black-box tests mirroring internal/
+│   ├── strategies/    # Strategy tests (also in internal/strategies/)
+│   ├── llm/           # Provider, retry, circuit breaker tests
+│   ├── app/           # Orchestrator tests
+│   └── ...            # One subdir per internal package
+├── integration/       # Cross-component; package `integration`
+│   ├── strategies/    # Real HTTP/git tests
+│   ├── llm/           # Live provider tests (skipped by default)
+│   └── renderer/      # Browser tests
+├── e2e/               # CLI workflow tests
+├── benchmark/         # Performance benchmarks
+├── testutil/          # Preferred shared helpers (PREFERRED)
+│   ├── documents.go   # Document factories
+│   ├── http.go        # TestServer wrapper
+│   ├── temp.go        # Temp dir with auto-cleanup
+│   ├── cache.go       # In-memory BadgerDB
+│   └── strategies.go  # NewTestDependencies, NewMinimalDependencies
+├── mocks/             # Generated gomock mocks
+├── helpers/           # Legacy helpers (deprecated)
+├── fixtures/          # Static binary/text fixtures
+│   ├── docsrs/json/   # Rustdoc JSON samples
+│   ├── git/           # sample-repo.tar.gz
+│   ├── llms/          # llms.txt samples
+│   └── pkggo/         # pkg.go.dev HTML
+└── testdata/          # Configs, golden files, HTML fixtures
 ```
-
-Child docs: [unit/](unit/AGENTS.md), [integration/](integration/AGENTS.md), [mocks/](mocks/AGENTS.md), [testutil/](testutil/AGENTS.md), [helpers/](helpers/AGENTS.md)
 
 ## Commands
 
@@ -32,27 +46,34 @@ go test ./tests/benchmark/... -bench=.
 go test ./... -short
 ```
 
-No `go:build integration` tags were found under `tests/`; integration tests are organized by directory/package, not build tags.
+## Where to Look
 
-## Shared Test Infrastructure
+| Task | Location | Notes |
+|------|----------|-------|
+| Write unit tests | `tests/unit/<package>/` | Use `package X_test` (black-box) |
+| Write integration tests | `tests/integration/<area>/` | Use `package integration`; skip with `testing.Short()` |
+| Create test documents | `testutil/documents.go` | `NewDocument()`, `NewHTMLDocument()` |
+| Mock HTTP calls | `testutil/http.go` | `NewTestServer(t)` with route handlers |
+| Mock interfaces | `mocks/` | gomock mocks for all domain interfaces |
+| Add fixtures | `fixtures/<strategy>/` | Per-strategy binary/text fixtures |
+| Regenerate mocks | `mocks/README.md` | `go generate ./...` |
 
-- `tests/testutil/`: preferred factories/assertions/temp dirs/servers.
-- `tests/mocks/`: generated mocks from `internal/domain/interfaces.go` and `internal/git/interface.go`.
-- `tests/helpers/`: older helper package; prefer `testutil` for new code.
-- `tests/fixtures/` and `tests/testdata/`: reusable HTML/XML/archive/config/golden inputs.
+## Conventions
 
-## Patterns
-
-- Black-box package naming: `fetcher_test`, `renderer_test`, `llm_test`, etc.
-- Some top-level unit files use `package app_test` as a general exported-API harness.
-- Table-driven tests and `t.TempDir()` are common throughout the tree.
-- Benchmarks are isolated in `tests/benchmark/`, not mixed into normal package dirs.
+- Table-driven: `tests := []struct{...}` + `t.Run(name, func(t *testing.T){})`
+- Test names: `Test<Subject>_<Scenario>`
+- Auto-cleanup: `testutil.TempDir(t)`, `testutil.NewTestServer(t)`, `testutil.NewBadgerCache(t)` use `t.Cleanup()`
+- Black-box: `package app_test` not `package app`
+- Integration tests skip in `-short`: `if testing.Short() { t.Skip(...) }`
+- Browser tests check availability: `if !renderer.IsAvailable() { t.Skip(...) }`
 
 ## Anti-Patterns
 
-- Prefer `tests/testutil/` over `tests/helpers/` for new code.
-- Do not edit generated files in `tests/mocks/` by hand.
-- Keep package-boundary intent: external tests here, white-box internal tests beside implementation when needed.
+- Prefer `testutil/` over `helpers/` (legacy)
+- Don't edit generated mocks (`mocks/*.go`)
+- `_ = err` only in tests as "no panic" assertions
+- Don't use real network in unit tests — use `testutil.NewTestServer()`
+- Avoid `t.Parallel()` with shared `NewTestDependencies()` (Badger conflicts)
 
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->

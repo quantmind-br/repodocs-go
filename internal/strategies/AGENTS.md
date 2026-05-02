@@ -1,72 +1,61 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-20 | Updated: 2026-03-15 -->
+<!-- Generated: 2026-05-01 | Updated: 2026-05-01 -->
 
-# AGENTS.md - internal/strategies
+# internal/strategies
 
-**Generated:** 2026-02-20 | **Updated:** 2026-03-15 | **Package:** internal/strategies
+Extraction strategies implementing `domain.Strategy`. Detection order: `LLMS → PkgGo → DocsRS → Sitemap → Wiki → GitHubPages → Git → Crawler`.
 
-Documentation extraction strategies implementing the Strategy interface.
+## Structure
 
-## Strategies
-
-| Strategy | Files | Handles |
-|----------|-------|---------|
-| LLMS | `llms.go` | Sites with `/llms.txt` or `/llms-full.txt` |
-| PkgGo | `pkggo.go` | `pkg.go.dev/*` Go package docs |
-| DocsRS | `docsrs.go`, `docsrs_*.go` | `docs.rs/*` Rust crate docs (JSON API) |
-| Sitemap | `sitemap.go` | Sites with `sitemap.xml` (gzip supported) |
-| Git | `git/*.go` | Git repos with `/docs` or markdown files |
-| GitHub Pages | `github_pages*.go` | `*.github.io` sites (SPA-aware) |
-| Wiki | `wiki.go`, `wiki_parser.go` | GitHub/GitLab wiki repos |
-| Crawler | `crawler.go` | Fallback: any HTTP/HTTPS URL |
-
-Detection order follows this table (top = highest priority).
+```
+├── strategy.go              # Options, Dependencies (DI container)
+├── git/                     # Subpackage: archive, clone, parser, processor
+│   ├── strategy.go          # GitStrategy coordinator
+│   ├── archive.go           # HTTP tar.gz fetcher
+│   ├── clone.go             # go-git wrapper
+│   ├── parser.go            # URL → platform/owner/repo
+│   ├── processor.go         # File discovery + doc conversion
+│   └── types.go             # Platform enum, file filter maps
+├── crawler.go               # Recursive crawler (colly)
+├── sitemap.go               # sitemap.xml parser
+├── github_pages.go          # SPA-aware GitHub Pages
+├── pkggo.go                 # pkg.go.dev extractor
+├── docsrs.go                # docs.rs Rustdoc extractor
+├── docsrs_types.go          # Rustdoc JSON schema
+├── docsrs_renderer.go       # Rustdoc → Markdown (complex)
+├── wiki.go                  # GitHub wiki
+├── llms.go                  # llms.txt extractor
+└── *_discovery.go           # Sitemap/MkDocs/Docusaurus probes
+```
 
 ## Where to Look
 
-| Task | File |
-|------|------|
-| Add URL detection logic | Strategy's `CanHandle()` method |
-| Modify extraction flow | Strategy's `Execute()` method |
-| Change shared deps | `strategy.go` → `Dependencies` struct |
-| Rustdoc JSON parsing | `docsrs_types.go`, `docsrs_json.go` |
-| Rustdoc → Markdown | `docsrs_renderer.go` (628 lines, complex) |
-| GitHub Pages SPA detection | `github_pages_discovery.go` |
-| Git clone/archive logic | `git/clone.go`, `git/archive.go` |
-| Wiki markdown parsing | `wiki_parser.go` |
+| Task | File | Notes |
+|------|------|-------|
+| Add strategy | New file + `detector.go` | Embed `*Dependencies`, implement 3 methods |
+| Change DI wiring | `strategy.go` `NewDependencies()` | Wires all shared services |
+| Git handling | `git/` subpackage | Archive vs clone; platform URLs |
+| SPA detection | `github_pages.go` | `looksLikeSPAShell()`, `isEmptyOrErrorContent()` |
+| Rustdoc render | `docsrs_renderer.go` | Signature formatting, type linking |
+| Crawler bugs | `crawler.go`, `crawler_context.go` | Colly callbacks, visited tracking |
 
-## Adding a New Strategy
+## Conventions
 
-1. Create `newstrategy.go` with struct embedding `*Dependencies`
-2. Implement interface:
-   ```go
-   func (s *NewStrategy) Name() string
-   func (s *NewStrategy) CanHandle(url string) bool
-   func (s *NewStrategy) Execute(ctx context.Context, url string, opts Options) error
-   ```
-3. Add constructor: `NewNewStrategy(deps *Dependencies) *NewStrategy`
-4. Register in `internal/app/detector.go` detection order
-5. Add tests in `newstrategy_test.go`
+- Constructor: `NewXStrategy(deps *Dependencies)`
+- `Dependencies` lazily initializes renderer via `sync.Once`
+- Options embed `domain.CommonOptions` for shared fields
+- File filters as global maps: `DocumentExtensions`, `IgnoreDirs`
 
-## Shared Patterns
+## Anti-Patterns
 
-**All strategies use Dependencies for:**
-- `deps.Fetcher` - HTTP requests with caching
-- `deps.Renderer` - Headless browser (JS sites)
-- `deps.Converter` - HTML → Markdown pipeline
-- `deps.Writer` - Output with frontmatter
-- `deps.WriteDocument()` - Standard doc output flow
+- Strategy logic belongs here, NOT in `internal/app/orchestrator.go`
+- Don't bypass `Dependencies` to create ad hoc service instances
 
-**Common method signatures:**
-```go
-func (s *XStrategy) SetFetcher(f domain.Fetcher)  // Testing injection
-```
+## Gotchas
 
-## Complexity Notes
-
-- **DocsRS**: Own type system (`docsrs_types.go`), JSON parser (`docsrs_json.go`), and Markdown renderer (`docsrs_renderer.go`). Handles Rust generics, lifetimes, trait bounds.
-- **GitHub Pages**: Multi-phase discovery (HTTP probes → browser render → link extraction). SPA shell detection in `looksLikeSPAShell()`.
-- **Git**: Subpackage with clone/archive/processor separation. Supports both full clone and archive fetch.
+- `git/strategy_test.go` (~1900 lines) and `git_strategy_test.go` (1530 lines) overlap
+- `docsrs_types.go` mirrors Rustdoc JSON; upstream changes break parsing
+- Git subpackage uses real `exec.Command("git", ...)` in clone path
 
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->
