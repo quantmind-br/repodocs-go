@@ -1,6 +1,6 @@
 # Self-Healing Extraction Pipeline — Plano de Design
 
-**Status:** Em execução — Phase 0 ✅ · Phase 1 ✅ · Phase 2 ✅ (MVP funcional) · Phases 3–5 ⬜
+**Status:** Em execução — Phase 0 ✅ · Phase 1 ✅ · Phase 2 ✅ (MVP funcional) · Phase 3 ✅ · Phases 4–5 ⬜
 **Autor:** Claude
 **Data:** 2026-05-06 · **Status atualizado:** 2026-06-26 (main @ 26806ee)
 **Escopo:** `internal/app`, `internal/strategies`, `internal/domain`, `internal/recovery` (novo), `cmd/repodocs`
@@ -519,30 +519,28 @@ Suggestions:
 
 ---
 
-### Phase 3 — Probes diagnósticos + planner refinado
+### Phase 3 — Probes diagnósticos + planner refinado — ✅ Concluída
 
-**Objetivo:** Casos não-óbvios. Quando Plano B também falha, probes sugerem Plano C inteligente.
+> **Status (2026-06-26):** entregue. Quando o Plano B estático (R1/R3) também não recupera, o orchestrator roda **probes diagnósticos baratos** e refina o plano (Plano C). Decisões de implementação (revisadas adversarialmente, no mesmo espírito da Phase 2):
+> - **Pureza preservada:** `internal/recovery` continua importando só `domain` + stdlib. Os probes recebem `domain.Fetcher` injetado (mesmo seam do `DiscoverSitemap`); checagens de conteúdo (`looksLikeSitemap`, `countAnchors`) foram **reimplementadas localmente** em vez de importar `internal/strategies`, para não quebrar o invariante.
+> - **7 → 4 probes (cada um consumido).** Mantidos apenas os probes que produzem ou habilitam um `Attempt` real em `RefineWith`, evitando dead code: `llms_txt_on_ancestor` → `llms`; `has_own_sitemap` → `sitemap`; `looks_like_index_page` → `crawler`; `github_pages_backed` → `git`. Descartados `URLAlive` (redundante: os probes acionáveis já confirmam liveness), `LooksLikeMdBook` (redundante com index) e `RobotsAllowsCrawl` (apenas consultivo; o crawler já respeita robots internamente).
+> - **Budget de tentativas duro:** `maxFallbackAttempts = 2` → no máximo 3 execuções de estratégia por run (inicial + 2 fallbacks). Probes são limitados (2s/probe, 6s total) e **nunca escrevem em disco**.
+> - **Dedup entre tiers:** um `tried` set (`strategy\x00url\x00filter`) impede re-executar um candidato já tentado (ex.: `crawler@origin` proposto tanto pela R3 quanto pelo probe de index).
+> - **`--no-fallback`/`--strategy` continuam suprimindo tudo** (incluindo probes) — sem novas flags na Phase 3.
 
 **Arquivos:**
-- `internal/recovery/probes.go` — interface `Probe` + 7 probes iniciais.
-- `internal/recovery/probe_cache.go` — cache em-memória por run.
-- `internal/recovery/planner.go` — método `RefineWith` consumindo `[]ProbeResult`.
+- `internal/recovery/probes.go` — `ProbeRunner` (paralelo, com budget) + 4 probes + helpers puros (`llmsCandidates`, `joinPath`, `githubRepoFromPagesHost`, …).
+- `internal/recovery/probe_cache.go` — `fetchCache`: single-flight em-memória por run sobre `Fetcher.Get` (deduplica fetches compartilhados entre probes).
+- `internal/recovery/planner.go` — método `RefineWith([]ProbeResult)` mapeando probes vencedores → `Attempt`s ordenados (mais barato primeiro: llms < sitemap < crawl < git).
+- `internal/app/fallback.go` — `runWithFallback` agora tem 2 tiers (estático + probes) com budget + dedup; helpers `tryFallback`, `validationOpts`, `logProbes`, `attemptKey`.
+- `internal/app/orchestrator.go` — campo `probeRunner`, inicializado com `recovery.NewProbeRunner(deps.Fetcher)`.
 
-**Probes implementados:**
-1. `URLAlive`
-2. `HasOwnSitemap`
-3. `LLMSTxtOnAncestor`
-4. `IsGitHubPagesBacked`
-5. `LooksLikeIndexPage`
-6. `LooksLikeMdBook`
-7. `RobotsAllowsCrawl`
+**Critério de aceite (atendido):**
+- Probes e helpers com unit tests usando `httptest.Server` + `domain.Fetcher` stub (`internal/recovery/probes_test.go`, `probe_cache_test.go`); `RefineWith` com tabela (`planner_test.go`). ✅
+- Caso sintético end-to-end: sitemap com `--filter` zerado **e** `/book/` 404 (Plano B falha) → probe acha `/llms.txt` na origem → fallback LLMS escreve docs (`TestE2E_SelfHealingProbeRecovery`). ✅
+- Budget total de probing logado (`Diagnostic probes completed … probe_budget=…`) e ≤ 6s/run. ✅
 
-**Critério de aceite:**
-- Probes individuais com unit tests usando `httptest.Server`.
-- Caso sintético: site bloqueado por 403 → probe detecta `RobotsAllowsCrawl=false` ou `IsGitHubPagesBacked=true` → fallback Git.
-- Budget total de probing logado e ≤ 10s/run.
-
-**Esforço:** 3–4 dias.
+**Esforço:** 3–4 dias (entregue).
 
 ---
 
@@ -628,11 +626,11 @@ Extraction completed via fallback (1 alternative tried)
 | 0 | StrategyResult + interface migrada | 1–2d | ✅ Concluída |
 | 1 | Validator + erro útil | 1–2d | ✅ Concluída |
 | 2 | Fallback 1 nível + flags CLI | 2–3d | ✅ Concluída — planner puro + loop em `app/fallback.go` + `--no-fallback`/`--min-docs` |
-| 3 | Probes + planner refinado | 3–4d | ⬜ Pendente |
+| 3 | Probes + planner refinado | 3–4d | ✅ Concluída — `ProbeRunner` (4 probes) + `fetchCache` + `RefineWith`; Tier 2 em `app/fallback.go` (budget 3, dedup) |
 | 4 | Recipe cache | 2d | ⬜ Pendente |
 | 5 | UX/observability | 1d | ⬜ Pendente |
 
-**MVP funcional entregue (Phase 0+1+2).** Phases 3–5 são polish progressivo. **Estado atual: Phases 0, 1 e 2 entregues — o MVP de auto-recuperação está fechado.**
+**MVP funcional entregue (Phase 0+1+2).** Phases 3–5 são polish progressivo. **Estado atual: Phases 0, 1, 2 e 3 entregues — o MVP de auto-recuperação está fechado e a recuperação por probes (Plano C) está ativa.**
 
 ---
 
@@ -799,7 +797,14 @@ recovery:
 - `cmd/repodocs/main.go` — flags `--no-fallback` e `--min-docs N`.
 - `tests/e2e/self_healing_test.go` — `TestE2E_SelfHealingFallback_RustBook` (positivo + `--no-fallback` + override).
 
-**Próximo passo — Phase 3 (probes diagnósticos + planner refinado):** quando o Plano B também falha, probes (`URLAlive`, `HasOwnSitemap`, `LLMSTxtOnAncestor`, …) sugerem um Plano C inteligente. Arquivos: `internal/recovery/probes.go`, `internal/recovery/probe_cache.go`, e `planner.go` ganha `RefineWith([]ProbeResult)`. Depois: Phase 4 (recipe cache) e Phase 5 (UX/observability), cada uma com valor isolado.
+**Concluído (Phase 3 — probes diagnósticos + planner refinado):** quando o Plano B estático também falha, o `ProbeRunner` roda 4 probes baratos e o `Planner.RefineWith` sugere um Plano C. Entregue em:
+- `internal/recovery/probes.go` — `ProbeRunner` (paralelo, budget 2s/probe, 6s total) + probes `llms_txt_on_ancestor` → llms, `has_own_sitemap` → sitemap, `looks_like_index_page` → crawler, `github_pages_backed` → git.
+- `internal/recovery/probe_cache.go` — `fetchCache` single-flight por run.
+- `internal/recovery/planner.go` — `RefineWith` mapeando probes → `Attempt`s (mais barato primeiro).
+- `internal/app/fallback.go` — Tier 2 no `runWithFallback` (budget 3 execuções, dedup por `attemptKey`).
+- `tests/e2e/self_healing_test.go` — `TestE2E_SelfHealingProbeRecovery` (recuperação via llms.txt quando o fallback estático falha).
+
+**Próximo passo — Phase 4 (recipe cache):** lembrar por domínio o que funcionou (`doc.rust-lang.org` → crawler@/book/) para acelerar runs subsequentes. Arquivos: `internal/recovery/recipes.go` (sobre o Badger existente, prefix `recipe:`), `internal/cache/recipe_codec.go`, flag `--ignore-recipes`. Depois: Phase 5 (UX/observability com `--explain`).
 
 ---
 
