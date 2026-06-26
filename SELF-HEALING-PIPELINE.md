@@ -1,8 +1,8 @@
 # Self-Healing Extraction Pipeline — Plano de Design
 
-**Status:** Proposta de arquitetura
-**Autor:** Claude (revisão pendente)
-**Data:** 2026-05-06
+**Status:** Em execução — Phase 0 ✅ · Phase 1 ✅ · Phase 2 ✅ (MVP funcional) · Phases 3–5 ⬜
+**Autor:** Claude
+**Data:** 2026-05-06 · **Status atualizado:** 2026-06-26 (main @ 26806ee)
 **Escopo:** `internal/app`, `internal/strategies`, `internal/domain`, `internal/recovery` (novo), `cmd/repodocs`
 
 ---
@@ -429,7 +429,7 @@ func (o *Orchestrator) Execute(ctx context.Context, url string, opts ExecuteOpti
 
 ## 5. Plano de execução faseado
 
-### Phase 0 — Contratos e infra (fundação)
+### Phase 0 — Contratos e infra (fundação) — ✅ Concluída
 
 **Objetivo:** Definir tipos novos sem mudar comportamento.
 
@@ -455,7 +455,7 @@ func (o *Orchestrator) Execute(ctx context.Context, url string, opts ExecuteOpti
 
 ---
 
-### Phase 1 — Validator + erro útil quando vazio
+### Phase 1 — Validator + erro útil quando vazio — ✅ Concluída
 
 **Objetivo:** Resolver o sintoma imediato. Saída silenciosa vira erro claro.
 
@@ -489,26 +489,33 @@ Suggestions:
 
 ---
 
-### Phase 2 — Fallback de 1 nível + flags CLI
+### Phase 2 — Fallback de 1 nível + flags CLI — ✅ Concluída
 
-**Objetivo:** Auto-recuperação para os 2 casos mais comuns:
-- (a) sitemap raso/filtro zerado → crawler@FilterURL.
-- (b) crawler retorna 0 → sitemap se descoberto.
+> **Status (2026-06-26):** entregue. O orchestrator agora aciona auto-recuperação no `VerdictRetryAlternative` em vez de só retornar `OutcomeError`. Decisões de implementação (revisadas adversarialmente):
+> - **Planner puro em `internal/recovery/planner.go`** (importa só `domain`) — testável isolado.
+> - **Loop em `internal/app/fallback.go`** (`runWithFallback` + `execAttempt`), não em `recovery/runner.go`: o loop já precisa de `CreateStrategy`/`Options`/`Execute` (tudo concern de `app`), então a abstração `Runner`/`ExecFunc` foi descartada por over-engineering.
+> - **Só gatilhos de zero-escrita disparam fallback** (`filter_zeroed`, `no_urls_attempted`); `high_failure_ratio` fica de fora (pode já ter escrito docs → risco de overwrite).
+> - **`--strategy`/manifest forçado suprime fallback** (respeita a escolha explícita).
+
+**Objetivo (entregue):** Auto-recuperação para os casos de zero-output mais comuns:
+- (a) filtro zerou (sitemap) → crawler escopado ao subtree filtrado (mantém o filtro). **R1**
+- (b) sitemap raso sem filtro → crawler na origem do site. **R3**
 
 **Arquivos:**
-- `internal/recovery/planner.go` — Planner mínimo (~5 regras).
-- `internal/recovery/runner.go` — loop de attempts no orchestrator.
-- `cmd/repodocs/main.go` — novas flags:
-  - `--strategy {crawler|sitemap|...}` — força strategy, desliga fallback.
+- `internal/recovery/planner.go` — Planner puro (R1 + R3) + `planner_test.go` (tabela).
+- `internal/app/fallback.go` — `runWithFallback` (loop de 1 nível) + `execAttempt` (caminho de execução único).
+- `internal/app/orchestrator.go` — campo `planner`, `NoFallback` em `OrchestratorOptions`, `Run` chama `runWithFallback` e reusa o switch de veredito.
+- `cmd/repodocs/main.go` — flags:
+  - `--strategy {crawler|sitemap|...}` — força strategy, desliga fallback (já existia).
   - `--no-fallback` — desliga fallback explicitamente.
-  - `--min-docs N` (default 1).
+  - `--min-docs N` (0 = default de 1).
 
-**Critério de aceite:**
-- Caso rust-book auto-recupera (rodaria crawler@/book/).
-- Manifests com `strategy:` explícito mantêm comportamento determinístico.
-- E2E test: rust-book reproduz, agora baixa N>0 docs sem intervenção.
+**Critério de aceite (atendido):**
+- Caso rust-book auto-recupera (crawler escopado em `/book/` escreve N>0 docs). ✅
+- Manifests/`--strategy` explícito mantêm comportamento determinístico (sem fallback). ✅
+- E2E `TestE2E_SelfHealingFallback_RustBook` (`tests/e2e/self_healing_test.go`): positivo + `--no-fallback` + override. ✅
 
-**Esforço:** 2–3 dias.
+**Esforço:** 2–3 dias (entregue).
 
 ---
 
@@ -616,16 +623,16 @@ Extraction completed via fallback (1 alternative tried)
 
 ### Resumo de phases
 
-| Phase | Entrega | Esforço | Cumulativo |
-|-------|---------|---------|-----------|
-| 0 | StrategyResult + interface migrada | 1–2d | 2d |
-| 1 | Validator + erro útil | 1–2d | 4d |
-| 2 | Fallback 1 nível + flags CLI | 2–3d | 7d |
-| 3 | Probes + planner refinado | 3–4d | 11d |
-| 4 | Recipe cache | 2d | 13d |
-| 5 | UX/observability | 1d | 14d |
+| Phase | Entrega | Esforço | Status |
+|-------|---------|---------|--------|
+| 0 | StrategyResult + interface migrada | 1–2d | ✅ Concluída |
+| 1 | Validator + erro útil | 1–2d | ✅ Concluída |
+| 2 | Fallback 1 nível + flags CLI | 2–3d | ✅ Concluída — planner puro + loop em `app/fallback.go` + `--no-fallback`/`--min-docs` |
+| 3 | Probes + planner refinado | 3–4d | ⬜ Pendente |
+| 4 | Recipe cache | 2d | ⬜ Pendente |
+| 5 | UX/observability | 1d | ⬜ Pendente |
 
-**MVP funcional após Phase 2 (~7 dias).** Phases 3–5 são polish progressivo.
+**MVP funcional entregue (Phase 0+1+2).** Phases 3–5 são polish progressivo. **Estado atual: Phases 0, 1 e 2 entregues — o MVP de auto-recuperação está fechado.**
 
 ---
 
@@ -783,12 +790,16 @@ recovery:
 
 ## 11. Próximos passos sugeridos
 
-1. **Revisar este doc** com stakeholders (você).
-2. **Aprovar Phase 0+1** como par mínimo (resolve sintoma observável em ~3–4 dias).
-3. **Abrir milestone GSD** "Self-Healing Pipeline" com phases 0–5 como roadmap.
-4. **Phase 0 via `/gsd-plan-phase`** (refactor mecânico mas amplo, merece plano formal).
-5. **Phase 1 via `/gsd-plan-phase`** após Phase 0 mergeada.
-6. **Phases 2–5 conforme cadência** — cada uma já entrega valor isoladamente.
+**Concluído na `main`:** Phase 0 (telemetria `StrategyResult` + interface migrada nas 8 strategies) e Phase 1 (validator + `OutcomeError` útil quando vazio) — commits 95ff61e, 614aed1, 26806ee. A flag `--strategy` veio no commit 80d24d7.
+
+**Concluído (Phase 2 — fallback automático de 1 nível):** o `VerdictRetryAlternative` agora aciona auto-recuperação. Entregue em:
+- `internal/recovery/planner.go` (+ `planner_test.go`) — Planner puro: R1 `filter_zeroed`/`no_urls_attempted` → crawler escopado ao subtree filtrado; R3 sitemap raso sem filtro → crawler na origem.
+- `internal/app/fallback.go` — `runWithFallback` (loop de 1 nível, sem recursão) + `execAttempt` (caminho de execução único, inicial e fallback).
+- `internal/app/orchestrator.go` — `Run` chama `runWithFallback` e reusa o switch de veredito; `NoFallback` em `OrchestratorOptions`.
+- `cmd/repodocs/main.go` — flags `--no-fallback` e `--min-docs N`.
+- `tests/e2e/self_healing_test.go` — `TestE2E_SelfHealingFallback_RustBook` (positivo + `--no-fallback` + override).
+
+**Próximo passo — Phase 3 (probes diagnósticos + planner refinado):** quando o Plano B também falha, probes (`URLAlive`, `HasOwnSitemap`, `LLMSTxtOnAncestor`, …) sugerem um Plano C inteligente. Arquivos: `internal/recovery/probes.go`, `internal/recovery/probe_cache.go`, e `planner.go` ganha `RefineWith([]ProbeResult)`. Depois: Phase 4 (recipe cache) e Phase 5 (UX/observability), cada uma com valor isolado.
 
 ---
 
